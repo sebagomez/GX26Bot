@@ -1,14 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using GX26Bot.Congnitive.LUIS;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 
-namespace GX26Bot
+namespace GX26Bot.Controllers
 {
 	[BotAuthentication]
 	public class MessagesController : ApiController
 	{
+		string[] m_help = new string[] { "help", "hola", "hello", "oi" };
 		/// <summary>
 		/// POST: api/Messages
 		/// Receive a message from a user and reply to it
@@ -17,6 +20,12 @@ namespace GX26Bot
 		{
 			if (message.Type == "Message")
 			{
+				if (m_help.Contains(message.Text.Trim().ToLower()))
+					return message.CreateReplyMessage(HelpMessage.GetHelp());
+
+				if (message.Text.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
+					return message.CreateReplyMessage("Soy mas que eso!, por favor escribe tu pregunta en lengaje natural!. Puedes escribir 'help' para obetener ayuda");
+
 				return await Conversation.SendAsync(message, MakeRoot);
 			}
 			else

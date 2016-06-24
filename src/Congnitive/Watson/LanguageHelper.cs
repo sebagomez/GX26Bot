@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.Serialization;
@@ -13,24 +14,33 @@ namespace GX26Bot.Congnitive.Watson
 	{
 		static string WATSON_API_KEY { get; } = ConfigurationManager.AppSettings["WatsonApiKey"];
 
-		static async Task<Language> GetLanguage(string text)
+		static string DEFAULT_LANG = "spanish";
+
+		static async Task<string> GetLanguage(string text)
 		{
-			string url = $"https://watson-api-explorer.mybluemix.net/alchemy-api/calls/text/TextGetLanguage?text={text}&apikey={WATSON_API_KEY}&outputMode=json";
-			HttpClient http = new HttpClient();
-			string stringData = await http.GetStringAsync(url);
+			try
+			{
+				string url = $"https://watson-api-explorer.mybluemix.net/alchemy-api/calls/text/TextGetLanguage?text={text}&apikey={WATSON_API_KEY}&outputMode=json";
+				HttpClient http = new HttpClient();
+				string stringData = await http.GetStringAsync(url);
 
-			Language lang = null;
-			DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Language));
-			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(stringData)))
-				lang = (Language)serializer.ReadObject(stream);
+				Language lang = null;
+				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Language));
+				using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(stringData)))
+					lang = (Language)serializer.ReadObject(stream);
 
-			return lang;
+				return lang.language;
+			}
+			catch (Exception ex)
+			{
+				return DEFAULT_LANG;
+			}
 		}
 
 		public static async Task<string> GetRestroomMessage(string text)
 		{
-			Language lang = await GetLanguage(text);
-			switch (lang.language)
+			string lang = await GetLanguage(text);
+			switch (lang)
 			{
 				case "unknown":
 				case "spanish":
@@ -40,14 +50,14 @@ namespace GX26Bot.Congnitive.Watson
 				case "english":
 					return "Bathrooms? of course. Bathrooms are marked on this map";
 				default:
-					return $"Sorry, I don't speak {lang.language}, but you'll find the bathrooms marked in the image";
+					return $"Sorry, I don't speak {lang}, but you'll find the bathrooms marked in the image";
 			}
 		}
 
 		public static async Task<string> GetClothesMessage(string text)
 		{
-			Language lang = await GetLanguage(text);
-			switch (lang.language)
+			string lang = await GetLanguage(text);
+			switch (lang)
 			{
 				case "unknown":
 				case "spanish":
@@ -57,16 +67,16 @@ namespace GX26Bot.Congnitive.Watson
 				case "english":
 					return "Coat check? of course. Leave your shit with us";
 				default:
-					return $"Sorry, I don't speak {lang.language}, but you'll find where to put your stuff away in the following image";
+					return $"Sorry, I don't speak {lang}, but you'll find where to put your stuff away in the following image";
 			}
 		}
 
 		public static async Task<string> GetRoomMessage(string text, string room)
 		{
-			Language lang = await GetLanguage(text.Replace(room, ""));
+			string lang = await GetLanguage(text.Replace(room, ""));
 			int floor;
 			ImageHelper.GetRoomImage(room, out floor);
-			switch (lang.language)
+			switch (lang)
 			{
 				case "unknown":
 				case "spanish":
@@ -76,11 +86,9 @@ namespace GX26Bot.Congnitive.Watson
 				case "english":
 					return $"{room} is located on floor {floor}";
 				default:
-					return $"Sorry, I don't speak {lang.language}, but you'll find {room} on floor {floor}";
+					return $"Sorry, I don't speak {lang}, but you'll find {room} on floor {floor}";
 			}
 		}
-
-		
 	}
 
 
