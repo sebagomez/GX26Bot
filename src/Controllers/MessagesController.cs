@@ -23,8 +23,8 @@ namespace GX26Bot.Controllers
 				if (m_help.Contains(message.Text.Trim().ToLower()))
 					return message.CreateReplyMessage(HelpMessage.GetHelp());
 
-				if (message.Text.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
-					return message.CreateReplyMessage("Soy mas que eso!, por favor escribe tu pregunta en lengaje natural!. Puedes escribir 'help' para obetener ayuda");
+				//if (message.Text.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
+				//	return message.CreateReplyMessage("Soy mas que eso!, por favor escribe tu pregunta en lengaje natural!. Puedes escribir 'help' para obetener ayuda");
 
 				return await Conversation.SendAsync(message, MakeRoot);
 			}

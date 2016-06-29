@@ -4,8 +4,10 @@ using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using GX26Bot.Congnitive.Watson;
+using GX26Bot.Dialogs;
 using GX26Bot.Images;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.FormFlow;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
@@ -15,6 +17,8 @@ namespace GX26Bot.Congnitive.LUIS
 	[Serializable]
 	public class LUISManager : LuisDialog<GX26Manager>
 	{
+		readonly string QUERY_LANGUAGE = "QUERY_LANGUAGE";
+
 		static string s_model { get; } = ConfigurationManager.AppSettings["LuisModelId"];
 		static string s_key { get; } = ConfigurationManager.AppSettings["LuisSubscriptionKey"];
 
@@ -53,12 +57,31 @@ namespace GX26Bot.Congnitive.LUIS
 		[LuisIntent("Restroom")]
 		public async Task Restroom(IDialogContext context, LuisResult result)
 		{
-			Message msg = context.MakeMessage();
-			msg.Text = await LanguageHelper.GetRestroomMessage(result.Query);
-			msg.Attachments = new List<Attachment>();
-			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetBathroomImage(2) });
+			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
 
-			await context.PostAsync(msg);
+			context.UserData.SetValue<TextLanguage>(QUERY_LANGUAGE, lang);
+
+			var floors = new[] { 2, 3, 4, 6, 25 };
+			PromptDialog.Choice(context, RestroomFloorComplete, floors, LanguageHelper.GetFloorQuestion(lang, floors), LanguageHelper.GetFloorQuestion(lang, floors, true), 3, PromptStyle.Auto);
+		}
+
+		private async Task RestroomFloorComplete(IDialogContext context, IAwaitable<int> result)
+		{
+			try
+			{
+				int floor = await result;
+
+				TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
+				context.UserData.RemoveValue(QUERY_LANGUAGE);
+
+				Message msg = context.MakeMessage();
+				msg.Text = LanguageHelper.GetRestroomMessage(lang, floor);
+				msg.Attachments = new List<Attachment>();
+				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetBathroomImage(floor) });
+
+				await context.PostAsync(msg);
+			}
+			catch (Exception) {  }
 
 			context.Wait(MessageReceived);
 		}

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using Microsoft.Bot.Builder.FormFlow;
 
-namespace GX26Bot.Congnitive.LUIS
+namespace GX26Bot.Dialogs
 {
 	[Serializable]
-	public class GX26Manager
+	public class RestroomDialog
 	{
-		//[Prompt("What floor are you in? {||}")]
-		//public int Floor { get; set; } 
+		[Prompt("What floor are you in? {||}", IsLocalizable = true)]
+		public int Floor { get; set; }
 	}
 }

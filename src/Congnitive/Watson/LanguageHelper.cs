@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Configuration;
 using System.IO;
 using System.Net.Http;
@@ -10,6 +11,14 @@ using GX26Bot.Images;
 
 namespace GX26Bot.Congnitive.Watson
 {
+	public enum TextLanguage
+	{
+		spanish,
+		english,
+		portuguese,
+		unknown
+	}
+
 	public class LanguageHelper
 	{
 		static string WATSON_API_KEY { get; } = ConfigurationManager.AppSettings["WatsonApiKey"];
@@ -37,20 +46,30 @@ namespace GX26Bot.Congnitive.Watson
 			}
 		}
 
-		public static async Task<string> GetRestroomMessage(string text)
+		public static async Task<TextLanguage> GetTextLanguage(string text)
 		{
 			string lang = await GetLanguage(text);
+
+			TextLanguage language;
+			if (Enum.TryParse<TextLanguage>(lang, out language))
+				return language;
+
+			return TextLanguage.unknown;
+
+		}
+
+		public static string GetRestroomMessage(TextLanguage lang, int floor)
+		{
 			switch (lang)
 			{
-				case "unknown":
-				case "spanish":
-					return "Baños? si claro. Los baños están marcados en este mapa";
-				case "portuguese":
-					return "Banheiro? claro cara. Oss banheiros están marcados en estos mapas";
-				case "english":
-					return "Bathrooms? of course. Bathrooms are marked on this map";
+				case TextLanguage.spanish:
+					return $"Los baños del piso {floor} están marcados en este mapa";
+				case TextLanguage.portuguese:
+					return $"Os banheiros no piso {floor} están marcados en estos mapas";
+				case TextLanguage.english:
+				case TextLanguage.unknown:
 				default:
-					return $"Sorry, I don't speak {lang}, but you'll find the bathrooms marked in the image";
+					return $"Bathrooms on livel {floor} are marked on this map";
 			}
 		}
 
@@ -88,6 +107,53 @@ namespace GX26Bot.Congnitive.Watson
 				default:
 					return $"Sorry, I don't speak {lang}, but you'll find {room} on floor {floor}";
 			}
+		}
+
+		public static string GetFloorQuestion(TextLanguage lang, int[] floors)
+		{
+			return GetFloorQuestion(lang, floors, false);
+		}
+		public static string GetFloorQuestion(TextLanguage lang, int[] floors, bool retry)
+		{
+			string strFloors = string.Join(", ", floors);
+			StringBuilder builder = new StringBuilder();
+			if (!retry)
+			{
+				switch (lang)
+				{
+					case TextLanguage.spanish:
+						builder.AppendLine("En qué piso se encuentra?");
+						break;
+					case TextLanguage.portuguese:
+						builder.AppendLine("En qué piso esta vocé?");
+						break;
+					case TextLanguage.unknown:
+					case TextLanguage.english:
+					default:
+						builder.AppendLine("What floor are you in?");
+						break;
+				}
+			}
+			else
+			{
+				switch (lang)
+				{
+					case TextLanguage.spanish:
+						builder.AppendLine("Piso inválido. Por favor reintente.");
+						break;
+					case TextLanguage.portuguese:
+						builder.AppendLine("Piso no válido.");
+						break;
+					case TextLanguage.unknown:
+					case TextLanguage.english:
+					default:
+						builder.AppendLine("Invalid floor. Please try again.");
+						break;
+				}
+			}
+
+			builder.AppendLine(strFloors);
+			return builder.ToString();
 		}
 	}
 

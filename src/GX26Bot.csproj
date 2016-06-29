@@ -114,6 +114,7 @@
     <Compile Include="Congnitive\LUIS\LUISManager.cs" />
     <Compile Include="Controllers\HelpMessage.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\RestroomDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
