@@ -31,32 +31,40 @@ namespace GX26Bot.Congnitive.LUIS
 
 		public LUISManager() :base(s_service) { }
 
+		[LuisIntent("None")]
 		[LuisIntent("")]
 		public async Task None(IDialogContext context, LuisResult result)
 		{
-			await context.PostAsync($"No che, no hay caso. No se qué me estás pidiendo cuando dices _{result.Query}_");
+			string message = await LanguageHelper.GetNotUnderstoodText(result.Query);
+			await context.PostAsync(message);
 			context.Wait(MessageReceived);
 		}
 
-		[LuisIntent("Bio")]
-		public async Task SearchBio(IDialogContext context, LuisResult result)
+		[LuisIntent("SpeakerSession")]
+		public async Task SpeakerSession(IDialogContext context, LuisResult result)
 		{
-			await context.PostAsync("Bien, sé que quieres una 'bio'");
-			StringBuilder builder = new StringBuilder();
-			foreach (var entity in result.Entities)
-				builder.AppendLine($"{entity.Type}: {entity.Entity}");
+			if (IsScoreTooLow(context, result))
+			{
+				await None(context, result);
+				return;
+			}
 
-			if (builder.Length > 0)
-				await context.PostAsync(builder.ToString());
-			else
-				await context.PostAsync($"pero no entendí de qué características :(");
-
+			string speaker = null;
+			if (result.Entities != null && result.Entities.Count > 0)
+				speaker = result.Entities[0].Entity;
+			await context.PostAsync($"Asique quieres saber cuando habla {speaker}");
 			context.Wait(MessageReceived);
 		}
 
 		[LuisIntent("Restroom")]
 		public async Task Restroom(IDialogContext context, LuisResult result)
 		{
+			if (IsScoreTooLow(context, result))
+			{
+				await None(context, result);
+				return;
+			}
+
 			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
 
 			context.UserData.SetValue<TextLanguage>(QUERY_LANGUAGE, lang);
@@ -89,6 +97,12 @@ namespace GX26Bot.Congnitive.LUIS
 		[LuisIntent("Clothes")]
 		public async Task Clothes(IDialogContext context, LuisResult result)
 		{
+			if (IsScoreTooLow(context, result))
+			{
+				await None(context, result);
+				return;
+			}
+
 			Message msg = context.MakeMessage();
 			msg.Text = await LanguageHelper.GetClothesMessage(result.Query);
 			msg.Attachments = new List<Attachment>();
@@ -102,6 +116,12 @@ namespace GX26Bot.Congnitive.LUIS
 		[LuisIntent("Room")]
 		public async Task Rooms(IDialogContext context, LuisResult result)
 		{
+			if (IsScoreTooLow(context, result))
+			{
+				await None(context, result);
+				return;
+			}
+
 			if (result.Entities.Count == 0) {
 				await context.PostAsync("No entendí qué sala está buscando");
 				context.Wait(MessageReceived);
@@ -117,6 +137,12 @@ namespace GX26Bot.Congnitive.LUIS
 			await context.PostAsync(msg);
 
 			context.Wait(MessageReceived);
+		}
+
+		private bool IsScoreTooLow(IDialogContext context, LuisResult result)
+		{
+			IntentRecommendation intent = result.Intents[0];
+			return intent.Score.HasValue && intent.Score.Value < 0.5;
 		}
 	}
 }

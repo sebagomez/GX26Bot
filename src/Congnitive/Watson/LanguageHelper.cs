@@ -73,6 +73,23 @@ namespace GX26Bot.Congnitive.Watson
 			}
 		}
 
+		public static async Task<string> GetNotUnderstoodText(string text)
+		{
+			string lang = await GetLanguage(text);
+			switch (lang)
+			{
+				case "unknown":
+				case "spanish":
+					return "Lo lamento. No comprendo la pregunta :(";
+				case "portuguese":
+					return "Meu error amigo, mais eu nao entendí";
+				case "english":
+					return "I'm sory. I don't understand :(";
+				default:
+					return $"Sorry, I don't speak {lang}, I also couldn't understand your question :(";
+			}
+		}
+
 		public static async Task<string> GetClothesMessage(string text)
 		{
 			string lang = await GetLanguage(text);

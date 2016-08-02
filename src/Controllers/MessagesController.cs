@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -22,6 +23,15 @@ namespace GX26Bot.Controllers
 			{
 				if (m_help.Contains(message.Text.Trim().ToLower()))
 					return message.CreateReplyMessage(HelpMessage.GetHelp());
+
+				//if (message.Text.Trim().ToLower().StartsWith("muuu"))
+				//{
+				//	Message msg = message.CreateReplyMessage($"{message.Text} to you too");
+				//	msg.Attachments = new List<Attachment>();
+				//	msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = "http://www.sustained.ie/wp-content/uploads/2013/01/Close-up+of+Cow.jpg" });
+
+				//	return msg;
+				//}
 
 				//if (message.Text.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
 				//	return message.CreateReplyMessage("Soy mas que eso!, por favor escribe tu pregunta en lengaje natural!. Puedes escribir 'help' para obetener ayuda");
