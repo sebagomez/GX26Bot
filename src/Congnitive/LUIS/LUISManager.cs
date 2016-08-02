@@ -18,6 +18,7 @@ namespace GX26Bot.Congnitive.LUIS
 	public class LUISManager : LuisDialog<GX26Manager>
 	{
 		readonly string QUERY_LANGUAGE = "QUERY_LANGUAGE";
+		readonly double MIN_ALLOWED_SCORE = 0.6d;
 
 		static string s_model { get; } = ConfigurationManager.AppSettings["LuisModelId"];
 		static string s_key { get; } = ConfigurationManager.AppSettings["LuisSubscriptionKey"];
@@ -142,7 +143,7 @@ namespace GX26Bot.Congnitive.LUIS
 		private bool IsScoreTooLow(IDialogContext context, LuisResult result)
 		{
 			IntentRecommendation intent = result.Intents[0];
-			return intent.Score.HasValue && intent.Score.Value < 0.5;
+			return intent.Score.HasValue && intent.Score.Value < MIN_ALLOWED_SCORE;
 		}
 	}
 }
