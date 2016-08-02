@@ -50,11 +50,30 @@ namespace GX26Bot.Congnitive.LUIS
 				return;
 			}
 
+			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
+
 			string speaker = null;
 			if (result.Entities != null && result.Entities.Count > 0)
+			{
 				speaker = result.Entities[0].Entity;
-			await context.PostAsync($"Asique quieres saber cuando habla {speaker}");
+				await context.PostAsync($"Asique quieres saber cuando habla {speaker}");
+				context.Wait(MessageReceived);
+			}
+			else
+			{
+				PromptDialog.Text(context, SpeakerComplete, LanguageHelper.GetSpeakerQuestion(lang), null, 1);
+			}
+		}
+
+		private async Task SpeakerComplete(IDialogContext context, IAwaitable<string> result)
+		{
+			string speaker = await result;
+			Message msg = context.MakeMessage();
+			msg.Text = $"Te busco las charlas de {speaker}";
+
+			await context.PostAsync(msg);
 			context.Wait(MessageReceived);
+
 		}
 
 		[LuisIntent("Restroom")]

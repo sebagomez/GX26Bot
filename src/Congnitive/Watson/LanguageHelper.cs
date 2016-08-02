@@ -126,6 +126,21 @@ namespace GX26Bot.Congnitive.Watson
 			}
 		}
 
+		public static string GetSpeakerQuestion(TextLanguage lang)
+		{
+			switch (lang)
+			{
+				case TextLanguage.spanish:
+					return "No entendí el nombre del orador. Por favor ingréselo nuevamente";
+				case TextLanguage.portuguese:
+					return "Nao entendeu o nome. Por favor ingréselo nuevamente";
+				case TextLanguage.unknown:
+				case TextLanguage.english:
+				default:
+					return "I didn't get the name of the speaker. Please write it again.";
+			}
+		}
+
 		public static string GetFloorQuestion(TextLanguage lang, int[] floors)
 		{
 			return GetFloorQuestion(lang, floors, false);
