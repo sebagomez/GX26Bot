@@ -126,6 +126,23 @@ namespace GX26Bot.Congnitive.Watson
 			}
 		}
 
+		public static async Task<string> GetRoomMessage(TextLanguage lang, string room)
+		{
+			int floor;
+			ImageHelper.GetRoomImage(room, out floor);
+			switch (lang)
+			{
+				case  TextLanguage.spanish:
+					return $"{room} la puede ubicar en el piso {floor}";
+				case TextLanguage.portuguese:
+					return $"A {room} esta no piso {floor}";
+				case TextLanguage.english:
+					return $"{room} is located on floor {floor}";
+				default:
+					return $"Sorry, I don't speak {lang}, but you'll find {room} on floor {floor}";
+			}
+		}
+
 		public static string GetSpeakerQuestion(TextLanguage lang)
 		{
 			switch (lang)
@@ -138,6 +155,21 @@ namespace GX26Bot.Congnitive.Watson
 				case TextLanguage.english:
 				default:
 					return "I didn't get the name of the speaker. Please write it again.";
+			}
+		}
+
+		public static string GetRoomQuestion(TextLanguage lang)
+		{
+			switch (lang)
+			{
+				case TextLanguage.spanish:
+					return "No entendí qué sala está buscando. Por favor dígame el nombre de la sala";
+				case TextLanguage.portuguese:
+					return "Nao entendeu o nome. Por favor ingréselo nuevamente";
+				case TextLanguage.unknown:
+				case TextLanguage.english:
+				default:
+					return "I didn't get the name of the room. Please tell me the room you're looking for.";
 			}
 		}
 

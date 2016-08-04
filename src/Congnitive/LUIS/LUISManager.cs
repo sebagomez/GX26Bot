@@ -142,15 +142,35 @@ namespace GX26Bot.Congnitive.LUIS
 				return;
 			}
 
+
+			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
+
 			if (result.Entities.Count == 0) {
-				await context.PostAsync("No entendí qué sala está buscando");
-				context.Wait(MessageReceived);
+				context.UserData.SetValue<TextLanguage>(QUERY_LANGUAGE, lang);
+				PromptDialog.Text(context, RoomComplete, LanguageHelper.GetRoomQuestion(lang), null, 1);
 				return;
 			}
 			string room = result.Entities[0].Entity;
 
 			Message msg = context.MakeMessage();
 			msg.Text = await LanguageHelper.GetRoomMessage(result.Query, room);
+			msg.Attachments = new List<Attachment>();
+			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
+
+			await context.PostAsync(msg);
+
+			context.Wait(MessageReceived);
+		}
+
+		public async Task RoomComplete(IDialogContext context, IAwaitable<string> result)
+		{
+			string room = await result;
+
+			TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
+			context.UserData.RemoveValue(QUERY_LANGUAGE);
+
+			Message msg = context.MakeMessage();
+			msg.Text = await LanguageHelper.GetRoomMessage(lang, room);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
 
