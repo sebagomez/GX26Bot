@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using GX26Bot.Congnitive.LUIS;
@@ -17,31 +19,36 @@ namespace GX26Bot.Controllers
 		/// POST: api/Messages
 		/// Receive a message from a user and reply to it
 		/// </summary>
-		public async Task<Message> Post([FromBody]Message message)
+		public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
 		{
-			if (message.Type == "Message")
+			ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+			if (activity.GetActivityType() == ActivityTypes.Message)
 			{
-				if (m_help.Contains(message.Text.Trim().ToLower()))
-					return message.CreateReplyMessage(HelpMessage.GetHelp());
+				if (m_help.Contains(activity.Text.Trim().ToLower()))
+				{
+					await connector.Conversations.ReplyToActivityAsync(activity.CreateReply(HelpMessage.GetHelp()));
+				}
+				else
+				{
+					//if (message.Text.Trim().ToLower().StartsWith("muuu"))
+					//{
+					//	Message msg = message.CreateReplyMessage($"{message.Text} to you too");
+					//	msg.Attachments = new List<Attachment>();
+					//	msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = "http://www.sustained.ie/wp-content/uploads/2013/01/Close-up+of+Cow.jpg" });
 
-				//if (message.Text.Trim().ToLower().StartsWith("muuu"))
-				//{
-				//	Message msg = message.CreateReplyMessage($"{message.Text} to you too");
-				//	msg.Attachments = new List<Attachment>();
-				//	msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = "http://www.sustained.ie/wp-content/uploads/2013/01/Close-up+of+Cow.jpg" });
+					//	return msg;
+					//}
 
-				//	return msg;
-				//}
+					//if (message.Text.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
+					//	return message.CreateReplyMessage("Soy mas que eso!, por favor escribe tu pregunta en lengaje natural!. Puedes escribir 'help' para obetener ayuda");
 
-				//if (message.Text.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
-				//	return message.CreateReplyMessage("Soy mas que eso!, por favor escribe tu pregunta en lengaje natural!. Puedes escribir 'help' para obetener ayuda");
-
-				return await Conversation.SendAsync(message, MakeRoot);
+					await Conversation.SendAsync(activity, MakeRoot);
+				}
 			}
 			else
-			{
-				return HandleSystemMessage(message);
-			}
+				await connector.Conversations.ReplyToActivityAsync(HandleSystemMessage(activity));
+
+			return Request.CreateResponse(HttpStatusCode.OK);
 		}
 
 		internal static IDialog<GX26Manager> MakeRoot()
@@ -49,33 +56,20 @@ namespace GX26Bot.Controllers
 			return Chain.From(() => new LUISManager());
 		}
 
-		private Message HandleSystemMessage(Message message)
+		private Activity HandleSystemMessage(Activity activity)
 		{
-			if (message.Type == "Ping")
+			switch (activity.GetActivityType())
 			{
-				Message reply = message.CreateReplyMessage();
-				reply.Type = "Ping";
-				return reply;
-			}
-			else if (message.Type == "DeleteUserData")
-			{
-				// Implement user deletion here
-				// If we handle user deletion, return a real message
-			}
-			else if (message.Type == "BotAddedToConversation")
-			{
-			}
-			else if (message.Type == "BotRemovedFromConversation")
-			{
-			}
-			else if (message.Type == "UserAddedToConversation")
-			{
-			}
-			else if (message.Type == "UserRemovedFromConversation")
-			{
-			}
-			else if (message.Type == "EndOfConversation")
-			{
+				case ActivityTypes.Ping:
+					Activity reply = activity.CreateReply();
+					reply.Text = "Haga Pum!";
+					return reply;
+				case ActivityTypes.ContactRelationUpdate:
+				case ActivityTypes.ConversationUpdate:
+				case ActivityTypes.DeleteUserData:
+				case ActivityTypes.Typing:
+				default:
+					break;
 			}
 
 			return null;

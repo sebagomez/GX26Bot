@@ -68,7 +68,7 @@ namespace GX26Bot.Congnitive.LUIS
 		private async Task SpeakerComplete(IDialogContext context, IAwaitable<string> result)
 		{
 			string speaker = await result;
-			Message msg = context.MakeMessage();
+			IMessageActivity msg = context.MakeMessage();
 			msg.Text = $"Te busco las charlas de {speaker}";
 
 			await context.PostAsync(msg);
@@ -102,7 +102,7 @@ namespace GX26Bot.Congnitive.LUIS
 				TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
 				context.UserData.RemoveValue(QUERY_LANGUAGE);
 
-				Message msg = context.MakeMessage();
+				IMessageActivity msg = context.MakeMessage();
 				msg.Text = LanguageHelper.GetRestroomMessage(lang, floor);
 				msg.Attachments = new List<Attachment>();
 				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetBathroomImage(floor) });
@@ -123,7 +123,7 @@ namespace GX26Bot.Congnitive.LUIS
 				return;
 			}
 
-			Message msg = context.MakeMessage();
+			IMessageActivity msg = context.MakeMessage();
 			msg.Text = await LanguageHelper.GetClothesMessage(result.Query);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetBathroomImage(2) });
@@ -152,7 +152,7 @@ namespace GX26Bot.Congnitive.LUIS
 			}
 			string room = result.Entities[0].Entity;
 
-			Message msg = context.MakeMessage();
+			IMessageActivity msg = context.MakeMessage();
 			msg.Text = await LanguageHelper.GetRoomMessage(result.Query, room);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
@@ -169,7 +169,7 @@ namespace GX26Bot.Congnitive.LUIS
 			TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
 			context.UserData.RemoveValue(QUERY_LANGUAGE);
 
-			Message msg = context.MakeMessage();
+			IMessageActivity msg = context.MakeMessage();
 			msg.Text = await LanguageHelper.GetRoomMessage(lang, room);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
