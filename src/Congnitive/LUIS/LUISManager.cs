@@ -66,12 +66,14 @@ namespace GX26Bot.Congnitive.LUIS
 				}
 				if (speakers.Count == 1) //best case
 				{
+					await SpeakerDisambiguated(context, $"{speakers[0].Speakerfirstname} {speakers[0].Speakerlastname}");
+					return;
 				}
 				if (speakers.Count > 1) //must disambiguate
 				{
 					string msg = $"Encontré {speakers.Count} oradores que cumplen con su búsqueda. Sobre cuál de ellos desea saber?";
 					string[] listedSpeakers = speakers.Select<Speaker, string>(s => $"{s.Speakerfirstname} {s.Speakerlastname}").ToArray();
-					PromptDialog.Choice(context, SpeakerDisambiguated, listedSpeakers, msg, null, 1, PromptStyle.Auto);
+					PromptDialog.Choice(context, OnSpeakerDisambiguated, listedSpeakers, msg, null, 1, PromptStyle.Auto);
 					return;
 				}
 
@@ -84,9 +86,8 @@ namespace GX26Bot.Congnitive.LUIS
 			}
 		}
 
-		private async Task SpeakerDisambiguated(IDialogContext context, IAwaitable<string> result)
+		private async Task SpeakerDisambiguated(IDialogContext context, string speaker)
 		{
-			string speaker = await result;
 			TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
 
 			List<Speaker> speakers = FindSpeaker.Find(speaker);
@@ -111,6 +112,12 @@ namespace GX26Bot.Congnitive.LUIS
 				await context.PostAsync($"No pude encontrar a {speaker}");
 
 			context.Wait(MessageReceived);
+		}
+
+		private async Task OnSpeakerDisambiguated(IDialogContext context, IAwaitable<string> result)
+		{
+			string speaker = await result;
+			await SpeakerDisambiguated(context, speaker);
 		}
 
 		private async Task SpeakerComplete(IDialogContext context, IAwaitable<string> result)
