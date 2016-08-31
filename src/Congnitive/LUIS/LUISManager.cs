@@ -123,12 +123,7 @@ namespace GX26Bot.Congnitive.LUIS
 		private async Task SpeakerComplete(IDialogContext context, IAwaitable<string> result)
 		{
 			string speaker = await result;
-			IMessageActivity msg = context.MakeMessage();
-			msg.Text = $"Te busco las charlas de {speaker}";
-
-			await context.PostAsync(msg);
-			context.Wait(MessageReceived);
-
+			await SpeakerDisambiguated(context, speaker);
 		}
 
 		[LuisIntent("Restroom")]
