@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BotConfiguration.cs" />
     <Compile Include="Congnitive\LUIS\GX26Manager.cs" />
     <Compile Include="Congnitive\LUIS\LUISManager.cs" />
     <Compile Include="Controllers\HelpMessage.cs" />
@@ -126,6 +127,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GX26\Data\GX26Session.cs" />
+    <Compile Include="GX26\FindSpeaker.cs" />
+    <Compile Include="GX26\Data\GX26Speaker.cs" />
+    <Compile Include="GX26\SpeakerSessions.cs" />
     <Compile Include="Images\ImageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Congnitive\Watson\LanguageHelper.cs" />

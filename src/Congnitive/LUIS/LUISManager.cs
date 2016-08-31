@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
 using System.Threading.Tasks;
 using GX26Bot.Congnitive.Watson;
-using GX26Bot.Dialogs;
+using GX26Bot.GX26.Data;
 using GX26Bot.Images;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.FormFlow;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
+using GX26Bot.GX26;
 
 namespace GX26Bot.Congnitive.LUIS
 {
@@ -51,11 +51,30 @@ namespace GX26Bot.Congnitive.LUIS
 			}
 
 			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
+			context.UserData.SetValue<TextLanguage>(QUERY_LANGUAGE, lang);
 
 			string speaker = null;
-			if (result.Entities != null && result.Entities.Count > 0)
+			if (result.Entities != null && result.Entities.Count == 1)
 			{
 				speaker = result.Entities[0].Entity;
+				List<Speaker> speakers = FindSpeaker.Find(speaker);
+				if (speakers.Count == 0) //invalid speaker
+				{
+					await context.PostAsync($"No encontré oradores llamados {speaker}");
+					context.Wait(MessageReceived);
+					return;
+				}
+				if (speakers.Count == 1) //best case
+				{
+				}
+				if (speakers.Count > 1) //must disambiguate
+				{
+					string msg = $"Encontré {speakers.Count} oradores que cumplen con su búsqueda. Sobre cuál de ellos desea saber?";
+					string[] listedSpeakers = speakers.Select<Speaker, string>(s => $"{s.Speakerfirstname} {s.Speakerlastname}").ToArray();
+					PromptDialog.Choice(context, SpeakerDisambiguated, listedSpeakers, msg, null, 1, PromptStyle.Auto);
+					return;
+				}
+
 				await context.PostAsync($"Asique quieres saber cuando habla {speaker}");
 				context.Wait(MessageReceived);
 			}
@@ -63,6 +82,35 @@ namespace GX26Bot.Congnitive.LUIS
 			{
 				PromptDialog.Text(context, SpeakerComplete, LanguageHelper.GetSpeakerQuestion(lang), null, 1);
 			}
+		}
+
+		private async Task SpeakerDisambiguated(IDialogContext context, IAwaitable<string> result)
+		{
+			string speaker = await result;
+			TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
+
+			List<Speaker> speakers = FindSpeaker.Find(speaker);
+			if (speakers.Count == 1) //best case
+			{
+				Speaker sp = speakers[0];
+				List<Session> sessions = SpeakerSessions.Find(speakers[0].Speakerid, lang);
+				if (sessions.Count == 0)
+				{
+					await context.PostAsync($"No pude encontrar sesiones de {sp.Speakerfirstname} {sp.Speakerlastname}");
+					context.Wait(MessageReceived);
+					return;
+				}
+				bool many = sessions.Count > 1;
+				string msg = $"I've found {sessions.Count} " + (many ? "sessions" : "session") + $" for {sp.Speakerfirstname} {sp.Speakerlastname}{Environment.NewLine}";
+				foreach (Session s in sessions)
+					msg += $"{s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}{Environment.NewLine}";
+
+				await context.PostAsync(msg);
+			}
+			else
+				await context.PostAsync($"No pude encontrar a {speaker}");
+
+			context.Wait(MessageReceived);
 		}
 
 		private async Task SpeakerComplete(IDialogContext context, IAwaitable<string> result)

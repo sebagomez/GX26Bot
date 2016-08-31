@@ -30,6 +30,7 @@ namespace GX26Bot.Controllers
 				}
 				else
 				{
+
 					//if (message.Text.Trim().ToLower().StartsWith("muuu"))
 					//{
 					//	Message msg = message.CreateReplyMessage($"{message.Text} to you too");
@@ -40,7 +41,7 @@ namespace GX26Bot.Controllers
 					//}
 
 					//if (message.Text.Trim().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
-					//	return message.CreateReplyMessage("Soy mas que eso!, por favor escribe tu pregunta en lengaje natural!. Puedes escribir 'help' para obetener ayuda");
+					//await connector.Conversations.ReplyToActivityAsync(activity.CreateReply("aslgo mas complicado"));
 
 					await Conversation.SendAsync(activity, MakeRoot);
 				}
@@ -62,6 +63,7 @@ namespace GX26Bot.Controllers
 			{
 				case ActivityTypes.Ping:
 					Activity reply = activity.CreateReply();
+					reply.Type = ActivityTypes.Ping;
 					reply.Text = "Haga Pum!";
 					return reply;
 				case ActivityTypes.ContactRelationUpdate:
