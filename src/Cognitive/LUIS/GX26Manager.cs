@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.Bot.Builder.FormFlow;
 
-namespace GX26Bot.Congnitive.LUIS
+namespace GX26Bot.Cognitive.LUIS
 {
 	[Serializable]
 	public class GX26Manager

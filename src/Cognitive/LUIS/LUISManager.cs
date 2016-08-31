@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
-using GX26Bot.Congnitive.Watson;
 using GX26Bot.GX26.Data;
 using GX26Bot.Images;
 using Microsoft.Bot.Builder.Dialogs;
@@ -11,8 +10,9 @@ using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
 using GX26Bot.GX26;
+using GX26Bot.Cognitive.Watson;
 
-namespace GX26Bot.Congnitive.LUIS
+namespace GX26Bot.Cognitive.LUIS
 {
 	[Serializable]
 	public class LUISManager : LuisDialog<GX26Manager>

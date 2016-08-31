@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GX26Bot.Images;
 
-namespace GX26Bot.Congnitive.Watson
+namespace GX26Bot.Cognitive.Watson
 {
 	public enum TextLanguage
 	{

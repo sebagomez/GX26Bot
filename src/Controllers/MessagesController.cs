@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using GX26Bot.Congnitive.LUIS;
+using GX26Bot.Cognitive.LUIS;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 
