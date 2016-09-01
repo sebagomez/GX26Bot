@@ -11,12 +11,12 @@ namespace GX26Bot.GX26
 {
 	public class SpeakerSessions
 	{
-		public static List<Session> Find(int speakerId, TextLanguage lang)
+		public static List<Session> Find(int speakerId, string lang)
 		{
 			string language = "E"; //English will be default
-			if (lang == TextLanguage.spanish)
+			if (lang == LanguageHelper.SPANISH)
 				language = "S";
-			else if (lang == TextLanguage.portuguese)
+			else if (lang == LanguageHelper.PORTUGUESE)
 				language = "P";
 
 			string query = $"speakerid={speakerId}&sessionLang={language}";

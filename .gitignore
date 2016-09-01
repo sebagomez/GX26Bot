@@ -6,3 +6,5 @@ packages/
 
 *.user
 private.config
+rudi.PublishSettings
+src/Properties/PublishProfiles/

@@ -9,19 +9,18 @@ namespace GX26Bot.Controllers
 	{
 		public static string GetHelp()
 		{
-			return $@"Hola! Acá va a ir toda la ayuda que querramos meter. Seguramente vaya a estar en algún config para poder corregir y no tener que recompilar.
+			return $@"Hola! Mi nombre es RUDI y puedo ayudarte a moverte durante en GX26.
 
-Lo que sé hacer es contestar preguntas sobre las ubicaciones de los baños, las roperías y las salas.
+Sé la ubicacíón de las salas, los baños y roperías.
+También conozco la agenda del evento.
 Ejemplo de estas preguntas son:  
 
 - dónde están los baños?  
 - dónde está la repería?
-- dónde puedo dejar mi abrigo?  
 - dónde queda la sala Renoir?
-- cómo llego al Ballroom B?
-- dónde está la sala 4CF?
+- a qué hora habla Nicolás Jodal?
 
-También voy a saber, pero todavía no, cuales son las distintas charlas de las salas y cuales son las 'próximas' charlas en general o de una sala en particular";
+Cuando necesites volver a ver esto simplemente me saludas :)";
 		}
 	}
 }

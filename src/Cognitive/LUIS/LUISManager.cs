@@ -32,11 +32,23 @@ namespace GX26Bot.Cognitive.LUIS
 
 		public LUISManager() :base(s_service) { }
 
+		[LuisIntent("Greeting")]
+		public async Task Greeting(IDialogContext context, LuisResult result)
+		{
+			string lang = await LanguageHelper.GetLanguage(result.Query);
+
+			string message = LanguageHelper.GetNotUnderstoodText(lang);
+			await context.PostAsync(message);
+			context.Wait(MessageReceived);
+		}
+
 		[LuisIntent("None")]
 		[LuisIntent("")]
 		public async Task None(IDialogContext context, LuisResult result)
 		{
-			string message = await LanguageHelper.GetNotUnderstoodText(result.Query);
+			string lang = await LanguageHelper.GetLanguage(result.Query);
+
+			string message = LanguageHelper.GetNotUnderstoodText(lang);
 			await context.PostAsync(message);
 			context.Wait(MessageReceived);
 		}
@@ -50,8 +62,8 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
-			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
-			context.UserData.SetValue<TextLanguage>(QUERY_LANGUAGE, lang);
+			string lang = await LanguageHelper.GetLanguage(result.Query);
+			context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
 
 			string speaker = null;
 			if (result.Entities != null && result.Entities.Count == 1)
@@ -88,7 +100,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		private async Task SpeakerDisambiguated(IDialogContext context, string speaker)
 		{
-			TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
+			string lang = context.UserData.Get<string>(QUERY_LANGUAGE);
 
 			List<Speaker> speakers = FindSpeaker.Find(speaker);
 			if (speakers.Count == 1) //best case
@@ -135,9 +147,8 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
-			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
-
-			context.UserData.SetValue<TextLanguage>(QUERY_LANGUAGE, lang);
+			string lang = await LanguageHelper.GetLanguage(result.Query);
+			context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
 
 			var floors = new[] { 2, 3, 4, 6, 25 };
 			PromptDialog.Choice(context, RestroomFloorComplete, floors, LanguageHelper.GetFloorQuestion(lang, floors), LanguageHelper.GetFloorQuestion(lang, floors, true), 3, PromptStyle.Auto);
@@ -149,7 +160,7 @@ namespace GX26Bot.Cognitive.LUIS
 			{
 				int floor = await result;
 
-				TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
+				string lang = context.UserData.Get<string>(QUERY_LANGUAGE);
 				context.UserData.RemoveValue(QUERY_LANGUAGE);
 
 				IMessageActivity msg = context.MakeMessage();
@@ -173,8 +184,10 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
+			string lang = await LanguageHelper.GetLanguage(result.Query);
+
 			IMessageActivity msg = context.MakeMessage();
-			msg.Text = await LanguageHelper.GetClothesMessage(result.Query);
+			msg.Text = LanguageHelper.GetClothesMessage(lang);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetBathroomImage(2) });
 
@@ -192,18 +205,17 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
-
-			TextLanguage lang = await LanguageHelper.GetTextLanguage(result.Query);
+			string lang = await LanguageHelper.GetLanguage(result.Query);
 
 			if (result.Entities.Count == 0) {
-				context.UserData.SetValue<TextLanguage>(QUERY_LANGUAGE, lang);
+				context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
 				PromptDialog.Text(context, RoomComplete, LanguageHelper.GetRoomQuestion(lang), null, 1);
 				return;
 			}
 			string room = result.Entities[0].Entity;
 
 			IMessageActivity msg = context.MakeMessage();
-			msg.Text = await LanguageHelper.GetRoomMessage(result.Query, room);
+			msg.Text = LanguageHelper.GetRoomMessage(lang, room);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
 
@@ -216,11 +228,11 @@ namespace GX26Bot.Cognitive.LUIS
 		{
 			string room = await result;
 
-			TextLanguage lang = context.UserData.Get<TextLanguage>(QUERY_LANGUAGE);
+			string lang = context.UserData.Get<string>(QUERY_LANGUAGE);
 			context.UserData.RemoveValue(QUERY_LANGUAGE);
 
 			IMessageActivity msg = context.MakeMessage();
-			msg.Text = await LanguageHelper.GetRoomMessage(lang, room);
+			msg.Text = LanguageHelper.GetRoomMessage(lang, room);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
 

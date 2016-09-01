@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Configuration;
 using System.IO;
 using System.Net.Http;
@@ -11,21 +10,17 @@ using GX26Bot.Images;
 
 namespace GX26Bot.Cognitive.Watson
 {
-	public enum TextLanguage
-	{
-		spanish,
-		english,
-		portuguese,
-		unknown
-	}
-
 	public class LanguageHelper
 	{
 		static string WATSON_API_KEY { get; } = ConfigurationManager.AppSettings["WatsonApiKey"];
 
-		static string DEFAULT_LANG = "spanish";
+		public const string SPANISH = "spanish";
+		public const string ENGLISH = "english";
+		public const string PORTUGUESE = "portuguese";
 
-		static async Task<string> GetLanguage(string text)
+		const string DEFAULT_LANG = ENGLISH;
+
+		public static async Task<string> GetLanguage(string text)
 		{
 			try
 			{
@@ -40,144 +35,106 @@ namespace GX26Bot.Cognitive.Watson
 
 				return lang.language;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				return DEFAULT_LANG;
 			}
 		}
 
-		public static async Task<TextLanguage> GetTextLanguage(string text)
-		{
-			string lang = await GetLanguage(text);
-
-			TextLanguage language;
-			if (Enum.TryParse<TextLanguage>(lang, out language))
-				return language;
-
-			return TextLanguage.unknown;
-
-		}
-
-		public static string GetRestroomMessage(TextLanguage lang, int floor)
+		public static string GetRestroomMessage(string lang, int floor)
 		{
 			switch (lang)
 			{
-				case TextLanguage.spanish:
+				case SPANISH:
 					return $"Los baños del piso {floor} están marcados en este mapa";
-				case TextLanguage.portuguese:
+				case PORTUGUESE:
 					return $"Os banheiros no piso {floor} están marcados en estos mapas";
-				case TextLanguage.english:
-				case TextLanguage.unknown:
+				case ENGLISH:
 				default:
 					return $"Bathrooms on livel {floor} are marked on this map";
 			}
 		}
 
-		public static async Task<string> GetNotUnderstoodText(string text)
+		public static string GetNotUnderstoodText(string lang)
 		{
-			string lang = await GetLanguage(text);
 			switch (lang)
 			{
-				case "unknown":
-				case "spanish":
+				case SPANISH:
 					return "Lo lamento. No comprendo la pregunta :(";
-				case "portuguese":
+				case PORTUGUESE:
 					return "Meu error amigo, mais eu nao entendí";
-				case "english":
+				case ENGLISH:
 					return "I'm sory. I don't understand :(";
 				default:
 					return $"Sorry, I don't speak {lang}, I also couldn't understand your question :(";
 			}
 		}
 
-		public static async Task<string> GetClothesMessage(string text)
+		public static string GetClothesMessage(string lang)
 		{
-			string lang = await GetLanguage(text);
 			switch (lang)
 			{
-				case "unknown":
-				case "spanish":
+				case SPANISH:
 					return "Ropería? si claro. Ubíquela en la siguiente imagen";
-				case "portuguese":
+				case PORTUGUESE:
 					return "Cómo se dice ropería en portuges?";
-				case "english":
+				case ENGLISH:
 					return "Coat check? of course. Leave your shit with us";
 				default:
 					return $"Sorry, I don't speak {lang}, but you'll find where to put your stuff away in the following image";
 			}
 		}
 
-		public static async Task<string> GetRoomMessage(string text, string room)
+		public static string GetRoomMessage(string lang, string room)
 		{
-			string lang = await GetLanguage(text.Replace(room, ""));
 			int floor;
 			ImageHelper.GetRoomImage(room, out floor);
 			switch (lang)
 			{
-				case "unknown":
-				case "spanish":
+				case SPANISH:
 					return $"{room} la puede ubicar en el piso {floor}";
-				case "portuguese":
+				case PORTUGUESE:
 					return $"A {room} esta no piso {floor}";
-				case "english":
+				case ENGLISH:
 					return $"{room} is located on floor {floor}";
 				default:
 					return $"Sorry, I don't speak {lang}, but you'll find {room} on floor {floor}";
 			}
 		}
 
-		public static async Task<string> GetRoomMessage(TextLanguage lang, string room)
-		{
-			int floor;
-			ImageHelper.GetRoomImage(room, out floor);
-			switch (lang)
-			{
-				case  TextLanguage.spanish:
-					return $"{room} la puede ubicar en el piso {floor}";
-				case TextLanguage.portuguese:
-					return $"A {room} esta no piso {floor}";
-				case TextLanguage.english:
-					return $"{room} is located on floor {floor}";
-				default:
-					return $"Sorry, I don't speak {lang}, but you'll find {room} on floor {floor}";
-			}
-		}
-
-		public static string GetSpeakerQuestion(TextLanguage lang)
+		public static string GetSpeakerQuestion(string lang)
 		{
 			switch (lang)
 			{
-				case TextLanguage.spanish:
+				case SPANISH:
 					return "No entendí el nombre del orador. Por favor ingréselo nuevamente";
-				case TextLanguage.portuguese:
+				case PORTUGUESE:
 					return "Nao entendeu o nome. Por favor ingréselo nuevamente";
-				case TextLanguage.unknown:
-				case TextLanguage.english:
+				case ENGLISH:
 				default:
 					return "I didn't get the name of the speaker. Please write it again.";
 			}
 		}
 
-		public static string GetRoomQuestion(TextLanguage lang)
+		public static string GetRoomQuestion(string lang)
 		{
 			switch (lang)
 			{
-				case TextLanguage.spanish:
+				case SPANISH:
 					return "No entendí qué sala está buscando. Por favor dígame el nombre de la sala";
-				case TextLanguage.portuguese:
+				case PORTUGUESE:
 					return "Nao entendeu o nome. Por favor ingréselo nuevamente";
-				case TextLanguage.unknown:
-				case TextLanguage.english:
+				case ENGLISH:
 				default:
 					return "I didn't get the name of the room. Please tell me the room you're looking for.";
 			}
 		}
 
-		public static string GetFloorQuestion(TextLanguage lang, int[] floors)
+		public static string GetFloorQuestion(string lang, int[] floors)
 		{
 			return GetFloorQuestion(lang, floors, false);
 		}
-		public static string GetFloorQuestion(TextLanguage lang, int[] floors, bool retry)
+		public static string GetFloorQuestion(string lang, int[] floors, bool retry)
 		{
 			string strFloors = string.Join(", ", floors);
 			StringBuilder builder = new StringBuilder();
@@ -185,14 +142,13 @@ namespace GX26Bot.Cognitive.Watson
 			{
 				switch (lang)
 				{
-					case TextLanguage.spanish:
+					case SPANISH:
 						builder.AppendLine("En qué piso se encuentra?");
 						break;
-					case TextLanguage.portuguese:
+					case PORTUGUESE:
 						builder.AppendLine("En qué piso esta vocé?");
 						break;
-					case TextLanguage.unknown:
-					case TextLanguage.english:
+					case ENGLISH:
 					default:
 						builder.AppendLine("What floor are you in?");
 						break;
@@ -202,14 +158,13 @@ namespace GX26Bot.Cognitive.Watson
 			{
 				switch (lang)
 				{
-					case TextLanguage.spanish:
+					case SPANISH:
 						builder.AppendLine("Piso inválido. Por favor reintente.");
 						break;
-					case TextLanguage.portuguese:
+					case PORTUGUESE:
 						builder.AppendLine("Piso no válido.");
 						break;
-					case TextLanguage.unknown:
-					case TextLanguage.english:
+					case ENGLISH:
 					default:
 						builder.AppendLine("Invalid floor. Please try again.");
 						break;
