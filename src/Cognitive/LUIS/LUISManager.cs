@@ -71,7 +71,7 @@ namespace GX26Bot.Cognitive.LUIS
 				}
 				if (speakers.Count > 1) //must disambiguate
 				{
-					string msg = $"Encontré {speakers.Count} oradores que cumplen con su búsqueda. Sobre cuál de ellos desea saber?";
+					string msg = $"Encontré {speakers.Count} oradores '{speaker}'. Sobre cuál de ellos desea saber?";
 					string[] listedSpeakers = speakers.Select<Speaker, string>(s => $"{s.Speakerfirstname} {s.Speakerlastname}").ToArray();
 					PromptDialog.Choice(context, OnSpeakerDisambiguated, listedSpeakers, msg, null, 1, PromptStyle.Auto);
 					return;
