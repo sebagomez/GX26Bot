@@ -18,7 +18,7 @@ namespace GX26Bot.Cognitive.LUIS
 	public class LUISManager : LuisDialog<GX26Manager>
 	{
 		readonly string QUERY_LANGUAGE = "QUERY_LANGUAGE";
-		readonly double MIN_ALLOWED_SCORE = 0.6d;
+		readonly double MIN_ALLOWED_SCORE = 0.5d;
 
 		static string s_model { get; } = ConfigurationManager.AppSettings["LuisModelId"];
 		static string s_key { get; } = ConfigurationManager.AppSettings["LuisSubscriptionKey"];
