@@ -74,5 +74,11 @@ namespace GX26Bot.Helpers
 					return "https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg";
 			}
 		}
+
+		public static string GetLocationImage()
+		{
+			return "http://images.travelpod.com/cache/accom_maps/Radisson_Victoria_Plaza-Montevideo.gif";
+
+		}
 	}
 }

@@ -125,6 +125,7 @@
     <Compile Include="Cognitive\TextAnalytics\DetectLanguage.cs" />
     <Compile Include="Cognitive\Watson\GetEntities.cs" />
     <Compile Include="Cognitive\Watson\GetLanguage.cs" />
+    <Compile Include="Cognitive\Watson\SentimentAnalysis.cs" />
     <Compile Include="Controllers\HelpMessage.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="default.aspx.cs">

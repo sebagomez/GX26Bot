@@ -41,9 +41,8 @@ namespace GX26Bot.Helpers
 				case PORTUGUESE:
 					return "Meu error amigo, mais eu nao entendí";
 				case ENGLISH:
-					return "I'm sory. I don't understand :(";
 				default:
-					return $"Sorry, I don't speak {lang}, I also couldn't understand your question :(";
+					return "I'm sorry. I don't understand :(";
 			}
 		}
 
@@ -70,9 +69,22 @@ namespace GX26Bot.Helpers
 				case PORTUGUESE:
 					return "Cómo se dice ropería en portuges?";
 				case ENGLISH:
-					return "Coat check? of course. Leave your shit with us";
 				default:
-					return $"Sorry, I don't speak {lang}, but you'll find where to put your stuff away in the following image";
+					return "Coat check? of course. Leave your shit with us";
+			}
+		}
+
+		public static string GetLocationMessage(string lang)
+		{
+			switch (lang)
+			{
+				case SPANISH:
+					return "El 26to encuentro Genexus es en el hotel Radisson Victoria Plaza en Montevideo.";
+				case PORTUGUESE:
+					return "O 26to encontro Genexus es en el hotel Radisson Victoria Plaza en Montevideu.";
+				case ENGLISH:
+				default:
+					return $"The 26th Genexus meeting is being held at the Radisson Victoria Plaza hotel in Montevideo";
 			}
 		}
 

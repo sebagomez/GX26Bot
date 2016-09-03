@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.Serialization;
@@ -12,13 +11,12 @@ namespace GX26Bot.Cognitive.Watson
 {
 	public class GetLanguage
 	{
-		static string WATSON_API_KEY { get; } = ConfigurationManager.AppSettings["WatsonApiKey"];
 
 		public static async Task<string> Execute(string text)
 		{
 			try
 			{
-				string url = $"https://watson-api-explorer.mybluemix.net/alchemy-api/calls/text/TextGetLanguage?text={text}&apikey={WATSON_API_KEY}&outputMode=json";
+				string url = $"https://watson-api-explorer.mybluemix.net/alchemy-api/calls/text/TextGetLanguage?text={text}&apikey={BotConfiguration.WATSON_API_KEY}&outputMode=json";
 				HttpClient http = new HttpClient();
 				string stringData = await http.GetStringAsync(url);
 

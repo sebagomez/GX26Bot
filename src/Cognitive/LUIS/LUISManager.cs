@@ -13,13 +13,15 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
+using static GX26Bot.Cognitive.Watson.SentimentAnalysis;
 
 namespace GX26Bot.Cognitive.LUIS
 {
 	[Serializable]
 	public class LUISManager : LuisDialog<GX26Manager>
 	{
-		readonly string QUERY_LANGUAGE = "QUERY_LANGUAGE";
+		readonly string QUERY_LANGUAGE = "LANGUAGE";
+		readonly string CONSECUTIVES_FAILS = "FAILS";
 		readonly double MIN_ALLOWED_SCORE = 0.5d;
 
 		static string s_model { get; } = ConfigurationManager.AppSettings["LuisModelId"];
@@ -58,6 +60,8 @@ namespace GX26Bot.Cognitive.LUIS
 				await None(context, result);
 				return;
 			}
+			else
+				OnSuccess(context);
 
 			string lang = await DetectLanguage.Execute(result.Query);
 			context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
@@ -140,6 +144,8 @@ namespace GX26Bot.Cognitive.LUIS
 				await None(context, result);
 				return;
 			}
+			else
+				OnSuccess(context);
 
 			string lang = await DetectLanguage.Execute(result.Query);
 			context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
@@ -181,6 +187,8 @@ namespace GX26Bot.Cognitive.LUIS
 				await None(context, result);
 				return;
 			}
+			else
+				OnSuccess(context);
 
 			string lang = await DetectLanguage.Execute(result.Query);
 
@@ -206,6 +214,8 @@ namespace GX26Bot.Cognitive.LUIS
 				await None(context, result);
 				return;
 			}
+			else
+				OnSuccess(context);
 
 			string lang = await DetectLanguage.Execute(result.Query);
 
@@ -246,6 +256,33 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#endregion
 
+		#region Location
+
+		[LuisIntent("Location")]
+		public async Task Location(IDialogContext context, LuisResult result)
+		{
+			if (IsScoreTooLow(context, result))
+			{
+				await None(context, result);
+				return;
+			}
+			else
+				OnSuccess(context);
+
+			string lang = await DetectLanguage.Execute(result.Query);
+
+			IMessageActivity msg = context.MakeMessage();
+			msg.Text = LanguageHelper.GetLocationMessage(lang);
+			msg.Attachments = new List<Attachment>();
+			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetLocationImage() });
+
+			await context.PostAsync(msg);
+
+			context.Wait(MessageReceived);
+		}
+
+		#endregion
+
 		#region None
 
 		[LuisIntent("None")]
@@ -260,8 +297,36 @@ namespace GX26Bot.Cognitive.LUIS
 				message += "Pero creo lo que te interesa es: ";
 
 				foreach (var e in entities.entities)
-					message += $"{e.text} ";
+					message += $"{e.text}  ";
 			}
+
+			int fails = 1;
+			if (context.UserData.TryGetValue<int>(CONSECUTIVES_FAILS, out fails))
+			{
+				fails++;
+				if (fails > 6)
+				{
+					message += @"
+Esto ya no lo soporto. Creo que necesitamos un timepo :'(";
+				} else if (fails > 4)
+				{
+					message += @"
+Esto ya es muy embarazoso :(";
+				} else if (fails > 2)
+				{
+					message += @"
+Siento que te estoy fallando mucho ultimamente :(";
+				}
+
+			}
+
+			Sentiment sentiment = await SentimentAnalysis.Execute(result.Query);
+			if (sentiment == Sentiment.negative)
+				message += @"
+
+Igual siento un 'tonito' que creo que está de mas";
+
+			context.UserData.SetValue<int>(CONSECUTIVES_FAILS, fails);
 
 			await context.PostAsync(message);
 			context.Wait(MessageReceived);
@@ -271,8 +336,14 @@ namespace GX26Bot.Cognitive.LUIS
 
 		private bool IsScoreTooLow(IDialogContext context, LuisResult result)
 		{
+
 			IntentRecommendation intent = result.Intents[0];
 			return intent.Score.HasValue && intent.Score.Value < MIN_ALLOWED_SCORE;
+		}
+
+		private void OnSuccess(IDialogContext context)
+		{
+			context.UserData.RemoveValue(CONSECUTIVES_FAILS);
 		}
 
 	}
