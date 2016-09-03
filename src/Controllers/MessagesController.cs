@@ -59,7 +59,7 @@ namespace GX26Bot.Controllers
 				case ActivityTypes.ConversationUpdate:
 					reply = activity.CreateReply();
 					reply.Type = ActivityTypes.Message;
-					reply.Text = HelpMessage.GetHelp();
+					reply.Text = HelpMessage.GetHelp("", activity.From.Name);
 					break;
 				case ActivityTypes.ContactRelationUpdate:
 				case ActivityTypes.DeleteUserData:

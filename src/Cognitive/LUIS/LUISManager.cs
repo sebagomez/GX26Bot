@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GX26Bot.Cognitive.TextAnalytics;
 using GX26Bot.Cognitive.Watson;
+using GX26Bot.Controllers;
 using GX26Bot.GX26;
 using GX26Bot.GX26.Data;
 using GX26Bot.Helpers;
@@ -40,7 +41,7 @@ namespace GX26Bot.Cognitive.LUIS
 		{
 			string lang = await DetectLanguage.Execute(result.Query);
 
-			string message = LanguageHelper.GetGreeting(lang);
+			string message = HelpMessage.GetHelp(lang, "");// LanguageHelper.GetGreeting(lang);
 			await context.PostAsync(message);
 			context.Wait(MessageReceived);
 		}
