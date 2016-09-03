@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace GX26Bot.Cognitive.Watson
 {
@@ -15,25 +12,21 @@ namespace GX26Bot.Cognitive.Watson
 	{
 		static string ALCHEMY_API_KEY { get; } = ConfigurationManager.AppSettings["AlchemyApiKey"];
 
-		public static async Task<List<Entity>> Execute(string text)
+		public static async Task<Entities> Execute(string text)
 		{
 			try
 			{
 				string url = $"https://gateway-a.watsonplatform.net/calls/text/TextGetRankedNamedEntities?apikey={ALCHEMY_API_KEY}&text={text}&outputMode=json";
 				string response;
 				using (WebClient http = new WebClient())
-				{
-					//http.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-					//http.Headers.Add("Ocp-Apim-Subscription-Key", TEXTANALYTICS_KEY);
 					response = await http.UploadStringTaskAsync(url, "");
-				}
 
 				Entities body;
 				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Entities));
 				using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(response)))
 					body = (Entities)serializer.ReadObject(stream);
 
-				return body.entities.ToList();
+				return body;
 			}
 			catch (Exception)
 			{

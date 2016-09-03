@@ -252,15 +252,14 @@ namespace GX26Bot.Cognitive.LUIS
 		[LuisIntent("")]
 		public async Task None(IDialogContext context, LuisResult result)
 		{
-			string lang = await DetectLanguage.Execute(result.Query);
-			List<Watson.Entity> entities = await GetEntities.Execute(result.Query);
+			Entities entities = await GetEntities.Execute(result.Query);
 
-			string message = LanguageHelper.GetNotUnderstoodText(lang);
-			if (entities.Count > 0)
+			string message = LanguageHelper.GetNotUnderstoodText(entities.language.ToLower());
+			if (entities.entities.Count() > 0)
 			{
 				message += "Pero creo lo que te interesa es: ";
 
-				foreach (var e in entities)
+				foreach (var e in entities.entities)
 					message += $"{e.text} ";
 			}
 
