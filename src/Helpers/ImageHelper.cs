@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace GX26Bot.Images
+namespace GX26Bot.Helpers
 {
 	public class ImageHelper
 	{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Web.Http;
 using GX26Bot.Cognitive.LUIS;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.Rest;
 
 namespace GX26Bot.Controllers
 {
@@ -18,11 +20,23 @@ namespace GX26Bot.Controllers
 		/// </summary>
 		public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
 		{
-			ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-			if (activity.GetActivityType() == ActivityTypes.Message)
-				await Conversation.SendAsync(activity, MakeRoot);
-			else
-				await connector.Conversations.ReplyToActivityAsync(HandleSystemMessage(activity));
+			try
+			{
+				ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+				if (activity.GetActivityType() == ActivityTypes.Message)
+				{
+					if (!string.IsNullOrEmpty(activity.Text))
+						await Conversation.SendAsync(activity, MakeRoot);
+					else // is it an emoji or attachment?
+						await connector.Conversations.ReplyToActivityAsync(activity.CreateReply(":)"));
+				}
+				else
+					await connector.Conversations.ReplyToActivityAsync(HandleSystemMessage(activity));
+			}
+			catch (HttpOperationException hoe)
+			{
+				Trace.TraceError(hoe.Message);
+			}
 
 			return Request.CreateResponse(HttpStatusCode.OK);
 		}
@@ -34,22 +48,27 @@ namespace GX26Bot.Controllers
 
 		private Activity HandleSystemMessage(Activity activity)
 		{
+			Activity reply = null;
 			switch (activity.GetActivityType())
 			{
 				case ActivityTypes.Ping:
-					Activity reply = activity.CreateReply();
+					reply = activity.CreateReply();
 					reply.Type = ActivityTypes.Ping;
 					reply.Text = "Haga Pum!";
-					return reply;
-				case ActivityTypes.ContactRelationUpdate:
+					break;
 				case ActivityTypes.ConversationUpdate:
+					reply = activity.CreateReply();
+					reply.Type = ActivityTypes.Message;
+					reply.Text = HelpMessage.GetHelp();
+					break;
+				case ActivityTypes.ContactRelationUpdate:
 				case ActivityTypes.DeleteUserData:
 				case ActivityTypes.Typing:
 				default:
 					break;
 			}
 
-			return null;
+			return reply;
 		}
 	}
 }

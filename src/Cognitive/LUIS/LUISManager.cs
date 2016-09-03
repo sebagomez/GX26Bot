@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
+using GX26Bot.Cognitive.TextAnalytics;
+using GX26Bot.Cognitive.Watson;
+using GX26Bot.GX26;
 using GX26Bot.GX26.Data;
-using GX26Bot.Images;
+using GX26Bot.Helpers;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
-using GX26Bot.GX26;
-using GX26Bot.Cognitive.Watson;
 
 namespace GX26Bot.Cognitive.LUIS
 {
@@ -30,28 +31,23 @@ namespace GX26Bot.Cognitive.LUIS
 			s_service = new LuisService(model);
 		}
 
-		public LUISManager() :base(s_service) { }
+		public LUISManager() : base(s_service) { }
+
+		#region Greeting
 
 		[LuisIntent("Greeting")]
 		public async Task Greeting(IDialogContext context, LuisResult result)
 		{
-			string lang = await LanguageHelper.GetLanguage(result.Query);
+			string lang = await DetectLanguage.Execute(result.Query);
 
-			string message = LanguageHelper.GetNotUnderstoodText(lang);
+			string message = LanguageHelper.GetGreeting(lang);
 			await context.PostAsync(message);
 			context.Wait(MessageReceived);
 		}
 
-		[LuisIntent("None")]
-		[LuisIntent("")]
-		public async Task None(IDialogContext context, LuisResult result)
-		{
-			string lang = await LanguageHelper.GetLanguage(result.Query);
+		#endregion
 
-			string message = LanguageHelper.GetNotUnderstoodText(lang);
-			await context.PostAsync(message);
-			context.Wait(MessageReceived);
-		}
+		#region Speaker Session
 
 		[LuisIntent("SpeakerSession")]
 		public async Task SpeakerSession(IDialogContext context, LuisResult result)
@@ -62,7 +58,7 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
-			string lang = await LanguageHelper.GetLanguage(result.Query);
+			string lang = await DetectLanguage.Execute(result.Query);
 			context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
 
 			string speaker = null;
@@ -72,25 +68,18 @@ namespace GX26Bot.Cognitive.LUIS
 				List<Speaker> speakers = FindSpeaker.Find(speaker);
 				if (speakers.Count == 0) //invalid speaker
 				{
-					await context.PostAsync($"No encontré oradores llamados {speaker}");
+					await context.PostAsync(string.Format(LanguageHelper.GetNoSpeakersFound(lang), speaker));
 					context.Wait(MessageReceived);
-					return;
-				}
-				if (speakers.Count == 1) //best case
-				{
-					await SpeakerDisambiguated(context, $"{speakers[0].Speakerfirstname} {speakers[0].Speakerlastname}");
 					return;
 				}
 				if (speakers.Count > 1) //must disambiguate
 				{
-					string msg = $"Encontré {speakers.Count} oradores '{speaker}'. Sobre cuál de ellos desea saber?";
+					string msg = string.Format(LanguageHelper.GetManySpeakersFound(lang), speakers.Count, speaker);
 					string[] listedSpeakers = speakers.Select<Speaker, string>(s => $"{s.Speakerfirstname} {s.Speakerlastname}").ToArray();
 					PromptDialog.Choice(context, OnSpeakerDisambiguated, listedSpeakers, msg, null, 1, PromptStyle.Auto);
 					return;
 				}
-
-				await context.PostAsync($"Asique quieres saber cuando habla {speaker}");
-				context.Wait(MessageReceived);
+				await SpeakerDisambiguated(context, $"{speakers[0].Speakerfirstname} {speakers[0].Speakerlastname}");
 			}
 			else
 			{
@@ -109,19 +98,19 @@ namespace GX26Bot.Cognitive.LUIS
 				List<Session> sessions = SpeakerSessions.Find(speakers[0].Speakerid, lang);
 				if (sessions.Count == 0)
 				{
-					await context.PostAsync($"No pude encontrar sesiones de {sp.Speakerfirstname} {sp.Speakerlastname}");
+					await context.PostAsync(string.Format(LanguageHelper.GetNoSessionsFound(lang), $"{sp.Speakerfirstname} {sp.Speakerlastname}"));
 					context.Wait(MessageReceived);
 					return;
 				}
 				bool many = sessions.Count > 1;
-				string msg = $"I've found {sessions.Count} " + (many ? "sessions" : "session") + $" for {sp.Speakerfirstname} {sp.Speakerlastname}{Environment.NewLine}";
+				string msg = string.Format(LanguageHelper.GetSessionsFound(lang, sessions.Count > 1), sessions.Count, $"{sp.Speakerfirstname} {sp.Speakerlastname}");
 				foreach (Session s in sessions)
 					msg += $"{s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}{Environment.NewLine}";
 
 				await context.PostAsync(msg);
 			}
 			else
-				await context.PostAsync($"No pude encontrar a {speaker}");
+				await context.PostAsync(string.Format(LanguageHelper.GetNoSpeakersFound(lang), speaker));
 
 			context.Wait(MessageReceived);
 		}
@@ -138,6 +127,10 @@ namespace GX26Bot.Cognitive.LUIS
 			await SpeakerDisambiguated(context, speaker);
 		}
 
+		#endregion
+
+		#region Restroom
+
 		[LuisIntent("Restroom")]
 		public async Task Restroom(IDialogContext context, LuisResult result)
 		{
@@ -147,7 +140,7 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
-			string lang = await LanguageHelper.GetLanguage(result.Query);
+			string lang = await DetectLanguage.Execute(result.Query);
 			context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
 
 			var floors = new[] { 2, 3, 4, 6, 25 };
@@ -170,10 +163,14 @@ namespace GX26Bot.Cognitive.LUIS
 
 				await context.PostAsync(msg);
 			}
-			catch (Exception) {  }
+			catch (Exception) { }
 
 			context.Wait(MessageReceived);
 		}
+
+		#endregion
+
+		#region Clothes
 
 		[LuisIntent("Clothes")]
 		public async Task Clothes(IDialogContext context, LuisResult result)
@@ -184,7 +181,7 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
-			string lang = await LanguageHelper.GetLanguage(result.Query);
+			string lang = await DetectLanguage.Execute(result.Query);
 
 			IMessageActivity msg = context.MakeMessage();
 			msg.Text = LanguageHelper.GetClothesMessage(lang);
@@ -196,6 +193,10 @@ namespace GX26Bot.Cognitive.LUIS
 			context.Wait(MessageReceived);
 		}
 
+		#endregion
+
+		#region Room
+
 		[LuisIntent("Room")]
 		public async Task Rooms(IDialogContext context, LuisResult result)
 		{
@@ -205,9 +206,10 @@ namespace GX26Bot.Cognitive.LUIS
 				return;
 			}
 
-			string lang = await LanguageHelper.GetLanguage(result.Query);
+			string lang = await DetectLanguage.Execute(result.Query);
 
-			if (result.Entities.Count == 0) {
+			if (result.Entities.Count == 0)
+			{
 				context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
 				PromptDialog.Text(context, RoomComplete, LanguageHelper.GetRoomQuestion(lang), null, 1);
 				return;
@@ -241,10 +243,37 @@ namespace GX26Bot.Cognitive.LUIS
 			context.Wait(MessageReceived);
 		}
 
+		#endregion
+
+		#region None
+
+		[LuisIntent("None")]
+		[LuisIntent("")]
+		public async Task None(IDialogContext context, LuisResult result)
+		{
+			string lang = await DetectLanguage.Execute(result.Query);
+			List<Watson.Entity> entities = await GetEntities.Execute(result.Query);
+
+			string message = LanguageHelper.GetNotUnderstoodText(lang);
+			if (entities.Count > 0)
+			{
+				message += "Pero creo lo que te interesa es: ";
+
+				foreach (var e in entities)
+					message += $"{e.text} ";
+			}
+
+			await context.PostAsync(message);
+			context.Wait(MessageReceived);
+		}
+
+		#endregion
+
 		private bool IsScoreTooLow(IDialogContext context, LuisResult result)
 		{
 			IntentRecommendation intent = result.Intents[0];
 			return intent.Score.HasValue && intent.Score.Value < MIN_ALLOWED_SCORE;
 		}
+
 	}
 }

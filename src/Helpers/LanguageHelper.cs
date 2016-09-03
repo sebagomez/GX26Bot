@@ -6,40 +6,17 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
-using GX26Bot.Images;
 
-namespace GX26Bot.Cognitive.Watson
+namespace GX26Bot.Helpers
 {
 	public class LanguageHelper
 	{
-		static string WATSON_API_KEY { get; } = ConfigurationManager.AppSettings["WatsonApiKey"];
 
 		public const string SPANISH = "spanish";
 		public const string ENGLISH = "english";
 		public const string PORTUGUESE = "portuguese";
-
-		const string DEFAULT_LANG = ENGLISH;
-
-		public static async Task<string> GetLanguage(string text)
-		{
-			try
-			{
-				string url = $"https://watson-api-explorer.mybluemix.net/alchemy-api/calls/text/TextGetLanguage?text={text}&apikey={WATSON_API_KEY}&outputMode=json";
-				HttpClient http = new HttpClient();
-				string stringData = await http.GetStringAsync(url);
-
-				Language lang = null;
-				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Language));
-				using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(stringData)))
-					lang = (Language)serializer.ReadObject(stream);
-
-				return lang.language;
-			}
-			catch (Exception)
-			{
-				return DEFAULT_LANG;
-			}
-		}
+		public const string UNKNOWN = "unknown";
+		public const string DEFAULT_LANG = ENGLISH;
 
 		public static string GetRestroomMessage(string lang, int floor)
 		{
@@ -67,6 +44,20 @@ namespace GX26Bot.Cognitive.Watson
 					return "I'm sory. I don't understand :(";
 				default:
 					return $"Sorry, I don't speak {lang}, I also couldn't understand your question :(";
+			}
+		}
+
+		public static string GetGreeting(string lang)
+		{
+			switch (lang)
+			{
+				case SPANISH:
+					return "Hola! Soy RUDI :)";
+				case PORTUGUESE:
+					return "Oi! eu so RUDI :)";
+				case ENGLISH:
+				default:
+					return $"Hi! I'm RUDI :)";
 			}
 		}
 
@@ -174,32 +165,67 @@ namespace GX26Bot.Cognitive.Watson
 			builder.AppendLine(strFloors);
 			return builder.ToString();
 		}
+
+
+		public static string GetNoSpeakersFound(string lang)
+		{
+			switch (lang)
+			{
+				case SPANISH:
+					return "Lo siento, no encontré oradores llamados '{0}'";
+				case PORTUGUESE:
+					return "Nao encontreu oradores llamados '{0}'";
+				case ENGLISH:
+				default:
+					return "I'm sorry, I couldn't find speakers named '{0}'";
+			}
+		}
+
+		public static string GetManySpeakersFound(string lang)
+		{
+			switch (lang)
+			{
+				case SPANISH:
+					return "Encontré {0} oradores llamados '{1}'. Cuál de ellos es el que te interesa?";
+				case PORTUGUESE:
+					return "Encontré {0} oradores llamados '{1}'. Cuál de ellos es el que te interesa?";
+				case ENGLISH:
+				default:
+					return "I've found {0} speakers called '{1}'. Which one of them is the one you want?";
+			}
+		}
+
+		public static string GetNoSessionsFound(string lang)
+		{
+			switch (lang)
+			{
+				case SPANISH:
+					return "Lo siento. No encontré sesiones para {0}.";
+				case PORTUGUESE:
+					return "Lo siento. No encontré sesiones para {0}";
+				case ENGLISH:
+				default:
+					return "I'm sorry, I couldn't find session for {0}";
+			}
+		}
+
+		public static string GetSessionsFound(string lang, bool many)
+		{
+			switch (lang)
+			{
+				case SPANISH:
+					return "Encontré {0} " + (many ? "sesiones" : "sesion") + " con {1} como participante.";
+				case PORTUGUESE:
+					return "Encontrée {0} " + (many ? "sessoes" : "sesson") +  " com {1} as a speaker.";
+				case ENGLISH:
+				default:
+					return "I've found {0} " + (many ? "sessions" : "session") + " with {1} as a speaker.";
+			}
+		}
+
 	}
 
 
 
-	[DataContract]
-	public class Language
-	{
-		[DataMember]
-		public string status { get; set; }
-		[DataMember]
-		public string usage { get; set; }
-		[DataMember]
-		public string url { get; set; }
-		[DataMember]
-		public string language { get; set; }
-		[DataMember]
-		public string iso6391 { get; set; }
-		[DataMember]
-		public string iso6392 { get; set; }
-		[DataMember]
-		public string iso6393 { get; set; }
-		[DataMember]
-		public string ethnologue { get; set; }
-		[DataMember]
-		public string nativespeakers { get; set; }
-		[DataMember]
-		public string wikipedia { get; set; }
-	}
+	
 }

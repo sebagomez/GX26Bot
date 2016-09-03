@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
-using GX26Bot.Cognitive.Watson;
 using GX26Bot.GX26.Data;
+using GX26Bot.Helpers;
 
 namespace GX26Bot.GX26
 {

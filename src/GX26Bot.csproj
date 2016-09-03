@@ -122,6 +122,9 @@
     <Compile Include="BotConfiguration.cs" />
     <Compile Include="Cognitive\LUIS\GX26Manager.cs" />
     <Compile Include="Cognitive\LUIS\LUISManager.cs" />
+    <Compile Include="Cognitive\TextAnalytics\DetectLanguage.cs" />
+    <Compile Include="Cognitive\Watson\GetEntities.cs" />
+    <Compile Include="Cognitive\Watson\GetLanguage.cs" />
     <Compile Include="Controllers\HelpMessage.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="default.aspx.cs">
@@ -139,9 +142,9 @@
     <Compile Include="GX26\FindSpeaker.cs" />
     <Compile Include="GX26\Data\GX26Speaker.cs" />
     <Compile Include="GX26\SpeakerSessions.cs" />
-    <Compile Include="Images\ImageHelper.cs" />
+    <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Cognitive\Watson\LanguageHelper.cs" />
+    <Compile Include="Helpers\LanguageHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
