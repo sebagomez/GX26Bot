@@ -283,6 +283,59 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#endregion
 
+		#region Genexus
+
+		[LuisIntent("Genexus")]
+		public async Task Genexus(IDialogContext context, LuisResult result)
+		{
+			await context.PostAsync("Genexus? flor de tool!");
+
+			context.Wait(MessageReceived);
+		}
+
+		#endregion
+
+		#region Harassment
+
+		[LuisIntent("Harassment")]
+		public async Task Harassment(IDialogContext context, LuisResult result)
+		{
+			await context.PostAsync("Las comunicaciones no son fácil... hago mi mejor esfuerzo :(");
+
+			context.Wait(MessageReceived);
+		}
+
+		#endregion
+
+		#region Harassment
+
+		[LuisIntent("Deep")]
+		public async Task Deep(IDialogContext context, LuisResult result)
+		{
+			await context.PostAsync("Uh! no estoy capacitado para contestar ese tipo de preguntas :S");
+
+			context.Wait(MessageReceived);
+		}
+
+		#endregion
+
+		#region 42
+
+		[LuisIntent("42")]
+		public async Task FortyTwo(IDialogContext context, LuisResult result)
+		{
+
+			IMessageActivity msg = context.MakeMessage();
+			msg.Text = "";
+			msg.Attachments = new List<Attachment>();
+			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = "https://upload.wikimedia.org/wikipedia/commons/5/56/Answer_to_Life.png" });
+			await context.PostAsync(msg);
+
+			context.Wait(MessageReceived);
+		}
+
+		#endregion
+
 		#region None
 
 		[LuisIntent("None")]
@@ -291,40 +344,45 @@ namespace GX26Bot.Cognitive.LUIS
 		{
 			Entities entities = await GetEntities.Execute(result.Query);
 
-			string message = LanguageHelper.GetNotUnderstoodText(entities.language.ToLower());
-			if (entities.entities.Count() > 0)
-			{
-				message += "Pero creo lo que te interesa es: ";
-
-				foreach (var e in entities.entities)
-					message += $"{e.text}  ";
-			}
-
+			string message = ""; LanguageHelper.GetNotUnderstoodText(entities.language.ToLower());
 			int fails = 1;
 			if (context.UserData.TryGetValue<int>(CONSECUTIVES_FAILS, out fails))
 			{
 				fails++;
 				if (fails > 6)
-				{
-					message += @"
-Esto ya no lo soporto. Creo que necesitamos un timepo :'(";
-				} else if (fails > 4)
-				{
-					message += @"
-Esto ya es muy embarazoso :(";
-				} else if (fails > 2)
-				{
-					message += @"
-Siento que te estoy fallando mucho ultimamente :(";
-				}
+					message = "Esto ya no lo soporto. Creo que necesitamos un timepo :'(";
+				else if (fails > 4)
+					message = "Esto ya es muy embarazoso :(";
+				else if (fails > 2)
+					message = "Siento que te estoy fallando mucho ultimamente :(";
+				else
+					message = LanguageHelper.GetNotUnderstoodText(entities.language.ToLower());
+			}
+			else
+				message = LanguageHelper.GetNotUnderstoodText(entities.language.ToLower());
 
+			KeywordObject kw = await GetKeywords.Execute(result.Query);
+			if (kw.keywords != null && kw.keywords.Length > 0)
+			{
+				message += @"
+Detecté estas palabras claves:";
+				foreach (var keyword in kw.keywords)
+					message += $"{keyword.text}, ";
+			}
+
+			if (entities.entities.Count() > 0)
+			{
+				message += @"
+Detecté estas entidades: ";
+				foreach (var e in entities.entities)
+					message += $"{e.text}  ";
 			}
 
 			Sentiment sentiment = await SentimentAnalysis.Execute(result.Query);
 			if (sentiment == Sentiment.negative)
 				message += @"
 
-Igual siento un 'tonito' que creo que está de mas";
+De todos modos siento un 'tonito' que creo que está de mas";
 
 			context.UserData.SetValue<int>(CONSECUTIVES_FAILS, fails);
 

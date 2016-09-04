@@ -124,6 +124,7 @@
     <Compile Include="Cognitive\LUIS\LUISManager.cs" />
     <Compile Include="Cognitive\TextAnalytics\DetectLanguage.cs" />
     <Compile Include="Cognitive\Watson\GetEntities.cs" />
+    <Compile Include="Cognitive\Watson\GetKeywords.cs" />
     <Compile Include="Cognitive\Watson\GetLanguage.cs" />
     <Compile Include="Cognitive\Watson\SentimentAnalysis.cs" />
     <Compile Include="Controllers\HelpMessage.cs" />

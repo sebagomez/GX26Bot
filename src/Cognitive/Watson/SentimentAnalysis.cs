@@ -16,7 +16,6 @@ namespace GX26Bot.Cognitive.Watson
 			negative
 		}
 
-
 		public static async Task<Sentiment> Execute(string text)
 		{
 			try
@@ -30,6 +29,10 @@ namespace GX26Bot.Cognitive.Watson
 				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SentimentObject));
 				using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(response)))
 					body = (SentimentObject)serializer.ReadObject(stream);
+
+				decimal score;
+				if (!string.IsNullOrEmpty(body.docSentiment.score))
+					score = decimal.Parse(body.docSentiment.score);
 
 				return (Sentiment)Enum.Parse(typeof(Sentiment), body.docSentiment.type);
 			}
