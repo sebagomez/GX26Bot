@@ -9,13 +9,15 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using GX26Bot.Helpers;
 using Microsoft.IdentityModel.Protocols;
 
 namespace GX26Bot.Cognitive.TextAnalytics
 {
 	public class DetectLanguage
 	{
-		static string TEXTANALYTICS_KEY { get; } = ConfigurationManager.AppSettings["TextAnalytics"];
+
+		static string[] s_allowedLanguages = new string[] { LanguageHelper.SPANISH, LanguageHelper.ENGLISH, LanguageHelper.PORTUGUESE }; 
 
 		public static async Task<string> Execute(string text)
 		{
@@ -28,20 +30,22 @@ namespace GX26Bot.Cognitive.TextAnalytics
 				using (WebClient http = new WebClient())
 				{
 					http.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-					http.Headers.Add("Ocp-Apim-Subscription-Key", TEXTANALYTICS_KEY);
+					http.Headers.Add("Ocp-Apim-Subscription-Key", BotConfiguration.TEXTANALYTICS_KEY);
 					response = await http.UploadDataTaskAsync(url, payload);
 				}
 
 				ResponseBody body = null;
-				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ResponseBody));
 				using (var stream = new MemoryStream(response))
-					body = (ResponseBody)serializer.ReadObject(stream);
+					body = Utils.Deserialize<ResponseBody>(stream);
 
-				return body.documents[0].detectedLanguages[0].name.ToLower();
+				string returnedLanguage = body.documents[0].detectedLanguages[0].name.ToLower();
+				if (s_allowedLanguages.Contains(returnedLanguage))
+					return returnedLanguage;
+				return LanguageHelper.DEFAULT_LANG;
 			}
 			catch (Exception)
 			{
-				return "spanish";
+				return LanguageHelper.DEFAULT_LANG;
 			}
 		}
 	}
@@ -63,7 +67,7 @@ namespace GX26Bot.Cognitive.TextAnalytics
 	{
 		public string name { get; set; }
 		public string iso6391Name { get; set; }
-		public int score { get; set; }
+		public decimal score { get; set; }
 	}
 
 }

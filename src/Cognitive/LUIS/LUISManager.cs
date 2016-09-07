@@ -168,9 +168,7 @@ namespace GX26Bot.Cognitive.LUIS
 			try
 			{
 				int floor = await result;
-
 				string lang = context.UserData.Get<string>(QUERY_LANGUAGE);
-				context.UserData.RemoveValue(QUERY_LANGUAGE);
 
 				IMessageActivity msg = context.MakeMessage();
 				msg.Text = string.Format(LanguageHelper.GetMessage(LanguageHelper.BathroomLocation, lang), floor);
@@ -268,7 +266,7 @@ namespace GX26Bot.Cognitive.LUIS
 		#region Location
 
 		[LuisIntent("Location")]
-		public async Task Location(IDialogContext context, LuisResult result)
+		public async Task Location(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
 			{
@@ -279,13 +277,49 @@ namespace GX26Bot.Cognitive.LUIS
 				OnSuccess(context);
 
 			string lang = await DetectLanguage.Execute(result.Query);
+			context.UserData.SetValue<string>(QUERY_LANGUAGE, lang);
 
-			IMessageActivity msg = context.MakeMessage();
-			msg.Text = LanguageHelper.GetMessage(LanguageHelper.Map, lang);
-			msg.Attachments = new List<Attachment>();
-			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetLocationImage() });
+			ConversationObject convObj = await Watson.Conversation.SendMessage(result.Query);
 
-			await context.PostAsync(msg);
+			if (convObj != null && convObj.entities.Length > 0)
+			{
+				foreach (var entity in convObj.entities)
+				{
+					LocationHelper.Entity ent = (LocationHelper.Entity) Enum.Parse(typeof(LocationHelper.Entity), entity.entity);
+					string message = $"{entity.entity}:{entity.value}";
+					switch (ent)
+					{
+						case LocationHelper.Entity.CDS:
+							break;
+						case LocationHelper.Entity.Radisson:
+							break;
+						case LocationHelper.Entity.CoatCheck:
+							break;
+						case LocationHelper.Entity.FrontDesk:
+							break;
+						case LocationHelper.Entity.Room:
+							break;
+						case LocationHelper.Entity.Restroom:
+							var floors = new[] { 2, 3, 4, 6, 25 };
+							PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(LanguageHelper.GetMessage(LanguageHelper.WhatFloor, lang), floors), string.Format(LanguageHelper.GetMessage(LanguageHelper.WhatFloor2, lang), floors), 3, PromptStyle.Auto);
+							return;
+						default:
+							break;
+					}
+
+
+					IMessageActivity msg = context.MakeMessage();
+					msg.Text = message;// LanguageHelper.GetMessage(LanguageHelper.Map, lang);
+					//msg.Attachments = new List<Attachment>();
+					//msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetLocationImage() });
+
+					await context.PostAsync(msg);
+				}
+			}
+			else
+				await context.PostAsync("No entiendo qué estás buscando");
+
+			
 
 			context.Wait(MessageReceived);
 		}
