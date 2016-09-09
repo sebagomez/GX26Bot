@@ -10,6 +10,8 @@ namespace GX26Bot.GX26
 {
 	public class FindSpeaker
 	{
+		static WebClient s_httpClient = new WebClient();
+
 		public static List<Speaker> Find(string pattern)
 		{
 			if (string.IsNullOrEmpty(pattern))
@@ -27,8 +29,8 @@ namespace GX26Bot.GX26
 			
 			string url = $"{BotConfiguration.GX26_SERVICES}/rest/findspeaker?{query}";
 
-			WebClient wc = new WebClient();
-			Stream response = wc.OpenRead(new Uri(url));
+			//WebClient wc = new WebClient();
+			Stream response = s_httpClient.OpenRead(new Uri(url));
 
 			DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(GX26Speaker));
 			GX26Speaker sdt = ser.ReadObject(response) as GX26Speaker;

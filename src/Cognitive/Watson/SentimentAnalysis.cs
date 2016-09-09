@@ -16,25 +16,32 @@ namespace GX26Bot.Cognitive.Watson
 			negative
 		}
 
+		static WebClient s_httpClient = new WebClient();
+
 		public static async Task<Sentiment> Execute(string text)
 		{
 			try
 			{
 				string url = $"https://gateway-a.watsonplatform.net/calls/text/TextGetTextSentiment?apikey={BotConfiguration.ALCHEMY_API_KEY}&text={text}&outputMode=json";
 				string response;
-				using (WebClient http = new WebClient())
-					response = await http.UploadStringTaskAsync(url, "");
+				//using (WebClient http = new WebClient())
+					response = await s_httpClient.UploadStringTaskAsync(url, "");
 
 				SentimentObject body;
 				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SentimentObject));
 				using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(response)))
 					body = (SentimentObject)serializer.ReadObject(stream);
 
-				decimal score;
+				double score = 0;
+				double min = -0.5d;
 				if (!string.IsNullOrEmpty(body.docSentiment.score))
-					score = decimal.Parse(body.docSentiment.score);
+					score = double.Parse(body.docSentiment.score);
 
-				return (Sentiment)Enum.Parse(typeof(Sentiment), body.docSentiment.type);
+				Sentiment sent = (Sentiment)Enum.Parse(typeof(Sentiment), body.docSentiment.type);
+				if (sent == Sentiment.negative && score > min)
+					return Sentiment.neutral;
+
+				return sent;
 			}
 			catch (Exception)
 			{

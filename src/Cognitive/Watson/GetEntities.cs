@@ -10,14 +10,16 @@ namespace GX26Bot.Cognitive.Watson
 {
 	public class GetEntities
 	{
+		static WebClient s_httpClient = new WebClient();
+
 		public static async Task<Entities> Execute(string text)
 		{
 			try
 			{
 				string url = $"https://gateway-a.watsonplatform.net/calls/text/TextGetRankedNamedEntities?apikey={BotConfiguration.ALCHEMY_API_KEY}&text={text}&outputMode=json";
 				string response;
-				using (WebClient http = new WebClient())
-					response = await http.UploadStringTaskAsync(url, "");
+				//using (WebClient http = new WebClient())
+					response = await s_httpClient.UploadStringTaskAsync(url, "");
 
 				Entities body;
 				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Entities));

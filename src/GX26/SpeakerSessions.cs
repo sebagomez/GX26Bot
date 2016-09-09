@@ -11,6 +11,8 @@ namespace GX26Bot.GX26
 {
 	public class SpeakerSessions
 	{
+		static WebClient s_httpClient = new WebClient();
+
 		public static List<Session> Find(int speakerId, string lang)
 		{
 			string language = "E"; //English will be default
@@ -22,8 +24,8 @@ namespace GX26Bot.GX26
 			string query = $"speakerid={speakerId}&sessionLang={language}";
 			string url = $"{BotConfiguration.GX26_SERVICES}/rest/speakersessions?{query}";
 
-			WebClient wc = new WebClient();
-			Stream response = wc.OpenRead(new Uri(url));
+			//WebClient wc = new WebClient();
+			Stream response = s_httpClient.OpenRead(new Uri(url));
 
 			DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(GX26Session));
 			GX26Session sdt = ser.ReadObject(response) as GX26Session;

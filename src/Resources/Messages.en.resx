@@ -188,4 +188,7 @@ Cuando necesites volver a ver esto simplemente me saludas :)</value>
   <data name="WhatFloor2" xml:space="preserve">
     <value>[ENG]Piso inválido. Por favor reintente</value>
   </data>
+  <data name="YourWelcome" xml:space="preserve">
+    <value>[ENG]Un placer</value>
+  </data>
 </root>

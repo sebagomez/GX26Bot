@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace GX26Bot.Helpers
+namespace GX26Bot.Cognitive.Watson
 {
-	public class LocationHelper
+	public class WatsonEntityHelper
 	{
 		public enum Entity
 		{
@@ -14,7 +14,9 @@ namespace GX26Bot.Helpers
 			CoatCheck,
 			FrontDesk,
 			Room,
-			Restroom
+			Restroom,
+			Snack,
+			TimeQ
 		}
 	}
 }
