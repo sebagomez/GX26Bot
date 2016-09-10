@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using GX26Bot.Helpers;
 
 namespace GX26Bot.Cognitive.Watson
 {
@@ -23,14 +23,11 @@ namespace GX26Bot.Cognitive.Watson
 			try
 			{
 				string url = $"https://gateway-a.watsonplatform.net/calls/text/TextGetTextSentiment?apikey={BotConfiguration.ALCHEMY_API_KEY}&text={text}&outputMode=json";
-				string response;
-				//using (WebClient http = new WebClient())
-					response = await s_httpClient.UploadStringTaskAsync(url, "");
 
+				string response = await s_httpClient.UploadStringTaskAsync(url, "");
 				SentimentObject body;
-				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SentimentObject));
 				using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(response)))
-					body = (SentimentObject)serializer.ReadObject(stream);
+					body = Utils.Deserialize<SentimentObject>(stream);
 
 				double score = 0;
 				double min = -0.5d;

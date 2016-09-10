@@ -120,6 +120,9 @@
   <data name="BathroomLocation" xml:space="preserve">
     <value>[ENG] Los baños del piso {floor} están marcados en este mapa</value>
   </data>
+  <data name="Break" xml:space="preserve">
+    <value>[ENG]El próximo corte es las {0}. Ahí podrás disfrutar de {1} (entre otras cosas)</value>
+  </data>
   <data name="CoatCheck" xml:space="preserve">
     <value>[ENG]Ropería? si claro. Ubíquela en la siguiente imagen</value>
   </data>

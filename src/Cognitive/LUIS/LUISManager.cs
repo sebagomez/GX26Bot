@@ -11,12 +11,11 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
-using static GX26Bot.Cognitive.Watson.SentimentAnalysis;
 
 namespace GX26Bot.Cognitive.LUIS
 {
 	[Serializable]
-	public class LUISManager : LuisDialog<GX26Manager>
+	public class LUISManager : LuisDialog<object>
 	{
 		readonly string CONSECUTIVES_FAILS = "FAILS";
 		readonly double MIN_ALLOWED_SCORE = 0.5d;
@@ -46,9 +45,9 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			string lang = await LanguageHelper.GetLanguage(context, activity);
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			string message = LanguageHelper.GetMessage(LanguageHelper.Hello, lang);// HelpMessage.GetHelp(lang, "");// LanguageHelper.GetGreeting(lang);
+			string message = lang.Hello;
 			await context.PostAsync(message);
 			context.Wait(MessageReceived);
 		}
@@ -68,7 +67,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			string lang = await LanguageHelper.GetLanguage(context, activity);
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
 			string speaker = null;
 			if (result.Entities != null && result.Entities.Count == 1)
@@ -77,13 +76,13 @@ namespace GX26Bot.Cognitive.LUIS
 				List<Speaker> speakers = FindSpeaker.Find(speaker);
 				if (speakers.Count == 0) //invalid speaker
 				{
-					await context.PostAsync(string.Format(LanguageHelper.GetMessage(LanguageHelper.NoSpeakersFound, lang), speaker));
+					await context.PostAsync(string.Format(lang.NoSpeakersFound, speaker));
 					context.Wait(MessageReceived);
 					return;
 				}
 				if (speakers.Count > 1) //must disambiguate
 				{
-					string msg = string.Format(LanguageHelper.GetMessage(LanguageHelper.TooManySpeakers, lang), speakers.Count, speaker);
+					string msg = string.Format(lang.TooManyspeakers, speakers.Count, speaker);
 					string[] listedSpeakers = speakers.Select<Speaker, string>(s => $"{s.Speakerfirstname} {s.Speakerlastname}").ToArray();
 					PromptDialog.Choice(context, OnSpeakerDisambiguated, listedSpeakers, msg, null, 1, PromptStyle.Auto);
 					return;
@@ -92,27 +91,27 @@ namespace GX26Bot.Cognitive.LUIS
 			}
 			else
 			{
-				PromptDialog.Text(context, SpeakerComplete, LanguageHelper.GetMessage(LanguageHelper.NoSpeaker, lang), null, 1);
+				PromptDialog.Text(context, SpeakerComplete, lang.NoSpeaker, null, 1);
 			}
 		}
 
 		private async Task SpeakerDisambiguated(IDialogContext context, string speaker)
 		{
-			string lang = await LanguageHelper.GetLanguage(context, null);
+			LanguageManager lang = await LanguageManager.GetLanguage(context, null);
 
 			List<Speaker> speakers = FindSpeaker.Find(speaker);
 			if (speakers.Count == 1) //best case
 			{
 				Speaker sp = speakers[0];
-				List<Session> sessions = SpeakerSessions.Find(speakers[0].Speakerid, lang);
+				List<Session> sessions = SpeakerSessions.Find(speakers[0].Speakerid, lang.Language);
 				if (sessions.Count == 0)
 				{
-					await context.PostAsync(string.Format(LanguageHelper.GetMessage(LanguageHelper.NoSpeakerSessions, lang), $"{sp.Speakerfirstname} {sp.Speakerlastname}"));
+					await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{sp.Speakerfirstname} {sp.Speakerlastname}"));
 					context.Wait(MessageReceived);
 					return;
 				}
 				bool many = sessions.Count > 1;
-				string msg = string.Format(LanguageHelper.GetMessage(LanguageHelper.SpeakerSessionFound, lang), sessions.Count, $"{sp.Speakerfirstname} {sp.Speakerlastname}");
+				string msg = string.Format(lang.SpeakerSessionsFound, sessions.Count, $"{sp.Speakerfirstname} {sp.Speakerlastname}");
 				foreach (Session s in sessions)
 					msg += $@"
 - {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}  ";
@@ -120,7 +119,7 @@ namespace GX26Bot.Cognitive.LUIS
 				await context.PostAsync(msg);
 			}
 			else
-				await context.PostAsync(string.Format(LanguageHelper.GetMessage(LanguageHelper.NoSpeakersFound,lang), speaker));
+				await context.PostAsync(string.Format(lang.NoSpeakersFound, speaker));
 
 			context.Wait(MessageReceived);
 		}
@@ -150,10 +149,10 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			string lang = await LanguageHelper.GetLanguage(context, activity);
-			
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
+
 			var floors = new[] { 2, 3, 4, 6, 25 };
-			PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(LanguageHelper.GetMessage(LanguageHelper.WhatFloor, lang), floors), string.Format(LanguageHelper.GetMessage(LanguageHelper.WhatFloor2, lang), floors), 3, PromptStyle.Auto);
+			PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(lang.WhatFloor, floors), string.Format(lang.InvalidFloor, floors), 3, PromptStyle.Auto);
 		}
 
 		private async Task RestroomFloorComplete(IDialogContext context, IAwaitable<int> result)
@@ -161,10 +160,10 @@ namespace GX26Bot.Cognitive.LUIS
 			try
 			{
 				int floor = await result;
-				string lang = await LanguageHelper.GetLanguage(context, null);
+				LanguageManager lang = await LanguageManager.GetLanguage(context, null);
 
 				IMessageActivity msg = context.MakeMessage();
-				msg.Text = string.Format(LanguageHelper.GetMessage(LanguageHelper.BathroomLocation, lang), floor);
+				msg.Text = string.Format(lang.BathroomLocation, floor);
 				msg.Attachments = new List<Attachment>();
 				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetBathroomImage(floor) });
 
@@ -178,10 +177,10 @@ namespace GX26Bot.Cognitive.LUIS
 		public async Task RoomComplete(IDialogContext context, IAwaitable<string> result)
 		{
 			string room = await result;
-			string lang = await LanguageHelper.GetLanguage(context, null);
-			
+			LanguageManager lang = await LanguageManager.GetLanguage(context, null);
+
 			IMessageActivity msg = context.MakeMessage();
-			msg.Text = string.Format(LanguageHelper.GetMessage(LanguageHelper.RoomMap, lang), room);
+			msg.Text = string.Format(lang.RoomMap, room);
 			msg.Attachments = new List<Attachment>();
 			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
 
@@ -203,7 +202,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			string lang = await LanguageHelper.GetLanguage(context, activity);
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
 			ConversationObject convObj = await Watson.Conversation.SendMessage(result.Query);
 
@@ -211,7 +210,7 @@ namespace GX26Bot.Cognitive.LUIS
 			{
 				foreach (var entity in convObj.entities)
 				{
-					WatsonEntityHelper.Entity ent = (WatsonEntityHelper.Entity) Enum.Parse(typeof(WatsonEntityHelper.Entity), entity.entity);
+					WatsonEntityHelper.Entity ent = WatsonEntityHelper.GetEntity(entity.entity);
 					string message = $"{entity.entity}:{entity.value}";
 					switch (ent)
 					{
@@ -226,10 +225,15 @@ namespace GX26Bot.Cognitive.LUIS
 						case WatsonEntityHelper.Entity.Room:
 							break;
 						case WatsonEntityHelper.Entity.Snack:
+							Break b = NextBreak.Find();
+							if (b != null)
+								message = string.Format(lang.Break, b.Sessionstarttimetext, entity.value);
+							else
+								message = "No encontré mas cortes por el día";
 							break;
 						case WatsonEntityHelper.Entity.Restroom:
 							var floors = new[] { 2, 3, 4, 6, 25 };
-							PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(LanguageHelper.GetMessage(LanguageHelper.WhatFloor, lang), floors), string.Format(LanguageHelper.GetMessage(LanguageHelper.WhatFloor2, lang), floors), 3, PromptStyle.Auto);
+							PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(lang.WhatFloor, floors), string.Format(lang.InvalidFloor, floors), 3, PromptStyle.Auto);
 							return;
 						default:
 							break;
@@ -238,8 +242,8 @@ namespace GX26Bot.Cognitive.LUIS
 
 					IMessageActivity msg = context.MakeMessage();
 					msg.Text = message;// LanguageHelper.GetMessage(LanguageHelper.Map, lang);
-					//msg.Attachments = new List<Attachment>();
-					//msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetLocationImage() });
+									   //msg.Attachments = new List<Attachment>();
+									   //msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetLocationImage() });
 
 					await context.PostAsync(msg);
 				}
@@ -247,7 +251,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				await context.PostAsync("No entiendo qué estás buscando");
 
-			
+
 
 			context.Wait(MessageReceived);
 		}
@@ -267,9 +271,9 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			string lang = await LanguageHelper.GetLanguage(context, activity);
-			
-			await context.PostAsync(LanguageHelper.GetMessage(LanguageHelper.Harassment, lang));
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
+
+			await context.PostAsync(lang.Harassment);
 
 			context.Wait(MessageReceived);
 		}
@@ -289,9 +293,9 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			string lang = await LanguageHelper.GetLanguage(context, activity);
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			await context.PostAsync(LanguageHelper.GetMessage(LanguageHelper.Deep, lang));
+			await context.PostAsync(lang.Deep);
 
 			context.Wait(MessageReceived);
 		}
@@ -359,8 +363,8 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			string lang = await LanguageHelper.GetLanguage(context, activity);
-			await context.PostAsync(LanguageHelper.GetMessage(LanguageHelper.YourWelcome, lang));
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
+			await context.PostAsync(lang.YourWelcome);
 
 			context.Wait(MessageReceived);
 		}
@@ -373,46 +377,67 @@ namespace GX26Bot.Cognitive.LUIS
 		[LuisIntent("")]
 		public async Task None(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
-			string lang = await LanguageHelper.GetLanguage(context, activity);
+			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 			string message = "";
-			int fails = 1;
-			if (context.UserData.TryGetValue<int>(CONSECUTIVES_FAILS, out fails))
-			{
-				fails++;
-				if (fails > 6)
-					message = LanguageHelper.GetMessage(LanguageHelper.MyBad6, lang);
-				else if (fails > 4)
-					message = LanguageHelper.GetMessage(LanguageHelper.MyBad4, lang);
-				else if (fails > 2)
-					message = LanguageHelper.GetMessage(LanguageHelper.MyBad2, lang);
-				else
-					message = LanguageHelper.GetMessage(LanguageHelper.MyBad, lang);
-			}
+			if (result.Entities.Any(e => e.Type == "Genexus"))
+				message = lang.Genexus;
 			else
-				message = LanguageHelper.GetMessage(LanguageHelper.MyBad, lang);
-
-			if (result.Entities.Count > 0)
 			{
-				message += @"
-Entidades detectadas por MSFT:";
-				foreach (var item in result.Entities)
-					message += $"{item.Type}:{item.Entity}";
+				ConversationObject convObj = await Watson.Conversation.SendMessage(result.Query);
+				if (convObj.entities.Length > 0)
+				{
+					ConversationEntity convEnt = convObj.entities[0];
+					WatsonEntityHelper.Entity ent = WatsonEntityHelper.GetEntity(convEnt.entity);
+					switch (ent)
+					{
+						case WatsonEntityHelper.Entity.CDS:
+							break;
+						case WatsonEntityHelper.Entity.Radisson:
+							break;
+						case WatsonEntityHelper.Entity.CoatCheck:
+							break;
+						case WatsonEntityHelper.Entity.FrontDesk:
+							break;
+						case WatsonEntityHelper.Entity.Room:
+							break;
+						case WatsonEntityHelper.Entity.Restroom:
+							break;
+						case WatsonEntityHelper.Entity.Snack:
+							Break b = NextBreak.Find();
+							if (b != null)
+								message = string.Format(lang.Break, b.Sessionstarttimetext, convEnt.value);
+							else
+								message = "No encontré mas cortes por el día";
+							break;
+						case WatsonEntityHelper.Entity.TimeQ:
+							break;
+						default:
+							break;
+					}
+
+				}
 			}
 
-			ConversationObject convObj = await Watson.Conversation.SendMessage(result.Query);
-			if (convObj.entities.Length > 0)
+			if (string.IsNullOrEmpty(message))
 			{
-				message += @"
-Entidades detectadas por Watson: ";
-				foreach (var item in convObj.entities)
-					message += $"{item.entity}:{item.value}";
+				int fails = 1;
+				if (context.UserData.TryGetValue<int>(CONSECUTIVES_FAILS, out fails))
+				{
+					fails++;
+					if (fails > 6)
+						message = lang.MyBad6;
+					else if (fails > 4)
+						message = lang.MyBad4;
+					else if (fails > 2)
+						message = lang.MyBad2;
+					else
+						message = lang.MyBad1;
+				}
+				else
+					message = lang.MyBad1;
+
+				context.UserData.SetValue<int>(CONSECUTIVES_FAILS, fails);
 			}
-
-			Sentiment sentiment = await SentimentAnalysis.Execute(result.Query);
-			if (sentiment == Sentiment.negative)
-				message += LanguageHelper.GetMessage(LanguageHelper.Negative, lang);
-
-			context.UserData.SetValue<int>(CONSECUTIVES_FAILS, fails);
 
 			await context.PostAsync(message);
 			context.Wait(MessageReceived);

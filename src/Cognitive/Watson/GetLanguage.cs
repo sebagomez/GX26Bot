@@ -19,19 +19,18 @@ namespace GX26Bot.Cognitive.Watson
 				HttpClient http = new HttpClient();
 				string stringData = await http.GetStringAsync(url);
 
-				Language lang = null;
-				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Language));
+				Language lang;
 				using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(stringData)))
-					lang = (Language)serializer.ReadObject(stream);
+					lang = Utils.Deserialize<Language>(stream);
 
-				if (lang.language == LanguageHelper.UNKNOWN)
-					return LanguageHelper.DEFAULT_LANG;
+				if (lang.language == LanguageManager.UNKNOWN)
+					return LanguageManager.DEFAULT_LANG;
 
 				return lang.language;
 			}
 			catch (Exception)
 			{
-				return LanguageHelper.DEFAULT_LANG;
+				return LanguageManager.DEFAULT_LANG;
 			}
 		}
 	}

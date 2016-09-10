@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Serialization.Json;
 using GX26Bot.GX26.Data;
+using GX26Bot.Helpers;
 
 namespace GX26Bot.GX26
 {
@@ -29,11 +29,9 @@ namespace GX26Bot.GX26
 			
 			string url = $"{BotConfiguration.GX26_SERVICES}/rest/findspeaker?{query}";
 
-			//WebClient wc = new WebClient();
 			Stream response = s_httpClient.OpenRead(new Uri(url));
 
-			DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(GX26Speaker));
-			GX26Speaker sdt = ser.ReadObject(response) as GX26Speaker;
+			GX26Speaker sdt = Utils.Deserialize<GX26Speaker>(response);
 
 			return sdt.Speakers.ToList();
 

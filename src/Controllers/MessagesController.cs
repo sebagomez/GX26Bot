@@ -25,6 +25,7 @@ namespace GX26Bot.Controllers
 				ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 				if (activity.GetActivityType() == ActivityTypes.Message)
 				{
+					//resolver el cambio de idioma acá!
 					if (!string.IsNullOrEmpty(activity.Text))
 						await Conversation.SendAsync(activity, MakeRoot);
 					else // is it an emoji or attachment?
@@ -41,7 +42,7 @@ namespace GX26Bot.Controllers
 			return Request.CreateResponse(HttpStatusCode.OK);
 		}
 
-		internal static IDialog<GX26Manager> MakeRoot()
+		internal static IDialog<object> MakeRoot()
 		{
 			return Chain.From(() => new LUISManager());
 		}

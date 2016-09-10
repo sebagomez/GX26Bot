@@ -8,7 +8,7 @@ namespace GX26Bot.Controllers
 		{
 			switch (lang)
 			{
-				case LanguageHelper.SPANISH:
+				case LanguageManager.SPANISH:
 					return $@"Hola {user}! Mi nombre es RUDI y puedo ayudarte a moverte durante en GX26.
 
 Sé la ubicacíón de las salas, los baños y roperías.
@@ -21,7 +21,7 @@ Ejemplo de estas preguntas son:
 - a qué hora habla Nicolás Jodal?
 
 Cuando necesites volver a ver esto simplemente me saludas :)";
-				case LanguageHelper.PORTUGUESE:
+				case LanguageManager.PORTUGUESE:
 					return $@"Oi {user}! Mi nombre es RUDI y puedo ayudarte a moverte durante en GX26.
 
 Sé la ubicacíón de las salas, los baños y roperías.

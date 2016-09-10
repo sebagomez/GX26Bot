@@ -18,5 +18,10 @@ namespace GX26Bot.Cognitive.Watson
 			Snack,
 			TimeQ
 		}
+
+		public static Entity GetEntity(string entityText)
+		{
+			return (WatsonEntityHelper.Entity)Enum.Parse(typeof(WatsonEntityHelper.Entity), entityText);
+		}
 	}
 }

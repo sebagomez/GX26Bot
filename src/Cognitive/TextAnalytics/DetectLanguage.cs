@@ -10,11 +10,8 @@ namespace GX26Bot.Cognitive.TextAnalytics
 {
 	public class DetectLanguage
 	{
-
-		static string[] s_allowedLanguages = new string[] { LanguageHelper.SPANISH, LanguageHelper.ENGLISH, LanguageHelper.PORTUGUESE };
+		static string[] s_allowedLanguages = new string[] { LanguageManager.SPANISH, LanguageManager.ENGLISH, LanguageManager.PORTUGUESE };
 		static WebClient s_httpClient = new WebClient();
-		
-
 
 		public static async Task<string> Execute(string text)
 		{
@@ -23,13 +20,10 @@ namespace GX26Bot.Cognitive.TextAnalytics
 				string url = "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/languages";
 				string data = "{\"documents\": [ {\"id\": \"" + new Guid().ToString() + "\",\"text\": \"" + text + "\"	} ]}";
 				byte[] payload = Encoding.ASCII.GetBytes(data);
-				byte[] response;
-				//using (WebClient http = new WebClient())
-				{
-					s_httpClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-					s_httpClient.Headers.Add("Ocp-Apim-Subscription-Key", BotConfiguration.TEXTANALYTICS_KEY);
-					response = await s_httpClient.UploadDataTaskAsync(url, payload);
-				}
+
+				s_httpClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+				s_httpClient.Headers.Add("Ocp-Apim-Subscription-Key", BotConfiguration.TEXTANALYTICS_KEY);
+				byte[] response = await s_httpClient.UploadDataTaskAsync(url, payload);
 
 				ResponseBody body = null;
 				using (var stream = new MemoryStream(response))
@@ -38,11 +32,11 @@ namespace GX26Bot.Cognitive.TextAnalytics
 				string returnedLanguage = body.documents[0].detectedLanguages[0].name.ToLower();
 				if (s_allowedLanguages.Contains(returnedLanguage))
 					return returnedLanguage;
-				return LanguageHelper.DEFAULT_LANG;
+				return LanguageManager.DEFAULT_LANG;
 			}
 			catch (Exception)
 			{
-				return LanguageHelper.DEFAULT_LANG;
+				return LanguageManager.DEFAULT_LANG;
 			}
 		}
 	}

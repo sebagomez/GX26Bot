@@ -19,18 +19,15 @@ namespace GX26Bot.Cognitive.Watson
 				InputObject reqData = new InputObject();
 				reqData.input = new Input { text = text };
 
-				string response;
-				//using (WebClient http = new WebClient())
-				{
-					s_httpClient.Encoding = Encoding.UTF8;
-					s_httpClient.Credentials = new NetworkCredential(BotConfiguration.CONVERSATION_USERNAME, BotConfiguration.CONVERSATION_PASSWORD);
-					s_httpClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-					response = await s_httpClient.UploadStringTaskAsync(url, Utils.ToJson(reqData));
-				}
+				s_httpClient.Encoding = Encoding.UTF8;
+				s_httpClient.Credentials = new NetworkCredential(BotConfiguration.CONVERSATION_USERNAME, BotConfiguration.CONVERSATION_PASSWORD);
+				s_httpClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+				string response = await s_httpClient.UploadStringTaskAsync(url, Utils.ToJson(reqData));
+
 				ConversationObject body;
 				using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(response)))
 					body = Utils.Deserialize<ConversationObject>(stream);
-				
+
 				return body;
 			}
 			catch (Exception)
