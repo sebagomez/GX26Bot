@@ -59,5 +59,158 @@ namespace GX26Bot.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/2A_0415f25a69a941fabd11c916e97cafcc.png.
+        /// </summary>
+        internal static string BallroomA {
+            get {
+                return ResourceManager.GetString("BallroomA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/2B_2bfff5adb532470ca8cb973015928bab.png.
+        /// </summary>
+        internal static string BallroomB {
+            get {
+                return ResourceManager.GetString("BallroomB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/2C_f7f423df74af4d8fb4f30ed82abc3566.png.
+        /// </summary>
+        internal static string BallroomC {
+            get {
+                return ResourceManager.GetString("BallroomC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/2A_0415f25a69a941fabd11c916e97cafcc.png.
+        /// </summary>
+        internal static string Bathroom2 {
+            get {
+                return ResourceManager.GetString("Bathroom2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg.
+        /// </summary>
+        internal static string Bathroom25 {
+            get {
+                return ResourceManager.GetString("Bathroom25", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/3F_9fdc574e25a64d679d0a54ab0286b6bb.png.
+        /// </summary>
+        internal static string Bathroom3 {
+            get {
+                return ResourceManager.GetString("Bathroom3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/4CR_8626ddccb9044bf492e3cd8a9d96b011.png.
+        /// </summary>
+        internal static string Bathroom4 {
+            get {
+                return ResourceManager.GetString("Bathroom4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg.
+        /// </summary>
+        internal static string Bathroom6 {
+            get {
+                return ResourceManager.GetString("Bathroom6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg.
+        /// </summary>
+        internal static string CoatCheck {
+            get {
+                return ResourceManager.GetString("CoatCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/4CR_8626ddccb9044bf492e3cd8a9d96b011.png.
+        /// </summary>
+        internal static string ConferenceRoom {
+            get {
+                return ResourceManager.GetString("ConferenceRoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/6D_b3fb095a16c140bb81e298a000f5cbdb.png.
+        /// </summary>
+        internal static string Diplomat {
+            get {
+                return ResourceManager.GetString("Diplomat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/3F_9fdc574e25a64d679d0a54ab0286b6bb.png.
+        /// </summary>
+        internal static string Florida {
+            get {
+                return ResourceManager.GetString("Florida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg.
+        /// </summary>
+        internal static string FrontDesk {
+            get {
+                return ResourceManager.GetString("FrontDesk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://images.travelpod.com/cache/accom_maps/Radisson_Victoria_Plaza-Montevideo.gif.
+        /// </summary>
+        internal static string GX26 {
+            get {
+                return ResourceManager.GetString("GX26", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/4P_b6740aa0609541b091552a03b34e695a.png.
+        /// </summary>
+        internal static string Picasso {
+            get {
+                return ResourceManager.GetString("Picasso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www5.genexus.com/GX26/PublicTempStorage/multimedia/4R_a201f63aeef041cf9f1099dd50a08ea8.png.
+        /// </summary>
+        internal static string Renoir {
+            get {
+                return ResourceManager.GetString("Renoir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg.
+        /// </summary>
+        internal static string TorresGarcia {
+            get {
+                return ResourceManager.GetString("TorresGarcia", resourceCulture);
+            }
+        }
     }
 }

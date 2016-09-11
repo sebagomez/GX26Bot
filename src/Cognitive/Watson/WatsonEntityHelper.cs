@@ -16,6 +16,7 @@ namespace GX26Bot.Cognitive.Watson
 			Room,
 			Restroom,
 			Snack,
+			Break,
 			TimeQ
 		}
 

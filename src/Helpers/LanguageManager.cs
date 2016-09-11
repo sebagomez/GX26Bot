@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
-using System.IO;
-using System.Net.Http;
 using System.Resources;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Threading.Tasks;
 using GX26Bot.Cognitive.TextAnalytics;
 using Microsoft.Bot.Builder.Dialogs;
@@ -24,32 +18,7 @@ namespace GX26Bot.Helpers
 		public const string UNKNOWN = "unknown";
 		public const string DEFAULT_LANG = SPANISH;
 
-		const string K_Hello = "Hello";
-		const string K_NoSpeakersFound = "NoSpeakersFound";
-		const string K_TooManySpeakers = "TooManySpeakers";
-		const string K_NoSpeaker = "NoSpeaker";
-		const string K_NoSpeakerSessions = "NoSpeakerSessions";
-		const string K_SpeakerSessionFound = "SpeakerSessionFound";
-		const string K_WhatFloor = "WhatFloor";
-		const string K_InvalidFloor = "InvalidFloor";
-		const string K_BathroomLocation = "BathroomLocation";
-		const string K_CoatCheck = "CoatCheck";
-		const string K_MisunderstoodRoom = "MisunderstoodRoom";
-		const string K_RoomMap = "RoomMap";
-		const string K_Map = "Map";
-		const string K_Genexus = "Genexus";
-		const string K_Harassment = "Harassment";
-		const string K_Deep = "Deep";
-		const string K_MyBad1 = "MyBad1";
-		const string K_MyBad2 = "MyBad2";
-		const string K_MyBad4 = "MyBad4";
-		const string K_MyBad6 = "MyBad6";
-		const string K_Negative = "Negative";
-		const string K_YourWelcome = "YourWelcome";
-		const string K_Break = "Break";
-
-
-		static readonly string QUERY_LANGUAGE = "LANGUAGE";
+		public static readonly string QUERY_LANGUAGE = "LANGUAGE";
 
 
 		static Dictionary<string, CultureInfo> s_cultures = new Dictionary<string, CultureInfo>();
@@ -187,12 +156,12 @@ namespace GX26Bot.Helpers
 
 		public string Harassment
 		{
-			get { return GetMessage("Harassment", 8); }
+			get { return GetMessage("Harassment", 9); }
 		}
 
 		public string Deep
 		{
-			get { return GetMessage("Deep", 5); }
+			get { return GetMessage("Deep", 6); }
 		}
 
 		public string MyBad1
@@ -225,6 +194,25 @@ namespace GX26Bot.Helpers
 			get { return GetMessage("Break"); }
 		}
 
+		public string Snack
+		{
+			get { return GetMessage("Snack"); }
+		}
+
+		public string NoMoreBreaks
+		{
+			get { return GetMessage("NoMoreBreaks"); }
+		}
+
+		public string LangChange
+		{
+			get { return GetMessage("LangChange"); }
+		}
+
+		public string FrontDesk
+		{
+			get { return GetMessage("FrontDesk"); }
+		}
 	}
 
 }

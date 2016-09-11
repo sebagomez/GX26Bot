@@ -197,6 +197,7 @@
     <EmbeddedResource Include="Resources\Messages.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Messages.es.resx">
       <Generator>ResXFileCodeGenerator</Generator>

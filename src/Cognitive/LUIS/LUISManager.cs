@@ -47,7 +47,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			string message = lang.Hello;
+			string message = string.Format(lang.Hello, (await activity).From.Name);
 			await context.PostAsync(message);
 			context.Wait(MessageReceived);
 		}
@@ -174,21 +174,6 @@ namespace GX26Bot.Cognitive.LUIS
 			context.Wait(MessageReceived);
 		}
 
-		public async Task RoomComplete(IDialogContext context, IAwaitable<string> result)
-		{
-			string room = await result;
-			LanguageManager lang = await LanguageManager.GetLanguage(context, null);
-
-			IMessageActivity msg = context.MakeMessage();
-			msg.Text = string.Format(lang.RoomMap, room);
-			msg.Attachments = new List<Attachment>();
-			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetRoomImage(room) });
-
-			await context.PostAsync(msg);
-
-			context.Wait(MessageReceived);
-		}
-
 		#region Location
 
 		[LuisIntent("Location")]
@@ -208,50 +193,63 @@ namespace GX26Bot.Cognitive.LUIS
 
 			if (convObj != null && convObj.entities.Length > 0)
 			{
-				foreach (var entity in convObj.entities)
+				ConversationEntity entity = convObj.entities[0];
+				WatsonEntityHelper.Entity ent = WatsonEntityHelper.GetEntity(entity.entity);
+				string message = $"{entity.entity}:{entity.value}";
+				string image = null;
+				Break b;
+				switch (ent)
 				{
-					WatsonEntityHelper.Entity ent = WatsonEntityHelper.GetEntity(entity.entity);
-					string message = $"{entity.entity}:{entity.value}";
-					switch (ent)
-					{
-						case WatsonEntityHelper.Entity.CDS:
-							break;
-						case WatsonEntityHelper.Entity.Radisson:
-							break;
-						case WatsonEntityHelper.Entity.CoatCheck:
-							break;
-						case WatsonEntityHelper.Entity.FrontDesk:
-							break;
-						case WatsonEntityHelper.Entity.Room:
-							break;
-						case WatsonEntityHelper.Entity.Snack:
-							Break b = NextBreak.Find();
-							if (b != null)
-								message = string.Format(lang.Break, b.Sessionstarttimetext, entity.value);
-							else
-								message = "No encontré mas cortes por el día";
-							break;
-						case WatsonEntityHelper.Entity.Restroom:
-							var floors = new[] { 2, 3, 4, 6, 25 };
-							PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(lang.WhatFloor, floors), string.Format(lang.InvalidFloor, floors), 3, PromptStyle.Auto);
-							return;
-						default:
-							break;
-					}
-
-
-					IMessageActivity msg = context.MakeMessage();
-					msg.Text = message;// LanguageHelper.GetMessage(LanguageHelper.Map, lang);
-									   //msg.Attachments = new List<Attachment>();
-									   //msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetLocationImage() });
-
-					await context.PostAsync(msg);
+					case WatsonEntityHelper.Entity.CDS:
+						break;
+					case WatsonEntityHelper.Entity.Radisson:
+						break;
+					case WatsonEntityHelper.Entity.CoatCheck:
+						message = lang.CoatCheck;
+						image = ImageHelper.GetCoatCheck();
+						break;
+					case WatsonEntityHelper.Entity.FrontDesk:
+						image = ImageHelper.GetFrontDesk();
+						message = lang.FrontDesk;
+						break;
+					case WatsonEntityHelper.Entity.Room:
+						int floor;
+						image = ImageHelper.GetRoomImage(entity.value, out floor);
+						message = string.Format(lang.RoomMap, entity.value, floor);
+						break;
+					case WatsonEntityHelper.Entity.Break:
+						b = NextBreak.Find();
+						if (b != null)
+							message = string.Format(lang.Break, b.Sessionstarttimetext);
+						else
+							message = lang.NoMoreBreaks;
+						break;
+					case WatsonEntityHelper.Entity.Snack:
+						b = NextBreak.Find();
+						if (b != null)
+							message = string.Format(lang.Snack, b.Sessionstarttimetext, entity.value);
+						else
+							message = lang.NoMoreBreaks;
+						break;
+					case WatsonEntityHelper.Entity.Restroom:
+						var floors = new[] { 2, 3, 4, 6, 25 };
+						PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(lang.WhatFloor, floors), string.Format(lang.InvalidFloor, floors), 3, PromptStyle.Auto);
+						return;
+					default:
+						break;
 				}
+
+				IMessageActivity msg = context.MakeMessage();
+				msg.Text = message;// LanguageHelper.GetMessage(LanguageHelper.Map, lang);
+				if (!string.IsNullOrEmpty(image))
+				{
+					msg.Attachments = new List<Attachment>();
+					msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = image });
+				}
+				await context.PostAsync(msg);
 			}
 			else
 				await context.PostAsync("No entiendo qué estás buscando");
-
-
 
 			context.Wait(MessageReceived);
 		}
@@ -379,6 +377,7 @@ namespace GX26Bot.Cognitive.LUIS
 		{
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 			string message = "";
+			string image = "";
 			if (result.Entities.Any(e => e.Type == "Genexus"))
 				message = lang.Genexus;
 			else
@@ -388,6 +387,7 @@ namespace GX26Bot.Cognitive.LUIS
 				{
 					ConversationEntity convEnt = convObj.entities[0];
 					WatsonEntityHelper.Entity ent = WatsonEntityHelper.GetEntity(convEnt.entity);
+					Break b;
 					switch (ent)
 					{
 						case WatsonEntityHelper.Entity.CDS:
@@ -395,19 +395,33 @@ namespace GX26Bot.Cognitive.LUIS
 						case WatsonEntityHelper.Entity.Radisson:
 							break;
 						case WatsonEntityHelper.Entity.CoatCheck:
+							message = lang.CoatCheck;
+							image = ImageHelper.GetCoatCheck();
 							break;
 						case WatsonEntityHelper.Entity.FrontDesk:
+							image = ImageHelper.GetFrontDesk();
+							message = lang.FrontDesk;
 							break;
 						case WatsonEntityHelper.Entity.Room:
+							int floor;
+							image = ImageHelper.GetRoomImage(convEnt.value, out floor);
+							message = string.Format(lang.RoomMap, convEnt.value, floor);
 							break;
 						case WatsonEntityHelper.Entity.Restroom:
 							break;
-						case WatsonEntityHelper.Entity.Snack:
-							Break b = NextBreak.Find();
+						case WatsonEntityHelper.Entity.Break:
+							b = NextBreak.Find();
 							if (b != null)
 								message = string.Format(lang.Break, b.Sessionstarttimetext, convEnt.value);
 							else
-								message = "No encontré mas cortes por el día";
+								message = lang.NoMoreBreaks;
+							break;
+						case WatsonEntityHelper.Entity.Snack:
+							b = NextBreak.Find();
+							if (b != null)
+								message = string.Format(lang.Snack, b.Sessionstarttimetext, convEnt.value);
+							else
+								message = lang.NoMoreBreaks;
 							break;
 						case WatsonEntityHelper.Entity.TimeQ:
 							break;
@@ -439,7 +453,15 @@ namespace GX26Bot.Cognitive.LUIS
 				context.UserData.SetValue<int>(CONSECUTIVES_FAILS, fails);
 			}
 
-			await context.PostAsync(message);
+			IMessageActivity msg = context.MakeMessage();
+			msg.Text = message;
+			if (!string.IsNullOrEmpty(image))
+			{
+				msg.Attachments = new List<Attachment>();
+				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = image });
+			}
+			await context.PostAsync(msg);
+
 			context.Wait(MessageReceived);
 		}
 
