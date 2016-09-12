@@ -32,7 +32,7 @@ namespace GX26Bot.Helpers
 		public static string GetRoomImage(string room, out int floor)
 		{
 			floor = s_roomFloor[room];
-			return s_resmgr.GetString(room);
+			return s_resmgr.GetString(room.Replace(" ",""));
 		}
 
 		public static string GetLocationImage()
@@ -48,6 +48,16 @@ namespace GX26Bot.Helpers
 		public static string GetFrontDesk()
 		{
 			return s_resmgr.GetString("FrontDesk");
+		}
+
+		public static string Get42()
+		{
+			return s_resmgr.GetString("FortyTwo");
+		}
+
+		public static string GetPanarol()
+		{
+			return s_resmgr.GetString("Penarol");
 		}
 	}
 }

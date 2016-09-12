@@ -8,19 +8,6 @@ namespace GX26Bot.Controllers
 		{
 			switch (lang)
 			{
-				case LanguageManager.SPANISH:
-					return $@"Hola {user}! Mi nombre es RUDI y puedo ayudarte a moverte durante en GX26.
-
-Sé la ubicacíón de las salas, los baños y roperías.
-También conozco la agenda del evento.
-Ejemplo de estas preguntas son:  
-
-- dónde están los baños?  
-- dónde está la repería?
-- dónde queda la sala Renoir?
-- a qué hora habla Nicolás Jodal?
-
-Cuando necesites volver a ver esto simplemente me saludas :)";
 				case LanguageManager.PORTUGUESE:
 					return $@"Oi {user}! Mi nombre es RUDI y puedo ayudarte a moverte durante en GX26.
 
@@ -34,7 +21,7 @@ Ejemplo de estas preguntas son:
 - a qué hora habla Nicolás Jodal?
 
 Cuando necesites volver a ver esto simplemente me saludas :)";
-				default:
+				case LanguageManager.ENGLISH:
 					return $@"Hello {user}! My name is RUDI and I can help you move around during the GX26.
 
 I know where the restrooms, session rooms and coat checks are.  
@@ -47,6 +34,19 @@ These are some of the question I can answer:
 - when is Nicolás Jodal speaking?
 
 Whenever you need to see this again, just say hi :)";
+				default:
+					return $@"Hola {user}! Mi nombre es RUDI y puedo ayudarte a moverte durante en GX26.
+
+Sé la ubicacíón de las salas, los baños y roperías.
+También conozco la agenda del evento.
+Ejemplo de estas preguntas son:  
+
+- dónde están los baños?  
+- dónde está la repería?
+- dónde queda la sala Renoir?
+- a qué hora habla Nicolás Jodal?
+
+Cuando necesites volver a ver esto simplemente me saludas :)";
 			}
 
 			

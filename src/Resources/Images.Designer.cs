@@ -169,6 +169,15 @@ namespace GX26Bot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://upload.wikimedia.org/wikipedia/commons/5/56/Answer_to_Life.png.
+        /// </summary>
+        internal static string FortyTwo {
+            get {
+                return ResourceManager.GetString("FortyTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg.
         /// </summary>
         internal static string FrontDesk {
@@ -183,6 +192,15 @@ namespace GX26Bot.Resources {
         internal static string GX26 {
             get {
                 return ResourceManager.GetString("GX26", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://upload.wikimedia.org/wikipedia/commons/c/c6/Escudo-penarol-2015.png.
+        /// </summary>
+        internal static string Penarol {
+            get {
+                return ResourceManager.GetString("Penarol", resourceCulture);
             }
         }
         

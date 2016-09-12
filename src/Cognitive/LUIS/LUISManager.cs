@@ -18,7 +18,7 @@ namespace GX26Bot.Cognitive.LUIS
 	public class LUISManager : LuisDialog<object>
 	{
 		readonly string CONSECUTIVES_FAILS = "FAILS";
-		readonly double MIN_ALLOWED_SCORE = 0.5d;
+		readonly double MIN_ALLOWED_SCORE = 0.25d;
 
 		static string s_model { get; } = ConfigurationManager.AppSettings["LuisModelId"];
 		static string s_key { get; } = ConfigurationManager.AppSettings["LuisSubscriptionKey"];
@@ -240,7 +240,7 @@ namespace GX26Bot.Cognitive.LUIS
 				}
 
 				IMessageActivity msg = context.MakeMessage();
-				msg.Text = message;// LanguageHelper.GetMessage(LanguageHelper.Map, lang);
+				msg.Text = message;
 				if (!string.IsNullOrEmpty(image))
 				{
 					msg.Attachments = new List<Attachment>();
@@ -316,7 +316,7 @@ namespace GX26Bot.Cognitive.LUIS
 			IMessageActivity msg = context.MakeMessage();
 			msg.Text = "";
 			msg.Attachments = new List<Attachment>();
-			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = "https://upload.wikimedia.org/wikipedia/commons/5/56/Answer_to_Life.png" });
+			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.Get42() });
 			await context.PostAsync(msg);
 
 			context.Wait(MessageReceived);
@@ -340,7 +340,7 @@ namespace GX26Bot.Cognitive.LUIS
 			IMessageActivity msg = context.MakeMessage();
 			msg.Text = "Peñarol es el cuadro mas glorioso del Uruguay.";
 			msg.Attachments = new List<Attachment>();
-			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = "https://upload.wikimedia.org/wikipedia/commons/c/c6/Escudo-penarol-2015.png" });
+			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetPanarol() });
 			await context.PostAsync(msg);
 
 			context.Wait(MessageReceived);
@@ -393,6 +393,8 @@ namespace GX26Bot.Cognitive.LUIS
 						case WatsonEntityHelper.Entity.CDS:
 							break;
 						case WatsonEntityHelper.Entity.Radisson:
+							message = lang.Map;
+							image = ImageHelper.GetLocationImage();
 							break;
 						case WatsonEntityHelper.Entity.CoatCheck:
 							message = lang.CoatCheck;
