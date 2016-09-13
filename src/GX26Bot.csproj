@@ -146,6 +146,7 @@
     <Compile Include="GX26\FindSpeaker.cs" />
     <Compile Include="GX26\Data\GX26Speaker.cs" />
     <Compile Include="GX26\NextBreak.cs" />
+    <Compile Include="GX26\SpeakerCompanySessions.cs" />
     <Compile Include="GX26\SpeakerSessions.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\Utils.cs" />

@@ -73,21 +73,22 @@ namespace GX26Bot.Cognitive.LUIS
 			if (result.Entities != null && result.Entities.Count == 1)
 			{
 				speaker = result.Entities[0].Entity;
-				List<Speaker> speakers = FindSpeaker.Find(speaker);
-				if (speakers.Count == 0) //invalid speaker
+
+				List<Session> sessions = SpeakerCompanySessions.Find(speaker, lang.Language);
+				if (sessions.Count == 0)
 				{
-					await context.PostAsync(string.Format(lang.NoSpeakersFound, speaker));
+					await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{speaker}"));
 					context.Wait(MessageReceived);
 					return;
 				}
-				if (speakers.Count > 1) //must disambiguate
-				{
-					string msg = string.Format(lang.TooManyspeakers, speakers.Count, speaker);
-					string[] listedSpeakers = speakers.Select<Speaker, string>(s => $"{s.Speakerfirstname} {s.Speakerlastname}").ToArray();
-					PromptDialog.Choice(context, OnSpeakerDisambiguated, listedSpeakers, msg, null, 1, PromptStyle.Auto);
-					return;
-				}
-				await SpeakerDisambiguated(context, $"{speakers[0].Speakerfirstname} {speakers[0].Speakerlastname}");
+				bool many = sessions.Count > 1;
+				string msg = string.Format(lang.SpeakerSessionsFound, sessions.Count, $"{speaker}");
+				foreach (Session s in sessions)
+					msg += $@"
+- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}  ";
+
+				await context.PostAsync(msg);
+				context.Wait(MessageReceived);
 			}
 			else
 			{
@@ -99,27 +100,20 @@ namespace GX26Bot.Cognitive.LUIS
 		{
 			LanguageManager lang = await LanguageManager.GetLanguage(context, null);
 
-			List<Speaker> speakers = FindSpeaker.Find(speaker);
-			if (speakers.Count == 1) //best case
+			List<Session> sessions = SpeakerCompanySessions.Find(speaker, lang.Language);
+			if (sessions.Count == 0)
 			{
-				Speaker sp = speakers[0];
-				List<Session> sessions = SpeakerSessions.Find(speakers[0].Speakerid, lang.Language);
-				if (sessions.Count == 0)
-				{
-					await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{sp.Speakerfirstname} {sp.Speakerlastname}"));
-					context.Wait(MessageReceived);
-					return;
-				}
-				bool many = sessions.Count > 1;
-				string msg = string.Format(lang.SpeakerSessionsFound, sessions.Count, $"{sp.Speakerfirstname} {sp.Speakerlastname}");
-				foreach (Session s in sessions)
-					msg += $@"
+				await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{speaker}"));
+				context.Wait(MessageReceived);
+				return;
+			}
+			bool many = sessions.Count > 1;
+			string msg = string.Format(lang.SpeakerSessionsFound, sessions.Count, $"{speaker}");
+			foreach (Session s in sessions)
+				msg += $@"
 - {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}  ";
 
-				await context.PostAsync(msg);
-			}
-			else
-				await context.PostAsync(string.Format(lang.NoSpeakersFound, speaker));
+			await context.PostAsync(msg);
 
 			context.Wait(MessageReceived);
 		}
