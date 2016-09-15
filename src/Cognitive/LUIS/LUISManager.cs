@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using GX26Bot.Cognitive.Watson;
 using GX26Bot.GX26;
@@ -73,22 +74,7 @@ namespace GX26Bot.Cognitive.LUIS
 			if (result.Entities != null && result.Entities.Count == 1)
 			{
 				speaker = result.Entities[0].Entity;
-
-				List<Session> sessions = SpeakerCompanySessions.Find(speaker, lang.Language);
-				if (sessions.Count == 0)
-				{
-					await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{speaker}"));
-					context.Wait(MessageReceived);
-					return;
-				}
-				bool many = sessions.Count > 1;
-				string msg = string.Format(lang.SpeakerSessionsFound, sessions.Count, $"{speaker}");
-				foreach (Session s in sessions)
-					msg += $@"
-- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}  ";
-
-				await context.PostAsync(msg);
-				context.Wait(MessageReceived);
+				await SendSessionsMessageText(context, speaker);
 			}
 			else
 			{
@@ -98,23 +84,54 @@ namespace GX26Bot.Cognitive.LUIS
 
 		private async Task SpeakerDisambiguated(IDialogContext context, string speaker)
 		{
+			await SendSessionsMessageText(context, speaker);
+		}
+
+		private async Task SendSessionsMessageText(IDialogContext context, string speaker)
+		{
 			LanguageManager lang = await LanguageManager.GetLanguage(context, null);
 
-			List<Session> sessions = SpeakerCompanySessions.Find(speaker, lang.Language);
-			if (sessions.Count == 0)
+			GX26Session sessions = SpeakerCompanySessions.Find(speaker, lang.Language);
+			if (sessions.Sessions.Count() == 0)
 			{
 				await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{speaker}"));
 				context.Wait(MessageReceived);
 				return;
 			}
 			bool many = sessions.Count > 1;
-			string msg = string.Format(lang.SpeakerSessionsFound, sessions.Count, $"{speaker}");
-			foreach (Session s in sessions)
-				msg += $@"
-- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}  ";
+			StringBuilder msg = new StringBuilder(many ? string.Format(lang.SpeakerSessionsFound, sessions.Count) : lang.SpeakerSessionsFound1);
+			bool needsSpeaker = true;
+			switch (sessions.Entityfound)
+			{
+				case "speaker":
+					msg.AppendFormat(lang.SessionSpeaker, speaker);
+					needsSpeaker = false;
+					break;
+				case "company":
+					msg.AppendFormat(lang.SessionCompany, speaker);
+					break;
+				case "track":
+					msg.AppendFormat(lang.SessionTrack, speaker);
+					break;
+				default:
+					break;
+			}
+			foreach (Session s in sessions.Sessions)
+			{
+				string name = "";
+				if (needsSpeaker)
+				{
+					name = "(";
+					foreach (Speaker sp in s.Speakers)
+						name += $"{sp.Speakerfirstname} {sp.Speakerlastname}, ";
+					name = name.Substring(0, name.LastIndexOf(", "));
+					name += ")";
+				}
 
-			await context.PostAsync(msg);
-
+				msg.Append($@"
+- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname} {name} ");
+			}
+			await context.PostAsync(msg.ToString());
 			context.Wait(MessageReceived);
 		}
 

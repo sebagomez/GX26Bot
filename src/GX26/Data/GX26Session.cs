@@ -6,6 +6,7 @@
 		public int Count { get; set; }
 		public bool Error { get; set; }
 		public string Message { get; set; }
+		public string Entityfound { get; set; }
 	}
 
 	public class Session

@@ -254,11 +254,23 @@ Cuando necesites volver a ver esto simplemente me saludas :)</value>
   <data name="RoomMap" xml:space="preserve">
     <value>[ENG]La sala {0} la puede ubicar en el piso {1}.</value>
   </data>
+  <data name="SessionCompany" xml:space="preserve">
+    <value>[ENG] para la empresa {0}</value>
+  </data>
+  <data name="SessionSpeaker" xml:space="preserve">
+    <value>[ENG] para el orador {0}</value>
+  </data>
+  <data name="SessionTrack" xml:space="preserve">
+    <value>[ENG] en el track {0}</value>
+  </data>
   <data name="Snack" xml:space="preserve">
     <value>[ENG]El próximo corte es las {0}. Ahí podrás disfrutar de {1} (entre otras cosas)</value>
   </data>
   <data name="SpeakerSessionFound" xml:space="preserve">
-    <value>[ENG]Encontré {0} sesiones con {1} como participante.</value>
+    <value>[ENG]Encontré {0} sesiones</value>
+  </data>
+  <data name="SpeakerSessionFound1" xml:space="preserve">
+    <value>[ENG]Encontré 1 sesión</value>
   </data>
   <data name="TooManySpeakers" xml:space="preserve">
     <value>[ENG]Estamos de suerte, hay {0} oradores llamados '{1}'. ¿Cuál de ellos es el que buscas?</value>

@@ -114,6 +114,26 @@ namespace GX26Bot.Helpers
 			get { return GetMessage("SpeakerSessionFound"); }
 		}
 
+		public string SpeakerSessionsFound1
+		{
+			get { return GetMessage("SpeakerSessionFound1"); }
+		}
+
+		public string SessionSpeaker
+		{
+			get { return GetMessage("SessionSpeaker"); }
+		}
+
+		public string SessionTrack
+		{
+			get { return GetMessage("SessionTrack"); }
+		}
+
+		public string SessionCompany
+		{
+			get { return GetMessage("SessionCompany"); }
+		}
+
 		public string WhatFloor
 		{
 			get { return GetMessage("WhatFloor"); }

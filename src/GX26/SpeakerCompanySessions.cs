@@ -12,7 +12,7 @@ namespace GX26Bot.GX26
 	{
 		static WebClient s_httpClient = new WebClient();
 
-		public static List<Session> Find(string name, string lang)
+		public static GX26Session Find(string name, string lang)
 		{
 			string language = "S"; //Spanish will be default
 			if (lang == LanguageManager.ENGLISH)
@@ -37,9 +37,7 @@ namespace GX26Bot.GX26
 			s_httpClient.Headers.Add("GeneXus-Language", $"{lang.Substring(0, 1).ToUpper()}{lang.Substring(1)}");
 			Stream response = s_httpClient.OpenRead(new Uri(url));
 
-			GX26Session sdt = Utils.Deserialize<GX26Session>(response);
-
-			return sdt.Sessions.ToList();
+			return Utils.Deserialize<GX26Session>(response);
 		}
 	}
 }
