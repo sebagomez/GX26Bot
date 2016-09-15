@@ -50,6 +50,8 @@ namespace GX26Bot.Cognitive.LUIS
 
 			string message = string.Format(lang.Hello, (await activity).From.Name);
 			await context.PostAsync(message);
+			await context.PostAsync(lang.HelloMultiLine);
+
 			context.Wait(MessageReceived);
 		}
 

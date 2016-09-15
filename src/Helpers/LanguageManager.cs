@@ -89,6 +89,11 @@ namespace GX26Bot.Helpers
 			get { return GetMessage("Hello", 2); }
 		}
 
+		public string HelloMultiLine
+		{
+			get { return GetMessage("HelloMultiLine"); }
+		}
+
 		public string NoSpeakersFound
 		{
 			get { return GetMessage("NoSpeakersFound", 3); }
@@ -176,7 +181,7 @@ namespace GX26Bot.Helpers
 
 		public string Harassment
 		{
-			get { return GetMessage("Harassment", 9); }
+			get { return GetMessage("Harassment", 11); }
 		}
 
 		public string Deep

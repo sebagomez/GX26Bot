@@ -145,7 +145,7 @@
     <value>Preferiría una pregunta sobre el Encuentro GeneXus, esta es bastante difícil.</value>
   </data>
   <data name="FrontDesk" xml:space="preserve">
-    <value>La secretaría está en el primer piso donde muestra el mapa.</value>
+    <value>Claro, la secretaría la encuentras en el 2º piso, detrás de las escaleras mecánicas.</value>
   </data>
   <data name="Genexus1" xml:space="preserve">
     <value>GeneXus es el mejor invento uruguayo después del Dulce de Leche. O eso he oído, no he probado el dulce de leche...</value>
@@ -161,6 +161,12 @@
   </data>
   <data name="Harassment1" xml:space="preserve">
     <value>Entiendo, pero si logramos volver a la línea de los comentarios constructivos, podré aprender algo de ti.</value>
+  </data>
+  <data name="Harassment10" xml:space="preserve">
+    <value>Eso puede interpretarse de muchas formas.</value>
+  </data>
+  <data name="Harassment11" xml:space="preserve">
+    <value>Soy un bot, pero tengo sentimientos, ¿qué me intentas decir?</value>
   </data>
   <data name="Harassment2" xml:space="preserve">
     <value>Gesundheit!</value>
@@ -187,18 +193,18 @@
     <value>Va a ser más productivo para los dos, si nos mantenemos en la línea de las preguntas sobre el Encuentro GeneXus.</value>
   </data>
   <data name="Hello1" xml:space="preserve">
-    <value>Hola {0}! Mi nombre es RUDI y puedo ayudarte a moverte durante en GX26.
-Sé la ubicacíón de las salas, los baños y roperías. También conozco la agenda del evento.
-Ejemplo de estas preguntas son:  
-- dónde están los baños?  
-- dónde está la repería?
-- dónde queda la sala Renoir?
-- a qué hora habla Nicolás Jodal?
-
-Cuando necesites volver a ver esto simplemente me saludas :)</value>
+    <value>Hola {0}! Mi nombre es RUDI y puedo ayudarte a con consultas del GX26. Sé la ubicación de las salas, los baños y roperías.También conozco la agenda del evento.</value>
   </data>
   <data name="Hello2" xml:space="preserve">
-    <value>¡Hola! Si no me equivoco, me saludas en {idioma}. Siempre puedes cambiar el idioma en el que hablamos diciendo "Español", "English" o "Portuguese". Mi nombre es Rudi y mi misión es contestar preguntas del Encuentro GeneXus 2016.</value>
+    <value>¡Hola {0}! Siempre puedes cambiar el idioma en el que hablamos diciendo "/Español", "/English" o "/Portuguese". Mi nombre es Rudi y mi misión es contestar preguntas del Encuentro GeneXus 2016.</value>
+  </data>
+  <data name="HelloMultiLine" xml:space="preserve">
+    <value>Algunas preguntas que sé responder son: 
+- ¿dónde están los baños? 
+- ¿dónde está la ropería? 
+- ¿dónde queda la sala Renoir? 
+- ¿a qué hora habla Nicolás Jodal?
+Cuando necesites volver a ver esto simplemente di hola. :)</value>
   </data>
   <data name="InvalidFloor" xml:space="preserve">
     <value>En realidad sólo puedes elegir entre los números que te sugiero.</value>
