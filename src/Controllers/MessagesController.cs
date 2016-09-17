@@ -67,10 +67,13 @@ namespace GX26Bot.Controllers
 				switch (command)
 				{
 					case "english":
+					case "ingles":
+					case "inglés":
 						lang = new LanguageManager(LanguageManager.ENGLISH);
 						break;
 					case "espanol":
 					case "español":
+					case "spanish":
 						lang = new LanguageManager(LanguageManager.SPANISH);
 						break;
 					case "brasileiro":

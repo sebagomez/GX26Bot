@@ -75,7 +75,7 @@ namespace GX26Bot.Cognitive.LUIS
 			string speaker = null;
 			if (result.Entities != null && result.Entities.Count == 1)
 			{
-				speaker = result.Entities[0].Entity;
+				speaker = result.Query.Substring(result.Entities[0].StartIndex.Value, (result.Entities[0].EndIndex.Value - result.Entities[0].StartIndex.Value) + 1);
 				await SendSessionsMessageText(context, speaker);
 			}
 			else
@@ -93,7 +93,7 @@ namespace GX26Bot.Cognitive.LUIS
 		{
 			LanguageManager lang = await LanguageManager.GetLanguage(context, null);
 
-			GX26Session sessions = SpeakerCompanySessions.Find(speaker, lang.Language);
+			GX26Session sessions = FindSessions.Find(speaker, lang.Language);
 			if (sessions.Sessions.Count() == 0)
 			{
 				await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{speaker}"));
@@ -118,22 +118,28 @@ namespace GX26Bot.Cognitive.LUIS
 				default:
 					break;
 			}
+			await context.PostAsync(msg.ToString());
 			foreach (Session s in sessions.Sessions)
 			{
+				msg = new StringBuilder($@"- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}");
 				string name = "";
 				if (needsSpeaker)
 				{
-					name = "(";
+					msg.Append(" (");
+					//name = "(";
 					foreach (Speaker sp in s.Speakers)
-						name += $"{sp.Speakerfirstname} {sp.Speakerlastname}, ";
-					name = name.Substring(0, name.LastIndexOf(", "));
-					name += ")";
+						msg.Append($"{sp.Speakerfirstname} {sp.Speakerlastname}, ");
+						//name += $"{sp.Speakerfirstname} {sp.Speakerlastname}, ";
+					msg = msg.Remove(msg.Length - 2, 2);
+					//name = name.Substring(0, name.LastIndexOf(", "));
+					//name += ")";
+					msg.Append(")");
 				}
 
-				msg.Append($@"
-- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname} {name} ");
+				//msg.Append($@"- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname} {name} ");
+
+				await context.PostAsync(msg.ToString());
 			}
-			await context.PostAsync(msg.ToString());
 			context.Wait(MessageReceived);
 		}
 
@@ -222,7 +228,6 @@ namespace GX26Bot.Cognitive.LUIS
 						image = ImageHelper.GetCoatCheck();
 						break;
 					case WatsonEntityHelper.Entity.FrontDesk:
-						image = ImageHelper.GetFrontDesk();
 						message = lang.FrontDesk;
 						break;
 					case WatsonEntityHelper.Entity.Room:
@@ -403,8 +408,6 @@ namespace GX26Bot.Cognitive.LUIS
 					Break b;
 					switch (ent)
 					{
-						case WatsonEntityHelper.Entity.CDS:
-							break;
 						case WatsonEntityHelper.Entity.Radisson:
 							message = lang.Map;
 							image = ImageHelper.GetLocationImage();
@@ -414,15 +417,12 @@ namespace GX26Bot.Cognitive.LUIS
 							image = ImageHelper.GetCoatCheck();
 							break;
 						case WatsonEntityHelper.Entity.FrontDesk:
-							image = ImageHelper.GetFrontDesk();
 							message = lang.FrontDesk;
 							break;
 						case WatsonEntityHelper.Entity.Room:
 							int floor;
 							image = ImageHelper.GetRoomImage(convEnt.value, out floor);
 							message = string.Format(lang.RoomMap, convEnt.value, floor);
-							break;
-						case WatsonEntityHelper.Entity.Restroom:
 							break;
 						case WatsonEntityHelper.Entity.Break:
 							b = NextBreak.Find();
@@ -445,6 +445,11 @@ namespace GX26Bot.Cognitive.LUIS
 					}
 
 				}
+			}
+
+			if (string.IsNullOrEmpty(message))
+			{
+				//BUSCAR CHARLA POR TITULO
 			}
 
 			if (string.IsNullOrEmpty(message))

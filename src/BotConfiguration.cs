@@ -11,6 +11,8 @@ namespace GX26Bot
 		public static string CONVERSATION_PASSWORD { get; } = ConfigurationManager.AppSettings["ConversationApiPassword"];
 		public static string CONVERSATION_WORKSPACE { get; } = ConfigurationManager.AppSettings["ConversationWorkspace"];
 		public static string TEXTANALYTICS_KEY { get; } = ConfigurationManager.AppSettings["TextAnalytics"];
+		public static string WEBCHAT_KEY { get; } = ConfigurationManager.AppSettings["WebChatKey"];
 
+		
 	}
 }

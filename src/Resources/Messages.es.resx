@@ -246,7 +246,7 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
     <value>No entendí el nombre del orador. ¿Puedes escribirlo de otra manera?</value>
   </data>
   <data name="NoSpeakerSessions" xml:space="preserve">
-    <value>Lo siento. No encontré sesiones con {0} como orador.</value>
+    <value>Lo siento. No encontré sesiones de {0}. ¿Algún sinónimo que se te ocurra?</value>
   </data>
   <data name="NoSpeakersFound1" xml:space="preserve">
     <value>Lo siento, ningún orador responde al nombre de '{0}'</value>

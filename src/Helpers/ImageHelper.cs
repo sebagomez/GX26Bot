@@ -45,11 +45,6 @@ namespace GX26Bot.Helpers
 			return s_resmgr.GetString("CoatCheck");
 		}
 
-		public static string GetFrontDesk()
-		{
-			return s_resmgr.GetString("FrontDesk");
-		}
-
 		public static string Get42()
 		{
 			return s_resmgr.GetString("FortyTwo");

@@ -178,15 +178,6 @@ namespace GX26Bot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-xtf1/t31.0-8/10273170_475451385933581_3709621524634832676_o.jpg.
-        /// </summary>
-        internal static string FrontDesk {
-            get {
-                return ResourceManager.GetString("FrontDesk", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to http://images.travelpod.com/cache/accom_maps/Radisson_Victoria_Plaza-Montevideo.gif.
         /// </summary>
         internal static string GX26 {

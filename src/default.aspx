@@ -10,8 +10,11 @@
 <body>
 	<form id="form1" runat="server">
 		<div>
-			<h1>RUDI</h1>
+			<h1>GX RUDI</h1>
 			<h3><a href="https://en.wikipedia.org/wiki/The_Jetsons">Referential Universal Differential Indexer</a></h3>
+		</div>
+		<div id="chat">
+			<iframe src="https://webchat.botframework.com/embed/rudi?s=<%=GX26Bot.BotConfiguration.WEBCHAT_KEY%>" style="height: 502px; max-height: 502px;"></iframe>
 		</div>
 		<div id="footer">
 			<asp:Label ID="lblVersion" runat="server" Font-Names="Calibri" Font-Size="Small" ForeColor="#666666"></asp:Label>

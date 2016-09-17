@@ -146,8 +146,7 @@
     <Compile Include="GX26\FindSpeaker.cs" />
     <Compile Include="GX26\Data\GX26Speaker.cs" />
     <Compile Include="GX26\NextBreak.cs" />
-    <Compile Include="GX26\SpeakerCompanySessions.cs" />
-    <Compile Include="GX26\SpeakerSessions.cs" />
+    <Compile Include="GX26\FindSessions.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -176,8 +175,8 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="private.config" />
-    <None Include="Properties\PublishProfiles\rudi - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\rudi - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\gxrudi - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\gxrudi - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
