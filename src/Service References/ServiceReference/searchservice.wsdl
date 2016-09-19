@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.gxtechnical.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.gxtechnical.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.gxtechnical.com/">
+      <s:element name="Search">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="text" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sources" type="tns:ArrayOfSourceParam" />
+            <s:element minOccurs="0" maxOccurs="1" name="cssClassForHighlight" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSourceParam">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SourceParam" type="tns:SourceParam" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SourceParam">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="sourceName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchResult" type="tns:ArrayOfDocument" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDocument">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Document" nillable="true" type="tns:Document" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Document">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Source" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Properties" type="tns:ArrayOfDocumentProperty" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDocumentProperty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DocumentProperty" nillable="true" type="tns:DocumentProperty" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DocumentProperty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Boost" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Searchable" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Redundant" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Search2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="text" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sources" type="tns:ArrayOfSourceParam" />
+            <s:element minOccurs="0" maxOccurs="1" name="cssClassForHighlight" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageNumber" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageSize" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Search2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Search2Result" type="tns:SearchResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SearchResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DocumentsCount" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalPages" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Documents" type="tns:ArrayOfDocument" />
+          <s:element minOccurs="0" maxOccurs="1" name="SearchTime" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Search3">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="searchParameter" type="tns:SearchParameter" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SearchParameter">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SearchText" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sources" type="tns:ArrayOfSourceParam" />
+          <s:element minOccurs="0" maxOccurs="1" name="SearchProperties" type="tns:ArrayOfSearchProperty" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSearchProperty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SearchProperty" nillable="true" type="tns:SearchProperty" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SearchProperty">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Search3Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Search3Result" type="tns:SearchResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchPrivate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="text" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sources" type="tns:ArrayOfSourceParam" />
+            <s:element minOccurs="0" maxOccurs="1" name="cssClassForHighlight" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageNumber" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pageSize" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwordPrivateSearch" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchPrivateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchPrivateResult" type="tns:SearchResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SearchSoapIn">
+    <wsdl:part name="parameters" element="tns:Search" />
+  </wsdl:message>
+  <wsdl:message name="SearchSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="Search2SoapIn">
+    <wsdl:part name="parameters" element="tns:Search2" />
+  </wsdl:message>
+  <wsdl:message name="Search2SoapOut">
+    <wsdl:part name="parameters" element="tns:Search2Response" />
+  </wsdl:message>
+  <wsdl:message name="Search3SoapIn">
+    <wsdl:part name="parameters" element="tns:Search3" />
+  </wsdl:message>
+  <wsdl:message name="Search3SoapOut">
+    <wsdl:part name="parameters" element="tns:Search3Response" />
+  </wsdl:message>
+  <wsdl:message name="SearchPrivateSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchPrivate" />
+  </wsdl:message>
+  <wsdl:message name="SearchPrivateSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchPrivateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SearchServiceSoap">
+    <wsdl:operation name="Search">
+      <wsdl:input message="tns:SearchSoapIn" />
+      <wsdl:output message="tns:SearchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Search2">
+      <wsdl:input message="tns:Search2SoapIn" />
+      <wsdl:output message="tns:Search2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Search3">
+      <wsdl:input message="tns:Search3SoapIn" />
+      <wsdl:output message="tns:Search3SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchPrivate">
+      <wsdl:input message="tns:SearchPrivateSoapIn" />
+      <wsdl:output message="tns:SearchPrivateSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SearchServiceSoap" type="tns:SearchServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Search">
+      <soap:operation soapAction="http://www.gxtechnical.com/Search" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Search2">
+      <soap:operation soapAction="http://www.gxtechnical.com/Search2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Search3">
+      <soap:operation soapAction="http://www.gxtechnical.com/Search3" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchPrivate">
+      <soap:operation soapAction="http://www.gxtechnical.com/SearchPrivate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SearchServiceSoap12" type="tns:SearchServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Search">
+      <soap12:operation soapAction="http://www.gxtechnical.com/Search" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Search2">
+      <soap12:operation soapAction="http://www.gxtechnical.com/Search2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Search3">
+      <soap12:operation soapAction="http://www.gxtechnical.com/Search3" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchPrivate">
+      <soap12:operation soapAction="http://www.gxtechnical.com/SearchPrivate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SearchService">
+    <wsdl:port name="SearchServiceSoap" binding="tns:SearchServiceSoap">
+      <soap:address location="http://www3.gxtechnical.com/gxsearchw/searchservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SearchServiceSoap12" binding="tns:SearchServiceSoap12">
+      <soap12:address location="http://www3.gxtechnical.com/gxsearchw/searchservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

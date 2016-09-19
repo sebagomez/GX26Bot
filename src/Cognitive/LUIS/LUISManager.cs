@@ -8,6 +8,7 @@ using GX26Bot.Cognitive.Watson;
 using GX26Bot.GX26;
 using GX26Bot.GX26.Data;
 using GX26Bot.Helpers;
+using GX26Bot.ServiceReference;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
@@ -122,21 +123,16 @@ namespace GX26Bot.Cognitive.LUIS
 			foreach (Session s in sessions.Sessions)
 			{
 				msg = new StringBuilder($@"- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}");
-				string name = "";
 				if (needsSpeaker)
 				{
 					msg.Append(" (");
-					//name = "(";
+
 					foreach (Speaker sp in s.Speakers)
 						msg.Append($"{sp.Speakerfirstname} {sp.Speakerlastname}, ");
-						//name += $"{sp.Speakerfirstname} {sp.Speakerlastname}, ";
+
 					msg = msg.Remove(msg.Length - 2, 2);
-					//name = name.Substring(0, name.LastIndexOf(", "));
-					//name += ")";
 					msg.Append(")");
 				}
-
-				//msg.Append($@"- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname} {name} ");
 
 				await context.PostAsync(msg.ToString());
 			}
@@ -449,7 +445,19 @@ namespace GX26Bot.Cognitive.LUIS
 
 			if (string.IsNullOrEmpty(message))
 			{
-				//BUSCAR CHARLA POR TITULO
+				SearchServiceSoapClient client = new SearchServiceSoapClient();
+				List<SourceParam> parm = new List<SourceParam>();
+				parm.Add(new SourceParam() { sourceName = BotConfiguration.GXSEARCH_KEY });
+				Search2Response response = await client.Search2Async(message, parm.ToArray(), "", 1, 10);
+				if (response.Body.Search2Result.DocumentsCount > 0)
+				{
+					message = "No entendí qué estás buscando, pero encontré esto que puede ser de tu interés";
+					foreach (var doc in response.Body.Search2Result.Documents)
+					{
+						message += $@"
+{doc.ToString()}";
+					}
+				}
 			}
 
 			if (string.IsNullOrEmpty(message))
