@@ -469,6 +469,8 @@ namespace GX26Bot.Cognitive.LUIS
 
 				context.UserData.SetValue<int>(CONSECUTIVES_FAILS, fails);
 			}
+			else
+				OnSuccess(context);
 
 			
 			await SendMessage(context, message, image);
