@@ -200,7 +200,6 @@
     <Compile Include="Cognitive\Watson\GetLanguage.cs" />
     <Compile Include="Cognitive\Watson\SentimentAnalysis.cs" />
     <Compile Include="Cognitive\Watson\WatsonEntityHelper.cs" />
-    <Compile Include="Controllers\HelpMessage.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>

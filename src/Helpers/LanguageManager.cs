@@ -11,7 +11,6 @@ namespace GX26Bot.Helpers
 {
 	public class LanguageManager
 	{
-
 		public const string SPANISH = "spanish";
 		public const string ENGLISH = "english";
 		public const string PORTUGUESE = "portuguese";
