@@ -431,15 +431,21 @@ namespace GX26Bot.Cognitive.LUIS
 				SearchServiceSoapClient client = new SearchServiceSoapClient();
 				List<SourceParam> parm = new List<SourceParam>();
 				parm.Add(new SourceParam() { sourceName = BotConfiguration.GXSEARCH_KEY });
-				Search2Response response = await client.Search2Async(message, parm.ToArray(), "", 1, 10);
+				Search2Response response = await client.Search2Async($"{result.Query} webidioid:{lang.SearchCode}", parm.ToArray(), "SearchHighlight", 1, 10);
 				if (response.Body.Search2Result.DocumentsCount > 0)
 				{
-					message = "No entendí qué estás buscando, pero encontré esto que puede ser de tu interés";
+					await SendMessage(context, string.Format(lang.SearchFound, response.Body.Search2Result.DocumentsCount));
 					foreach (var doc in response.Body.Search2Result.Documents)
 					{
-						message += $@"
-{doc.ToString()}";
+						StringBuilder msg = new StringBuilder($"- {doc.Description.Sanitize()}");
+						foreach (var p in doc.Properties)
+							if (p.Key == "charlaexp")
+								msg.Append($" ({p.Value.Sanitize()})");
+						
+						await SendMessage(context, msg.ToString());
 					}
+					context.Wait(MessageReceived);
+					return;
 				}
 			}
 

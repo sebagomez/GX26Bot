@@ -61,6 +61,11 @@ namespace GX26Bot.Helpers
 			return s_resmgr.GetString(message, s_cultures[name]);
 		}
 
+		public string SearchCode
+		{
+			get { return m_language == ENGLISH ? "E": m_language == PORTUGUESE ? "P" : "S"; }
+		}
+
 		string GetMessage(string message, int max)
 		{
 			int val = s_random.Next(1, max);
@@ -241,6 +246,11 @@ namespace GX26Bot.Helpers
 		public string NoLocation
 		{
 			get { return GetMessage("NoLocation"); }
+		}
+
+		public string SearchFound
+		{
+			get { return GetMessage("SearchFound"); }
 		}
 	}
 

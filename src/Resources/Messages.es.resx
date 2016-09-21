@@ -260,6 +260,9 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
   <data name="RoomMap" xml:space="preserve">
     <value>La sala {0} la puede ubicar en el piso {1}.</value>
   </data>
+  <data name="SearchFound" xml:space="preserve">
+    <value>No entendí qué me quisiste decir, pero una búsqueda me devolvió {0} sesiones.</value>
+  </data>
   <data name="SessionCompany" xml:space="preserve">
     <value> para la empresa {0}</value>
   </data>

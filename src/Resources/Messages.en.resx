@@ -260,6 +260,9 @@ Whenever you need to get back to this, just say Hello. :)</value>
   <data name="RoomMap" xml:space="preserve">
     <value>You will find room {room} on the {0} floor.</value>
   </data>
+  <data name="SearchFound" xml:space="preserve">
+    <value>I don't get what you mean, but a search returned {0} sessions.</value>
+  </data>
   <data name="SessionCompany" xml:space="preserve">
     <value> for the company {0}</value>
   </data>
