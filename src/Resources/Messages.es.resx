@@ -193,7 +193,7 @@
     <value>Va a ser más productivo para los dos, si nos mantenemos en la línea de las preguntas sobre el Encuentro GeneXus.</value>
   </data>
   <data name="Hello1" xml:space="preserve">
-    <value>Hola {0}! Mi nombre es RUDI y puedo ayudarte a con consultas del GX26. Sé la ubicación de las salas, los baños y roperías.También conozco la agenda del evento.</value>
+    <value>Hola {0}! Mi nombre es RUDI y puedo ayudarte con consultas del GX26. Sé la ubicación de las salas, los baños y roperías.También conozco la agenda del evento.</value>
   </data>
   <data name="Hello2" xml:space="preserve">
     <value>¡Hola {0}! Siempre puedes cambiar el idioma en el que hablamos diciendo "/Español", "/English" o "/Portuguese". Mi nombre es Rudi y mi misión es contestar preguntas del Encuentro GeneXus 2016.</value>
