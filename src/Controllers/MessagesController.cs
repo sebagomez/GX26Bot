@@ -78,6 +78,8 @@ namespace GX26Bot.Controllers
 						break;
 					case "brasileiro":
 					case "portuguese":
+					case "português":
+					case "portugues":
 						lang = new LanguageManager(LanguageManager.PORTUGUESE);
 						break;
 					default:

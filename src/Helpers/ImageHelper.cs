@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Resources;
 using System.Web;
 
@@ -12,7 +10,7 @@ namespace GX26Bot.Helpers
 
 		public static string GetBathroomImage(int floor)
 		{
-			return s_resmgr.GetString($"Bathroom{floor}");
+			return GetImageUrl(s_resmgr.GetString($"Bathroom{floor}"));
 		}
 
 		static Dictionary<string, int> s_roomFloor = new Dictionary<string, int>()
@@ -20,6 +18,7 @@ namespace GX26Bot.Helpers
 			{ "Ballroom A", 2 },
 			{ "Ballroom B", 2 },
 			{ "Ballroom C", 2 },
+			{ "Grand Ballroom", 2 },
 			{ "Florida", 3 },
 			{ "Picasso", 4 },
 			{ "Renoir", 4 },
@@ -32,27 +31,40 @@ namespace GX26Bot.Helpers
 		public static string GetRoomImage(string room, out int floor)
 		{
 			floor = s_roomFloor[room];
-			return s_resmgr.GetString(room.Replace(" ",""));
+			string imageName = s_resmgr.GetString(room.Replace(" ",""));
+			if (!string.IsNullOrEmpty(imageName))
+				return GetImageUrl(imageName);
+			return null;
 		}
 
 		public static string GetLocationImage()
 		{
-			return s_resmgr.GetString("GX26");
+			return GetImageUrl(s_resmgr.GetString("GX26"));
 		}
 
 		public static string GetCoatCheck()
 		{
-			return s_resmgr.GetString("CoatCheck");
+			return GetImageUrl(s_resmgr.GetString("CoatCheck"));
 		}
 
 		public static string Get42()
 		{
-			return s_resmgr.GetString("FortyTwo");
+			return GetImageUrl(s_resmgr.GetString("FortyTwo"));
 		}
 
 		public static string GetPanarol()
 		{
-			return s_resmgr.GetString("Penarol");
+			return GetImageUrl(s_resmgr.GetString("Penarol"));
+		}
+
+		static string GetImageUrl(string imageName)
+		{
+			return $"{GetCurentUrl()}/Resources/Images/{imageName}";
+		}
+
+		static string GetCurentUrl()
+		{
+			return $"{HttpContext.Current.Request.Url.Scheme}://{HttpContext.Current.Request.Url.Authority}";
 		}
 	}
 }

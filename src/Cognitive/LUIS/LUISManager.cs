@@ -108,7 +108,7 @@ namespace GX26Bot.Cognitive.LUIS
 			{
 				case "speaker":
 					msg.AppendFormat(lang.SessionSpeaker, speaker);
-					needsSpeaker = false;
+					needsSpeaker = !speaker.Trim().Contains(" ");
 					break;
 				case "company":
 					msg.AppendFormat(lang.SessionCompany, speaker);
@@ -122,7 +122,7 @@ namespace GX26Bot.Cognitive.LUIS
 			await context.PostAsync(msg.ToString());
 			foreach (Session s in sessions.Sessions)
 			{
-				msg = new StringBuilder($@"- {s.Sessiontitle} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}");
+				msg = new StringBuilder($@"- {s.Sessiontitle.Sanitize()} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}");
 				if (needsSpeaker)
 				{
 					msg.Append(" (");
@@ -166,7 +166,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			var floors = new[] { 2, 3, 4, 6, 25 };
+			var floors = new[] { 2, 3, 4 };
 			PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(lang.WhatFloor, floors), string.Format(lang.InvalidFloor, floors), 3, PromptStyle.Auto);
 		}
 
@@ -210,7 +210,7 @@ namespace GX26Bot.Cognitive.LUIS
 			{
 				ConversationEntity entity = convObj.entities[0];
 				WatsonEntityHelper.Entity ent = WatsonEntityHelper.GetEntity(entity.entity);
-				string message = $"{entity.entity}:{entity.value}";
+				string message = "";// $"{entity.entity}:{entity.value}";
 				string image = null;
 				Break b;
 				switch (ent)
@@ -246,7 +246,7 @@ namespace GX26Bot.Cognitive.LUIS
 							message = lang.NoMoreBreaks;
 						break;
 					case WatsonEntityHelper.Entity.Restroom:
-						var floors = new[] { 2, 3, 4, 6, 25 };
+						var floors = new[] { 2, 3, 4 };
 						PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(lang.WhatFloor, floors), string.Format(lang.InvalidFloor, floors), 3, PromptStyle.Auto);
 						return;
 					default:

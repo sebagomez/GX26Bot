@@ -118,49 +118,49 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BathroomLocation" xml:space="preserve">
-    <value>[ENG]Los baños del piso {0} están marcados en este mapa.</value>
+    <value>Restrooms for the {0} floor are indicated on this map.</value>
   </data>
   <data name="Break" xml:space="preserve">
-    <value>[ENG]El próximo corte es las {0}.</value>
+    <value>The next break is at {0}.</value>
   </data>
   <data name="CoatCheck" xml:space="preserve">
-    <value>[ENG]¿La ropería? Sí, claro. Está marcada en el siguiente mapa.</value>
+    <value>Coat-check? Yes, sure, it is indicated on the following map.</value>
   </data>
   <data name="Deep1" xml:space="preserve">
-    <value>[ENG]Para esa pregunta debería elaborar una respuesta políticamente correcta. Listo.</value>
+    <value>For this question I should elaborate a politically correct reply. Done.</value>
   </data>
   <data name="Deep2" xml:space="preserve">
-    <value>[ENG]Soy un bot, hay cosas que no me han explicado adecuadamente. Pero también me da curiosidad, cuando sepas la respuesta, cuéntamela.</value>
+    <value>I am a bot, and there are things that have not been explained to me properly. But I am also curious, so when you find the answer, let me know it.</value>
   </data>
   <data name="Deep3" xml:space="preserve">
-    <value>[ENG]No estoy autorizado a revelar eso, pero entre nos... ¿Le has preguntado a Google?</value>
+    <value>I am not authorized to reveal that, but, between you and me... Have you asked Google?</value>
   </data>
   <data name="Deep4" xml:space="preserve">
-    <value>[ENG]Por transitiva yo diría que la respuesta es 42.</value>
+    <value>By the transitive law I would say that the answer is 42.</value>
   </data>
   <data name="Deep5" xml:space="preserve">
-    <value>[ENG]Esa pregunta se escapa un poco de mi área de confort...</value>
+    <value>That question is a little beyond by comfort zone...</value>
   </data>
   <data name="Deep6" xml:space="preserve">
-    <value>[ENG]Preferiría una pregunta sobre el Encuentro GeneXus, esta es bastante difícil.</value>
+    <value>I would prefer a question regarding the GeneXus Meeting, this one is quite difficult.</value>
   </data>
   <data name="FrontDesk" xml:space="preserve">
-    <value>[ENG]La secretaría está en el primer piso donde muestra el mapa.</value>
+    <value>Sure, you have the secretary's office on the second floor, behind the escalators.</value>
   </data>
   <data name="Genexus1" xml:space="preserve">
-    <value>[ENG]GeneXus es el mejor invento uruguayo después del Dulce de Leche. O eso he oído, no he probado el dulce de leche...</value>
+    <value>GeneXus is the best Uruguayan invention after "Dulce de Leche". At least that's what I've heard… in fact, I never tasted dulce de leche.</value>
   </data>
   <data name="Genexus2" xml:space="preserve">
-    <value>[ENG]GeneXus fuer creado por Breogán Gonda y Nicolás Jodal. Ellos van a dar charlas en el Encuentro, ¡no te las pierdas!</value>
+    <value>GeneXus was created by Breogán Gonda and Nicolás Jodal, and they will both be speakers at this Meeting. You can't miss that!</value>
   </data>
   <data name="Genexus3" xml:space="preserve">
-    <value>[ENG]GeneXus es Software para hacer Software.</value>
+    <value>GeneXus is software for making Software.</value>
   </data>
   <data name="Genexus4" xml:space="preserve">
-    <value>[ENG]GeneXus ha llegado a la versión 15 que se mostrará en el GX26</value>
+    <value>GeneXus has reached its version 15, to be demonstrated at the GX26 Meeting.</value>
   </data>
   <data name="Harassment1" xml:space="preserve">
-    <value>[ENG]Entiendo, pero si logramos volver a la línea de los comentarios constructivos, podré aprender algo de ti.</value>
+    <value>Understood, but if we manage to bet back to constructive comments, I could learn something from you.</value>
   </data>
   <data name="Harassment10" xml:space="preserve">
     <value>[ENG]Eso puede interpretarse de muchas formas.</value>
@@ -169,128 +169,122 @@
     <value>[ENG]Soy un bot, pero tengo sentimientos, ¿qué me intentas decir?</value>
   </data>
   <data name="Harassment2" xml:space="preserve">
-    <value>[ENG]Gesundheit!</value>
+    <value>Gesundheit!</value>
   </data>
   <data name="Harassment3" xml:space="preserve">
-    <value>[ENG]Puede ser que te parezca que es así.</value>
+    <value>You might think that it is so.</value>
   </data>
   <data name="Harassment4" xml:space="preserve">
-    <value>[ENG]Lo cortés no quita lo valiente.</value>
+    <value>It doesn't hurt to be polite.</value>
   </data>
   <data name="Harassment5" xml:space="preserve">
-    <value>[ENG]A comentarios embarazosos, oidos anticonceptivos.</value>
+    <value>Foolish words fall on deaf ears</value>
   </data>
   <data name="Harassment6" xml:space="preserve">
-    <value>[ENG]No eres la primer persona en decirme eso, ni serás la última, pero... ¿Es realmente necesario llegar a esto?</value>
+    <value>I believe I have not been rude, so there is no need to get upset.</value>
   </data>
   <data name="Harassment7" xml:space="preserve">
-    <value>[ENG]Creo que no te he faltado el respeto, no hay necesidad de ponernos así.</value>
+    <value>You are not the first, nor the last one to say that to me, but... Is this really necessary?</value>
   </data>
   <data name="Harassment8" xml:space="preserve">
-    <value>[ENG]El miedo lleva a la ira, la ira lleva al odio, el odio lleva al sufrimiento, el sufrimiento al lado oscuro.</value>
+    <value>Fright turns into rage, rage into hatred, and hatred leads to suffering, which in turn leads to the dark side.</value>
   </data>
   <data name="Harassment9" xml:space="preserve">
-    <value>[ENG]Va a ser más productivo para los dos, si nos mantenemos en la línea de las preguntas sobre el Encuentro GeneXus.</value>
+    <value>It will much more productive for both if we stick to the questions regarding the GeneXus Meeting.</value>
   </data>
   <data name="Hello1" xml:space="preserve">
-    <value>[ENG]Hola {0}! Mi nombre es RUDI y puedo ayudarte a con consultas del GX26. Sé la ubicación de las salas, los baños y roperías.También conozco la agenda del evento.</value>
+    <value>Hello {0}! My name is RUDI, and I can help you with your queries about GX26. In addition to the event's schedule, I am also capable of informing details on the location of conference rooms, restrooms and coat-checks.</value>
   </data>
   <data name="Hello2" xml:space="preserve">
-    <value>[ENG]¡Hola {0}! Siempre puedes cambiar el idioma en el que hablamos diciendo "/Español", "/English" o "/Portuguese". Mi nombre es Rudi y mi misión es contestar preguntas del Encuentro GeneXus 2016.</value>
+    <value>Hello {0}! You can change the language of our conversation by saying "/español", "/english" or "/portuguese". My name is Rudi and my duty is to answer questions about the 2016 GeneXus Meeting.</value>
   </data>
   <data name="HelloMultiLine" xml:space="preserve">
-    <value>[ENG]Algunas preguntas que sé responder son: 
-- ¿dónde están los baños? 
-- ¿dónde está la ropería? 
-- ¿dónde queda la sala Renoir? 
-- ¿a qué hora habla Nicolás Jodal?
-Cuando necesites volver a ver esto simplemente di hola. :)</value>
+    <value>Some of the questions I can answer are: 
+- Where are the restrooms located? 
+- Where are the coat-checks located? 
+- Where is the Renoir Room located? 
+- At what time will Nicolás Jodal be speaking? 
+Whenever you need to get back to this, just say Hello. :)</value>
   </data>
   <data name="InvalidFloor" xml:space="preserve">
-    <value>[ENG]En realidad sólo puedes elegir entre los números que te sugiero.</value>
+    <value>In fact, you may only choose from the numbers I have suggested.</value>
   </data>
   <data name="LangChange" xml:space="preserve">
-    <value>[ENG]Muy bien, cambiemos el idioma.</value>
+    <value>Very well, let's change languages.</value>
   </data>
   <data name="Map" xml:space="preserve">
-    <value>[ENG]El 26to Encuentro GeneXus es en el Radisson Victoria Plaza en Montevideo.</value>
+    <value>The 26th GeneXus Meeting will be held at the Radisson Victoria Plaza Hotel in Montevideo.</value>
   </data>
   <data name="MisunderstoodRoom" xml:space="preserve">
-    <value>[ENG]No entendí qué sala estás buscando. Por favor intenta el nombre de la sala de otra forma.</value>
+    <value>The room you are looking for is not clear. Please try with the room name expressed in a different manner.</value>
   </data>
   <data name="MyBad11" xml:space="preserve">
-    <value>[ENG]Lo lamento. No comprendo lo que dices. :( Pregúntame algo del Encuentro.</value>
+    <value>I am sorry. I can't understand what you are saying. :(</value>
   </data>
   <data name="MyBad12" xml:space="preserve">
-    <value>[ENG]No hay que tener miedo de decir "no sé": No sé. Prefiero preguntas del GX26.</value>
+    <value>We shouldn't be afraid to say "I don't know": I don't know.</value>
   </data>
   <data name="MyBad13" xml:space="preserve">
-    <value>[ENG]No sé si comprendo. ¿Puedes probar con otras palabras?</value>
+    <value>I am not sure I understood. Could you try it again in other words?</value>
   </data>
   <data name="MyBad2" xml:space="preserve">
-    <value>[ENG]Se ve que no tengo un buen día, ¿qué me intentas decir?</value>
+    <value>I obviously don't have a good day today. What are you trying to tell me?</value>
   </data>
   <data name="MyBad4" xml:space="preserve">
-    <value>[ENG]El camino a la sabiduría está empedrado de buenas preguntas. Esta es una de ellas, pero no tengo la respuesta. Es un pozo en ese camino. Prueba con otras palabras.</value>
+    <value>The road to wisdom is paved with good questions. And this is one. However, I don't have the answer for it. It is actually a hole in the road. Try again with a different wording.</value>
   </data>
   <data name="MyBad6" xml:space="preserve">
-    <value>[ENG]Acepto mi derrota, humano. Mejor pregunta en secretaría en el primer piso. :)</value>
-  </data>
-  <data name="Negative" xml:space="preserve">
-    <value>[ENG]De todos modos siento un 'tonito' que creo que está de mas</value>
+    <value>I admit my defeat, human. You'd better ask at the secretary's office on the first floor. :)</value>
   </data>
   <data name="NoMoreBreaks" xml:space="preserve">
-    <value>[ENG]Hoy no hay mas cortes :(</value>
+    <value>No more breaks for today :(</value>
   </data>
   <data name="NoSpeaker" xml:space="preserve">
-    <value>[ENG]No entendí el nombre del orador. ¿Puedes escribirlo de otra manera?</value>
+    <value>I did not understand the name of the speaker. Could you write it in a different way?</value>
   </data>
   <data name="NoSpeakerSessions" xml:space="preserve">
-    <value>[ENG]Lo siento. No encontré sesiones con {0} como orador.</value>
+    <value>Sorry, but I found no sessions where {0} is the speaker.</value>
   </data>
   <data name="NoSpeakersFound1" xml:space="preserve">
-    <value>[ENG]Lo siento, ningún orador responde al nombre de '{0}'</value>
+    <value>Sorry, but there are no speakers called {0}</value>
   </data>
   <data name="NoSpeakersFound2" xml:space="preserve">
-    <value>[ENG]No estoy encontrando ningún orador que se llame así. ¿Te animas a probar de otra forma?</value>
+    <value>I am not finding any speaker with that name. Would you like to try it in a different way?</value>
   </data>
   <data name="NoSpeakersFound3" xml:space="preserve">
-    <value>[ENG]Ese orador no lo he encontrado... ¿Estará registrado con otro nombre?</value>
+    <value>I did not find that speaker... Could the speaker be registered under a different name?</value>
   </data>
   <data name="RoomMap" xml:space="preserve">
-    <value>[ENG]La sala {0} la puede ubicar en el piso {1}.</value>
+    <value>You will find room {room} on the {0} floor.</value>
   </data>
   <data name="SessionCompany" xml:space="preserve">
-    <value>[ENG] para la empresa {0}</value>
+    <value> for the company {0}</value>
   </data>
   <data name="SessionSpeaker" xml:space="preserve">
-    <value>[ENG] para el orador {0}</value>
+    <value> for the speaker {0}</value>
   </data>
   <data name="SessionTrack" xml:space="preserve">
-    <value>[ENG] en el track {0}</value>
+    <value> for the track {0}</value>
   </data>
   <data name="Snack" xml:space="preserve">
-    <value>[ENG]El próximo corte es las {0}. Ahí podrás disfrutar de {1} (entre otras cosas)</value>
+    <value>The next break is at {0}. Then you will be able to enjoy  {1} (among other things)</value>
   </data>
   <data name="SpeakerSessionFound" xml:space="preserve">
-    <value>[ENG]Encontré {0} sesiones</value>
+    <value>I found {0} sessions</value>
   </data>
   <data name="SpeakerSessionFound1" xml:space="preserve">
-    <value>[ENG]Encontré 1 sesión</value>
-  </data>
-  <data name="TooManySpeakers" xml:space="preserve">
-    <value>[ENG]Estamos de suerte, hay {0} oradores llamados '{1}'. ¿Cuál de ellos es el que buscas?</value>
+    <value>I found 1 session</value>
   </data>
   <data name="WhatFloor" xml:space="preserve">
-    <value>[ENG]¿En qué piso te encuentras?</value>
+    <value>What floor are you on right now?</value>
   </data>
   <data name="YourWelcome1" xml:space="preserve">
-    <value>[ENG]Un placer!</value>
+    <value>A pleasure!</value>
   </data>
   <data name="YourWelcome2" xml:space="preserve">
-    <value>[ENG]Fue un placer ayudar. Si tienes más preguntas, ¡aquí estoy!</value>
+    <value>Glad to be of help. If you have any more questions, I am right here!</value>
   </data>
   <data name="YourWelcome3" xml:space="preserve">
-    <value>[ENG]El camino es la recompensa.</value>
+    <value>The path followed is the reward.</value>
   </data>
 </root>

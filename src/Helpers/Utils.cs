@@ -8,7 +8,7 @@ using System.Web;
 
 namespace GX26Bot.Helpers
 {
-	public class Utils
+	public static class Utils
 	{
 		public static T Deserialize<T>(Stream stream)
 		{
@@ -71,7 +71,20 @@ namespace GX26Bot.Helpers
 			}
 			return sb.ToString();
 		}
+
+		static List<string> s_ToClean = new List<string>
+		{
+			"\r",
+			"\n"
+		};
+
+		public static string Sanitize(this string value)
+		{
+			foreach (string str in s_ToClean)
+				value = value.Replace(str, string.Empty);
+
+			return value;
+		}
+
 	}
-
-
 }

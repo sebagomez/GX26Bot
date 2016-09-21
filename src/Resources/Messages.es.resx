@@ -236,14 +236,11 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
   <data name="MyBad6" xml:space="preserve">
     <value>Acepto mi derrota, humano. Mejor pregunta en secretaría en el primer piso. :)</value>
   </data>
-  <data name="Negative" xml:space="preserve">
-    <value>De todos modos siento un 'tonito' que creo que está de mas</value>
-  </data>
   <data name="NoMoreBreaks" xml:space="preserve">
     <value>Hoy no hay mas cortes :(</value>
   </data>
   <data name="NoSpeaker" xml:space="preserve">
-    <value>No entendí el nombre del orador. ¿Puedes escribirlo de otra manera?</value>
+    <value>No entendí esas palabras. ¿Puedes escribirlo de otra manera?</value>
   </data>
   <data name="NoSpeakerSessions" xml:space="preserve">
     <value>Lo siento. No encontré sesiones de {0}. ¿Algún sinónimo que se te ocurra?</value>
@@ -277,9 +274,6 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
   </data>
   <data name="SpeakerSessionFound1" xml:space="preserve">
     <value>Encontré 1 sesión</value>
-  </data>
-  <data name="TooManySpeakers" xml:space="preserve">
-    <value>Estamos de suerte, hay {0} oradores llamados '{1}'. ¿Cuál de ellos es el que buscas?</value>
   </data>
   <data name="WhatFloor" xml:space="preserve">
     <value>¿En qué piso te encuentras?</value>

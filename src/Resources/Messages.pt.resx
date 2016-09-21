@@ -118,85 +118,85 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BathroomLocation" xml:space="preserve">
-    <value>[POR]Los baños del piso {0} están marcados en este mapa.</value>
+    <value>Os banheiros do andar {0} estão marcados no mapa.</value>
   </data>
   <data name="Break" xml:space="preserve">
     <value>[POR]El próximo corte es las {0}.</value>
   </data>
   <data name="CoatCheck" xml:space="preserve">
-    <value>[POR]¿La ropería? Sí, claro. Está marcada en el siguiente mapa.</value>
+    <value>Chapelaria? Sim, claro. Está marcado no mapa.</value>
   </data>
   <data name="Deep1" xml:space="preserve">
-    <value>[POR]Para esa pregunta debería elaborar una respuesta políticamente correcta. Listo.</value>
+    <value>Para essa pergunta deve desenvolver uma resposta politicamente correta. Feito.</value>
   </data>
   <data name="Deep2" xml:space="preserve">
-    <value>[POR]Soy un bot, hay cosas que no me han explicado adecuadamente. Pero también me da curiosidad, cuando sepas la respuesta, cuéntamela.</value>
+    <value>Eu sou um bot, há coisas que não foram explicadas adequadamente para mim. Mas eu sou curioso, quando você sabe a resposta, me conta.</value>
   </data>
   <data name="Deep3" xml:space="preserve">
-    <value>[POR]No estoy autorizado a revelar eso, pero entre nos... ¿Le has preguntado a Google?</value>
+    <value>Eu não estou autorizado a revelar isso, mas cá entre nós ... Você perguntou ao Google?</value>
   </data>
   <data name="Deep4" xml:space="preserve">
-    <value>[POR]Por transitiva yo diría que la respuesta es 42.</value>
+    <value>Eu diria que a resposta é 42.</value>
   </data>
   <data name="Deep5" xml:space="preserve">
-    <value>[POR]Esa pregunta se escapa un poco de mi área de confort...</value>
+    <value>Essa questão foge um pouco da minha zona de conforto ...</value>
   </data>
   <data name="Deep6" xml:space="preserve">
-    <value>[POR]Preferiría una pregunta sobre el Encuentro GeneXus, esta es bastante difícil.</value>
+    <value>Preferia uma pergunta sobre o Encontro GeneXus, isso é muito difícil.</value>
   </data>
   <data name="FrontDesk" xml:space="preserve">
-    <value>[POR]La secretaría está en el primer piso donde muestra el mapa.</value>
+    <value>Claro, a secretaria se encontra no 2º andar, atrás da escada rolante.</value>
   </data>
   <data name="Genexus1" xml:space="preserve">
-    <value>[POR]GeneXus es el mejor invento uruguayo después del Dulce de Leche. O eso he oído, no he probado el dulce de leche...</value>
+    <value>GeneXus é a melhor invenção uruguaia depois do Doce de Leite. Isso mesmo que você ouviu, não deixe de provar o doce de leite ...</value>
   </data>
   <data name="Genexus2" xml:space="preserve">
-    <value>[POR]GeneXus fuer creado por Breogán Gonda y Nicolás Jodal. Ellos van a dar charlas en el Encuentro, ¡no te las pierdas!</value>
+    <value>GeneXus foi criado por Breogán Gonda e Nicolás Jodal. Eles vão dar uma palestra, não perca!</value>
   </data>
   <data name="Genexus3" xml:space="preserve">
-    <value>[POR]GeneXus es Software para hacer Software.</value>
+    <value>GeneXus é o software para fazer software.</value>
   </data>
   <data name="Genexus4" xml:space="preserve">
-    <value>[POR]GeneXus ha llegado a la versión 15 que se mostrará en el GX26</value>
+    <value>GeneXus está lançando a versão 15 que será exibida no GX26.</value>
   </data>
   <data name="Harassment1" xml:space="preserve">
-    <value>[POR]Entiendo, pero si logramos volver a la línea de los comentarios constructivos, podré aprender algo de ti.</value>
+    <value>Eu entendo, mas se voltar para a linha de comentários construtivos, eu posso aprender alguma coisa com você.</value>
   </data>
   <data name="Harassment10" xml:space="preserve">
-    <value>[POR]Eso puede interpretarse de muchas formas.</value>
+    <value>Isto pode ser interpretado de muitas maneiras.</value>
   </data>
   <data name="Harassment11" xml:space="preserve">
-    <value>[POR]Soy un bot, pero tengo sentimientos, ¿qué me intentas decir?</value>
+    <value>Eu sou um bot, mas eu tenho sentimentos, o que você está tentando me dizer?</value>
   </data>
   <data name="Harassment2" xml:space="preserve">
-    <value>[POR]Gesundheit!</value>
+    <value>Gesundheit!</value>
   </data>
   <data name="Harassment3" xml:space="preserve">
-    <value>[POR]Puede ser que te parezca que es así.</value>
+    <value>Pode ser que você ache que é assim.</value>
   </data>
   <data name="Harassment4" xml:space="preserve">
-    <value>[POR]Lo cortés no quita lo valiente.</value>
+    <value>Polidez não precisa de valentia.</value>
   </data>
   <data name="Harassment5" xml:space="preserve">
-    <value>[POR]A comentarios embarazosos, oidos anticonceptivos.</value>
+    <value>Comentários embaraçosos, ouvidos anticonceptivos.</value>
   </data>
   <data name="Harassment6" xml:space="preserve">
-    <value>[POR]No eres la primer persona en decirme eso, ni serás la última, pero... ¿Es realmente necesario llegar a esto?</value>
+    <value>Você não é a primeira pessoa a me dizer isso, nem será a última, mas ... É realmente necessário para chegar a isto?</value>
   </data>
   <data name="Harassment7" xml:space="preserve">
-    <value>[POR]Creo que no te he faltado el respeto, no hay necesidad de ponernos así.</value>
+    <value>Eu acho que eu não te faltei o respeito, não há necessidade de ficar assim.</value>
   </data>
   <data name="Harassment8" xml:space="preserve">
-    <value>[POR]El miedo lleva a la ira, la ira lleva al odio, el odio lleva al sufrimiento, el sufrimiento al lado oscuro.</value>
+    <value>O medo leva a raiva, a raiva leva ao ódio,  o ódio leva ao sofrimento, o sofrimento ao lado escuro.</value>
   </data>
   <data name="Harassment9" xml:space="preserve">
-    <value>[POR]Va a ser más productivo para los dos, si nos mantenemos en la línea de las preguntas sobre el Encuentro GeneXus.</value>
+    <value>Será mais produtivo para ambos, se ficarmos na linha de perguntas sobre o Encontro GeneXus.</value>
   </data>
   <data name="Hello1" xml:space="preserve">
-    <value>[POR]Hola {0}! Mi nombre es RUDI y puedo ayudarte a con consultas del GX26. Sé la ubicación de las salas, los baños y roperías.También conozco la agenda del evento.</value>
+    <value>Olá {0}! Meu nome é RUDI e eu posso ajudá-lo com dúvidas do GX26. Eu sei a localização das salas, banheiros e chapelarias.Também conheço a agenda do evento.</value>
   </data>
   <data name="Hello2" xml:space="preserve">
-    <value>[POR]¡Hola! Si no me equivoco, me saludas en {idioma}. Siempre puedes cambiar el idioma en el que hablamos diciendo "Español", "English" o "Portuguese". Mi nombre es Rudi y mi misión es contestar preguntas del Encuentro GeneXus 2016.</value>
+    <value>Olá {0}! Você sempre pode alterar o idioma em que falamos dizendo "/español", "/english" ou "/português". Meu nome é Rudi e minha missão é responder a perguntas do Encontro GeneXus 2016.</value>
   </data>
   <data name="HelloMultiLine" xml:space="preserve">
     <value>[POR]Algunas preguntas que sé responder son: 
@@ -207,58 +207,55 @@
 Cuando necesites volver a ver esto simplemente di hola. :)</value>
   </data>
   <data name="InvalidFloor" xml:space="preserve">
-    <value>[POR]En realidad sólo puedes elegir entre los números que te sugiero.</value>
+    <value>Na verdade, você só pode escolher os números que eu te sugiro.</value>
   </data>
   <data name="LangChange" xml:space="preserve">
-    <value>[POR]Muy bien, cambiemos el idioma.</value>
+    <value>Ok, vamos mudar o idioma.</value>
   </data>
   <data name="Map" xml:space="preserve">
-    <value>[POR]El 26to Encuentro GeneXus es en el Radisson Victoria Plaza en Montevideo.</value>
+    <value>O 26º Encontro GeneXus é no Radisson Victoria Plaza, em Montevidéu.</value>
   </data>
   <data name="MisunderstoodRoom" xml:space="preserve">
-    <value>[POR]No entendí qué sala estás buscando. Por favor intenta el nombre de la sala de otra forma.</value>
+    <value>Eu não entendi que sala você está procurando. Por favor, tente o nome da sala de outra maneira.</value>
   </data>
   <data name="MyBad11" xml:space="preserve">
-    <value>[POR]Lo lamento. No comprendo lo que dices. :( Pregúntame algo del Encuentro.</value>
+    <value>Lamento. Eu não entendo o que você diz. :(</value>
   </data>
   <data name="MyBad12" xml:space="preserve">
-    <value>[POR]No hay que tener miedo de decir "no sé": No sé. Prefiero preguntas del GX26.</value>
+    <value>Não tenha medo de dizer "não sei" Eu não sei.</value>
   </data>
   <data name="MyBad13" xml:space="preserve">
-    <value>[POR]No sé si comprendo. ¿Puedes probar con otras palabras?</value>
+    <value>Eu não sei se eu entendi. Você pode tentar com palavras diferentes?</value>
   </data>
   <data name="MyBad2" xml:space="preserve">
-    <value>[POR]Se ve que no tengo un buen día, ¿qué me intentas decir?</value>
+    <value>Eu não tive um bom dia, o que você está tentando me dizer?</value>
   </data>
   <data name="MyBad4" xml:space="preserve">
-    <value>[POR]El camino a la sabiduría está empedrado de buenas preguntas. Esta es una de ellas, pero no tengo la respuesta. Es un pozo en ese camino. Prueba con otras palabras.</value>
+    <value>O caminho para a sabedoria é pavimentada com boas perguntas. Esta é um delas, mas eu não tenho a resposta. É um poço no caminho. Tente palavras diferentes.</value>
   </data>
   <data name="MyBad6" xml:space="preserve">
-    <value>[POR]Acepto mi derrota, humano. Mejor pregunta en secretaría en el primer piso. :)</value>
-  </data>
-  <data name="Negative" xml:space="preserve">
-    <value>[POR]De todos modos siento un 'tonito' que creo que está de mas</value>
+    <value>Eu aceito a minha derrota, humano. Melhor perguntar na secretaria no primeiro andar. :)</value>
   </data>
   <data name="NoMoreBreaks" xml:space="preserve">
     <value>[POR]Hoy no hay mas cortes :(</value>
   </data>
   <data name="NoSpeaker" xml:space="preserve">
-    <value>[POR]No entendí el nombre del orador. ¿Puedes escribirlo de otra manera?</value>
+    <value>Eu não entendi o nome do palestrante. Pode escrever isso de forma diferente?</value>
   </data>
   <data name="NoSpeakerSessions" xml:space="preserve">
-    <value>[POR]Lo siento. No encontré sesiones con {0} como orador.</value>
+    <value>Sinto muito. Eu não encontrei sessões com {0} como palestrante.</value>
   </data>
   <data name="NoSpeakersFound1" xml:space="preserve">
-    <value>[POR]Lo siento, ningún orador responde al nombre de '{0}'</value>
+    <value>Desculpe, nenhum palestrante responde com o nome de '{0}'.</value>
   </data>
   <data name="NoSpeakersFound2" xml:space="preserve">
-    <value>[POR]No estoy encontrando ningún orador que se llame así. ¿Te animas a probar de otra forma?</value>
+    <value>Eu não estou encontrando nenhum palestrante com esse nome. Teria como testar de outra forma?</value>
   </data>
   <data name="NoSpeakersFound3" xml:space="preserve">
-    <value>[POR]Ese orador no lo he encontrado... ¿Estará registrado con otro nombre?</value>
+    <value>Esse palestrante não é encontrado... Estará registrado com outro nome?</value>
   </data>
   <data name="RoomMap" xml:space="preserve">
-    <value>[POR]La sala {0} la puede ubicar en el piso {1}.</value>
+    <value>A sala {0} você pode encontrar no piso {1}.</value>
   </data>
   <data name="SessionCompany" xml:space="preserve">
     <value>[POR] para la empresa {0}</value>
@@ -278,19 +275,16 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
   <data name="SpeakerSessionFound1" xml:space="preserve">
     <value>[POR]Encontré 1 sesión</value>
   </data>
-  <data name="TooManySpeakers" xml:space="preserve">
-    <value>[POR]Estamos de suerte, hay {0} oradores llamados '{1}'. ¿Cuál de ellos es el que buscas?</value>
-  </data>
   <data name="WhatFloor" xml:space="preserve">
-    <value>[POR]¿En qué piso te encuentras?</value>
+    <value>Em que andar você se encontra?</value>
   </data>
   <data name="YourWelcome1" xml:space="preserve">
-    <value>[POR]Un placer!</value>
+    <value>Um prazer!</value>
   </data>
   <data name="YourWelcome2" xml:space="preserve">
-    <value>[POR]Fue un placer ayudar. Si tienes más preguntas, ¡aquí estoy!</value>
+    <value>Foi um prazer ajudar. Se tiver mais perguntas, eu estou aqui!</value>
   </data>
   <data name="YourWelcome3" xml:space="preserve">
-    <value>[POR]El camino es la recompensa.</value>
+    <value>A viagem é a recompensa.</value>
   </data>
 </root>
