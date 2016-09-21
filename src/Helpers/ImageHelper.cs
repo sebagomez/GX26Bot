@@ -39,7 +39,7 @@ namespace GX26Bot.Helpers
 
 		public static string GetLocationImage()
 		{
-			return GetImageUrl(s_resmgr.GetString("GX26"));
+			return s_resmgr.GetString("GX26");
 		}
 
 		public static string GetCoatCheck()
@@ -49,12 +49,12 @@ namespace GX26Bot.Helpers
 
 		public static string Get42()
 		{
-			return GetImageUrl(s_resmgr.GetString("FortyTwo"));
+			return s_resmgr.GetString("FortyTwo");
 		}
 
 		public static string GetPanarol()
 		{
-			return GetImageUrl(s_resmgr.GetString("Penarol"));
+			return s_resmgr.GetString("Penarol");
 		}
 
 		static string GetImageUrl(string imageName)

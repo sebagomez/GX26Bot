@@ -28,11 +28,10 @@ namespace GX26Bot.Controllers
 				ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 				if (activity.GetActivityType() == ActivityTypes.Message)
 				{
-					//resolver el cambio de idioma acá!
 					if (!string.IsNullOrEmpty(activity.Text) && !m_doNotProcess.Contains(activity.Text.Trim().ToLower()))
 					{
 						LanguageManager lang;
-						if (IsItLanguageCommand(activity.Text, out lang))
+						if (IsLanguageCommand(activity.Text, out lang))
 						{
 							StateClient state = activity.GetStateClient();
 							BotData data = state.BotState.GetUserData(activity.ChannelId, activity.From.Id);
@@ -57,7 +56,7 @@ namespace GX26Bot.Controllers
 			return Request.CreateResponse(HttpStatusCode.OK);
 		}
 
-		bool IsItLanguageCommand(string text, out LanguageManager lang)
+		bool IsLanguageCommand(string text, out LanguageManager lang)
 		{
 			lang = null;
 			string command = text.Trim().ToLower();

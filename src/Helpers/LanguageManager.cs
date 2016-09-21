@@ -237,6 +237,11 @@ namespace GX26Bot.Helpers
 		{
 			get { return GetMessage("FrontDesk"); }
 		}
+
+		public string NoLocation
+		{
+			get { return GetMessage("NoLocation"); }
+		}
 	}
 
 }

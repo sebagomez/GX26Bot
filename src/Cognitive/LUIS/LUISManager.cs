@@ -49,9 +49,8 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			string message = string.Format(lang.Hello, (await activity).From.Name);
-			await context.PostAsync(message);
-			await context.PostAsync(lang.HelloMultiLine);
+			await SendMessage(context, string.Format(lang.Hello, (await activity).From.Name));
+			await SendMessage(context, lang.HelloMultiLine);
 
 			context.Wait(MessageReceived);
 		}
@@ -97,7 +96,7 @@ namespace GX26Bot.Cognitive.LUIS
 			GX26Session sessions = FindSessions.Find(speaker, lang.Language);
 			if (sessions.Sessions.Count() == 0)
 			{
-				await context.PostAsync(string.Format(lang.NoSpeakersSession, $"{speaker}"));
+				await SendMessage(context, string.Format(lang.NoSpeakersSession, $"{speaker}"));
 				context.Wait(MessageReceived);
 				return;
 			}
@@ -119,7 +118,7 @@ namespace GX26Bot.Cognitive.LUIS
 				default:
 					break;
 			}
-			await context.PostAsync(msg.ToString());
+			await SendMessage(context, msg.ToString());
 			foreach (Session s in sessions.Sessions)
 			{
 				msg = new StringBuilder($@"- {s.Sessiontitle.Sanitize()} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}");
@@ -134,7 +133,7 @@ namespace GX26Bot.Cognitive.LUIS
 					msg.Append(")");
 				}
 
-				await context.PostAsync(msg.ToString());
+				await SendMessage(context, msg.ToString());
 			}
 			context.Wait(MessageReceived);
 		}
@@ -176,13 +175,8 @@ namespace GX26Bot.Cognitive.LUIS
 			{
 				int floor = await result;
 				LanguageManager lang = await LanguageManager.GetLanguage(context, null);
-
-				IMessageActivity msg = context.MakeMessage();
-				msg.Text = string.Format(lang.BathroomLocation, floor);
-				msg.Attachments = new List<Attachment>();
-				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetBathroomImage(floor) });
-
-				await context.PostAsync(msg);
+								
+				await SendMessage(context, string.Format(lang.BathroomLocation, floor), ImageHelper.GetBathroomImage(floor));
 			}
 			catch (Exception) { }
 
@@ -218,6 +212,8 @@ namespace GX26Bot.Cognitive.LUIS
 					case WatsonEntityHelper.Entity.CDS:
 						break;
 					case WatsonEntityHelper.Entity.Radisson:
+						message = lang.Map;
+						image = ImageHelper.GetLocationImage();
 						break;
 					case WatsonEntityHelper.Entity.CoatCheck:
 						message = lang.CoatCheck;
@@ -252,18 +248,12 @@ namespace GX26Bot.Cognitive.LUIS
 					default:
 						break;
 				}
+				
+				await SendMessage(context, message, image);
 
-				IMessageActivity msg = context.MakeMessage();
-				msg.Text = message;
-				if (!string.IsNullOrEmpty(image))
-				{
-					msg.Attachments = new List<Attachment>();
-					msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = image });
-				}
-				await context.PostAsync(msg);
 			}
 			else
-				await context.PostAsync("No entiendo qué estás buscando");
+				await SendMessage(context, lang.NoLocation);
 
 			context.Wait(MessageReceived);
 		}
@@ -285,7 +275,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			await context.PostAsync(lang.Harassment);
+			await SendMessage(context, lang.Harassment);
 
 			context.Wait(MessageReceived);
 		}
@@ -307,7 +297,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			await context.PostAsync(lang.Deep);
+			await SendMessage(context, lang.Deep);
 
 			context.Wait(MessageReceived);
 		}
@@ -327,11 +317,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			IMessageActivity msg = context.MakeMessage();
-			msg.Text = "";
-			msg.Attachments = new List<Attachment>();
-			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.Get42() });
-			await context.PostAsync(msg);
+			await SendMessage(context, " ", ImageHelper.Get42());
 
 			context.Wait(MessageReceived);
 		}
@@ -351,11 +337,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			IMessageActivity msg = context.MakeMessage();
-			msg.Text = "Peñarol es el cuadro mas glorioso del Uruguay.";
-			msg.Attachments = new List<Attachment>();
-			msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetPanarol() });
-			await context.PostAsync(msg);
+			await SendMessage(context, "Peñarol es el cuadro mas glorioso del Uruguay.", ImageHelper.GetPanarol());
 
 			context.Wait(MessageReceived);
 		}
@@ -376,7 +358,8 @@ namespace GX26Bot.Cognitive.LUIS
 				OnSuccess(context);
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
-			await context.PostAsync(lang.YourWelcome);
+
+			await SendMessage(context, lang.YourWelcome);
 
 			context.Wait(MessageReceived);
 		}
@@ -481,6 +464,24 @@ namespace GX26Bot.Cognitive.LUIS
 				context.UserData.SetValue<int>(CONSECUTIVES_FAILS, fails);
 			}
 
+			
+			await SendMessage(context, message, image);
+
+			context.Wait(MessageReceived);
+		}
+
+		#endregion
+
+		async Task SendMessage(IDialogContext context, string message)
+		{
+			await SendMessage(context, message, null);
+		}
+
+		async Task SendMessage(IDialogContext context, string message, string image)
+		{
+			if (string.IsNullOrEmpty(message))
+				return;
+
 			IMessageActivity msg = context.MakeMessage();
 			msg.Text = message;
 			if (!string.IsNullOrEmpty(image))
@@ -489,11 +490,7 @@ namespace GX26Bot.Cognitive.LUIS
 				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = image });
 			}
 			await context.PostAsync(msg);
-
-			context.Wait(MessageReceived);
 		}
-
-		#endregion
 
 		private bool IsScoreTooLow(IDialogContext context, LuisResult result)
 		{

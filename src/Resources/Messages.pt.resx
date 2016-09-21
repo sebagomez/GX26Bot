@@ -236,6 +236,9 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
   <data name="MyBad6" xml:space="preserve">
     <value>Eu aceito a minha derrota, humano. Melhor perguntar na secretaria no primeiro andar. :)</value>
   </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Eu não entendi que sala você está procurando. Por favor, tente de outra maneira.</value>
+  </data>
   <data name="NoMoreBreaks" xml:space="preserve">
     <value>[POR]Hoy no hay mas cortes :(</value>
   </data>
