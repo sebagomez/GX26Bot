@@ -49,7 +49,11 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			await SendMessage(context, string.Format(lang.Hello, (await activity).From.Name));
+			string name = (await activity).From.Name.Trim();
+			if (!string.IsNullOrEmpty(name))
+				name = name.Split(' ')[0];
+			
+			await SendMessage(context, string.Format(lang.Hello, name));
 			await SendMessage(context, lang.HelloMultiLine);
 
 			context.Wait(MessageReceived);
