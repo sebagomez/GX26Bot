@@ -246,7 +246,7 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
     <value>No entendí esas palabras. ¿Puedes escribirlo de otra manera?</value>
   </data>
   <data name="NoSpeakerSessions" xml:space="preserve">
-    <value>Lo siento. No encontré sesiones de {0}. ¿Algún sinónimo que se te ocurra?</value>
+    <value>Lo siento. No encontré conferencias de {0}. ¿Algún sinónimo que se te ocurra?</value>
   </data>
   <data name="NoSpeakersFound1" xml:space="preserve">
     <value>Lo siento, ningún orador responde al nombre de '{0}'</value>
@@ -261,7 +261,7 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
     <value>La sala {0} la puede ubicar en el piso {1}.</value>
   </data>
   <data name="SearchFound" xml:space="preserve">
-    <value>No entendí qué me quisiste decir, pero una búsqueda me devolvió {0} sesiones.</value>
+    <value>No entendí qué me quisiste decir, pero una búsqueda me devolvió {0} conferencias.</value>
   </data>
   <data name="SessionCompany" xml:space="preserve">
     <value> para la empresa {0}</value>
@@ -276,10 +276,10 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
     <value>El próximo corte es las {0}. Ahí podrás disfrutar de {1} (entre otras cosas)</value>
   </data>
   <data name="SpeakerSessionFound" xml:space="preserve">
-    <value>Encontré {0} sesiones</value>
+    <value>Encontré {0} conferencias</value>
   </data>
   <data name="SpeakerSessionFound1" xml:space="preserve">
-    <value>Encontré 1 sesión</value>
+    <value>Encontré 1 conferencia</value>
   </data>
   <data name="WhatFloor" xml:space="preserve">
     <value>¿En qué piso te encuentras?</value>
