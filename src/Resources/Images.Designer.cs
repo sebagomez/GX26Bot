@@ -169,7 +169,7 @@ namespace GX26Bot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://upload.wikimedia.org/wikipedia/commons/c/c6/Escudo-penarol-2015.png.
+        ///   Looks up a localized string similar to http://www.xn--pearol-xwa.org/imgnoticias/201108/188.jpg.
         /// </summary>
         internal static string Penarol {
             get {

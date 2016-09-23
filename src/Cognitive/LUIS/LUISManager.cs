@@ -83,14 +83,9 @@ namespace GX26Bot.Cognitive.LUIS
 				await SendSessionsMessageText(context, speaker);
 			}
 			else
-			{
-				PromptDialog.Text(context, SpeakerComplete, lang.NoSpeaker, null, 1);
-			}
-		}
-
-		private async Task SpeakerDisambiguated(IDialogContext context, string speaker)
-		{
-			await SendSessionsMessageText(context, speaker);
+				await SendMessage(context, lang.NoSpeaker);
+			
+			context.Wait(MessageReceived);
 		}
 
 		private async Task SendSessionsMessageText(IDialogContext context, string speaker)
@@ -139,19 +134,6 @@ namespace GX26Bot.Cognitive.LUIS
 
 				await SendMessage(context, msg.ToString());
 			}
-			context.Wait(MessageReceived);
-		}
-
-		private async Task OnSpeakerDisambiguated(IDialogContext context, IAwaitable<string> result)
-		{
-			string speaker = await result;
-			await SpeakerDisambiguated(context, speaker);
-		}
-
-		private async Task SpeakerComplete(IDialogContext context, IAwaitable<string> result)
-		{
-			string speaker = await result;
-			await SpeakerDisambiguated(context, speaker);
 		}
 
 		#endregion
