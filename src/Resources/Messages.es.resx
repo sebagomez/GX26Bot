@@ -219,10 +219,10 @@ Cuando necesites volver a ver esto simplemente di hola. :)</value>
     <value>No entendí qué sala estás buscando. Por favor intenta el nombre de la sala de otra forma.</value>
   </data>
   <data name="MyBad11" xml:space="preserve">
-    <value>Lo lamento. No comprendo lo que dices. :( Pregúntame algo del Encuentro.</value>
+    <value>Lo lamento. No comprendo lo que dices.</value>
   </data>
   <data name="MyBad12" xml:space="preserve">
-    <value>No hay que tener miedo de decir "no sé": No sé. Prefiero preguntas del GX26.</value>
+    <value>No hay que tener miedo de decir "no sé": No sé.</value>
   </data>
   <data name="MyBad13" xml:space="preserve">
     <value>No sé si comprendo. ¿Puedes probar con otras palabras?</value>

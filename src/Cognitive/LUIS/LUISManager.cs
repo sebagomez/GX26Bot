@@ -120,7 +120,7 @@ namespace GX26Bot.Cognitive.LUIS
 			await SendMessage(context, msg.ToString());
 			foreach (Session s in sessions.Sessions)
 			{
-				msg = new StringBuilder($@"- {s.Sessiontitle.Sanitize()} - {s.Sessiondaytext} {s.Sessiontimetxt}.{s.Roomname}");
+				msg = new StringBuilder($@"- {s.Sessiontitle.Sanitize()} - {s.Sessiondaytext} {s.Sessiontimetxt} @ {s.Roomname}");
 				if (needsSpeaker)
 				{
 					msg.Append(" (");
@@ -323,7 +323,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			await SendMessage(context, "Peñarol es el cuadro mas glorioso del Uruguay.", ImageHelper.GetPanarol());
+			await SendMessage(context, "Eso depende de qué cuadro seas hincha ;)", ImageHelper.GetPanarol());
 
 			context.Wait(MessageReceived);
 		}
