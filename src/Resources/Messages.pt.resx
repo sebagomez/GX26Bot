@@ -261,7 +261,7 @@ Quando necessitar voltar a ver isso simplesmente dê olá :)</value>
     <value>A sala {0} você pode encontrar no piso {1}.</value>
   </data>
   <data name="SearchFound" xml:space="preserve">
-    <value>Não entendi o que quis me dizer, mas uma busca me devolveu {0} palestras.</value>
+    <value>Encontrei {0} palestras procurando {1}.</value>
   </data>
   <data name="SessionCompany" xml:space="preserve">
     <value> para a empresa {0}</value>

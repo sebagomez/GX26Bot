@@ -420,7 +420,7 @@ namespace GX26Bot.Cognitive.LUIS
 				Search2Response response = await client.Search2Async($"{result.Query} webidioid:{lang.SearchCode}", parm.ToArray(), "SearchHighlight", 1, 10);
 				if (response.Body.Search2Result.DocumentsCount > 0)
 				{
-					await SendMessage(context, string.Format(lang.SearchFound, response.Body.Search2Result.DocumentsCount));
+					await SendMessage(context, string.Format(lang.SearchFound, response.Body.Search2Result.DocumentsCount, result.Query));
 					foreach (var doc in response.Body.Search2Result.Documents)
 					{
 						StringBuilder msg = new StringBuilder($"- {doc.Description.Sanitize()}");
