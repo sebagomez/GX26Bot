@@ -258,7 +258,7 @@ Whenever you need to get back to this, just say Hello. :)</value>
     <value>I did not find that speaker... Could the speaker be registered under a different name?</value>
   </data>
   <data name="RoomMap" xml:space="preserve">
-    <value>You will find room {room} on the {0} floor.</value>
+    <value>You will find room {0} on the {1} floor.</value>
   </data>
   <data name="SearchFound" xml:space="preserve">
     <value>I found {0} conferences searching for {1}.</value>

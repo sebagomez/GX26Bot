@@ -323,7 +323,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			await SendMessage(context, "Eso depende de qué cuadro seas hincha ;)", ImageHelper.GetPanarol());
+			await SendMessage(context, "Eso depende de qué cuadro seas simpatizante ;)", ImageHelper.GetPanarol());
 
 			context.Wait(MessageReceived);
 		}

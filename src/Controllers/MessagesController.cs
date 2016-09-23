@@ -10,6 +10,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Rest;
 using GX26Bot.Helpers;
+using System.Collections.Generic;
 
 namespace GX26Bot.Controllers
 {
@@ -23,9 +24,9 @@ namespace GX26Bot.Controllers
 		/// </summary>
 		public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
 		{
+			ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 			try
 			{
-				ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 				if (activity.GetActivityType() == ActivityTypes.Message)
 				{
 					if (!string.IsNullOrEmpty(activity.Text) && !m_doNotProcess.Contains(activity.Text.Trim().ToLower()))
@@ -48,9 +49,14 @@ namespace GX26Bot.Controllers
 				else
 					await connector.Conversations.ReplyToActivityAsync(HandleSystemMessage(activity));
 			}
-			catch (HttpOperationException hoe)
+			catch (Exception ex)
 			{
-				Trace.TraceError(hoe.Message);
+				Trace.TraceError(ex.Message);
+
+				Activity msg = activity.CreateReply("BOT ERROR! Nooooooooooooooo");
+				msg.Attachments = new List<Attachment>();
+				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = ImageHelper.GetVader() });
+				await connector.Conversations.ReplyToActivityAsync(msg);
 			}
 
 			return Request.CreateResponse(HttpStatusCode.OK);

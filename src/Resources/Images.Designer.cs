@@ -169,7 +169,7 @@ namespace GX26Bot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://www.xn--pearol-xwa.org/imgnoticias/201108/188.jpg.
+        ///   Looks up a localized string similar to PenarolNacional.png.
         /// </summary>
         internal static string Penarol {
             get {
@@ -192,6 +192,15 @@ namespace GX26Bot.Resources {
         internal static string Renoir {
             get {
                 return ResourceManager.GetString("Renoir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vader.jpg.
+        /// </summary>
+        internal static string Vader {
+            get {
+                return ResourceManager.GetString("Vader", resourceCulture);
             }
         }
     }

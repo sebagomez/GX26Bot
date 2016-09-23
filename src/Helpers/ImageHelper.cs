@@ -54,7 +54,12 @@ namespace GX26Bot.Helpers
 
 		public static string GetPanarol()
 		{
-			return s_resmgr.GetString("Penarol");
+			return GetImageUrl(s_resmgr.GetString("Penarol"));
+		}
+
+		public static string GetVader()
+		{
+			return GetImageUrl(s_resmgr.GetString("Vader"));
 		}
 
 		static string GetImageUrl(string imageName)
