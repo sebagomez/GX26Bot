@@ -25,6 +25,17 @@ namespace GX26Bot.Cognitive.LUIS
 		static string s_model { get; } = ConfigurationManager.AppSettings["LuisModelId"];
 		static string s_key { get; } = ConfigurationManager.AppSettings["LuisSubscriptionKey"];
 
+		const string GREETING = "Greeting";
+		const string SPEAKER_SESSION = "SpeakerSession";
+		const string RESTROOM = "Restroom";
+		const string LOCATION = "Location";
+		const string HARASSMENT = "Harassment";
+		const string DEEP = "Deep";
+		const string FORTY_TWO = "42";
+		const string PENAROL = "Peñarol";
+		const string GRATITUDE = "Gratitude";
+		const string NONE = "None";
+
 		static LuisService s_service;
 		static LUISManager()
 		{
@@ -36,7 +47,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region Greeting
 
-		[LuisIntent("Greeting")]
+		[LuisIntent(GREETING)]
 		public async Task Greeting(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -53,8 +64,8 @@ namespace GX26Bot.Cognitive.LUIS
 			if (!string.IsNullOrEmpty(name))
 				name = name.Split(' ')[0];
 			
-			await SendMessage(context, string.Format(lang.Hello, name));
-			await SendMessage(context, lang.HelloMultiLine);
+			await SendMessage(context, string.Format(lang.Hello, name), result.Query, GREETING);
+			await SendMessage(context, lang.HelloMultiLine, result.Query, GREETING);
 
 			context.Wait(MessageReceived);
 		}
@@ -63,7 +74,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region Speaker Session
 
-		[LuisIntent("SpeakerSession")]
+		[LuisIntent(SPEAKER_SESSION)]
 		public async Task SpeakerSession(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -80,22 +91,22 @@ namespace GX26Bot.Cognitive.LUIS
 			if (result.Entities != null && result.Entities.Count == 1)
 			{
 				speaker = result.Query.Substring(result.Entities[0].StartIndex.Value, (result.Entities[0].EndIndex.Value - result.Entities[0].StartIndex.Value) + 1);
-				await SendSessionsMessageText(context, speaker);
+				await SendSessionsMessageText(context, speaker, result.Query);
 			}
 			else
-				await SendMessage(context, lang.NoSpeaker);
+				await SendMessage(context, lang.NoSpeaker, result.Query, SPEAKER_SESSION);
 			
 			context.Wait(MessageReceived);
 		}
 
-		private async Task SendSessionsMessageText(IDialogContext context, string speaker)
+		private async Task SendSessionsMessageText(IDialogContext context, string speaker, string original)
 		{
 			LanguageManager lang = await LanguageManager.GetLanguage(context, null);
 
 			GX26Session sessions = FindSessions.Find(speaker, lang.Language);
 			if (sessions.Sessions.Count() == 0)
 			{
-				await SendMessage(context, string.Format(lang.NoSpeakersSession, $"{speaker}"));
+				await SendMessage(context, string.Format(lang.NoSpeakersSession, $"{speaker}"), original, SPEAKER_SESSION);
 				context.Wait(MessageReceived);
 				return;
 			}
@@ -117,7 +128,7 @@ namespace GX26Bot.Cognitive.LUIS
 				default:
 					break;
 			}
-			await SendMessage(context, msg.ToString());
+			await SendMessage(context, msg.ToString(), original, SPEAKER_SESSION);
 			foreach (Session s in sessions.Sessions)
 			{
 				msg = new StringBuilder($@"- {s.Sessiontitle.Sanitize()} - {s.Sessiondaytext} {s.Sessiontimetxt} @ {s.Roomname}");
@@ -138,7 +149,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#endregion
 
-		[LuisIntent("Restroom")]
+		[LuisIntent(RESTROOM)]
 		public async Task Restroom(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -151,27 +162,25 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
+			StorageLogger.LogData(new DataLog { Question = result.Query, Answer = lang.WhatFloor, Intent = RESTROOM });
+
 			var floors = new[] { 2, 3, 4 };
 			PromptDialog.Choice(context, RestroomFloorComplete, floors, string.Format(lang.WhatFloor, floors), string.Format(lang.InvalidFloor, floors), 3, PromptStyle.Auto);
 		}
 
 		private async Task RestroomFloorComplete(IDialogContext context, IAwaitable<int> result)
 		{
-			try
-			{
 				int floor = await result;
 				LanguageManager lang = await LanguageManager.GetLanguage(context, null);
 								
 				await SendMessage(context, string.Format(lang.BathroomLocation, floor), ImageHelper.GetBathroomImage(floor));
-			}
-			catch (Exception) { }
 
 			context.Wait(MessageReceived);
 		}
 
 		#region Location
 
-		[LuisIntent("Location")]
+		[LuisIntent(LOCATION)]
 		public async Task Location(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -235,11 +244,11 @@ namespace GX26Bot.Cognitive.LUIS
 						break;
 				}
 				
-				await SendMessage(context, message, image);
+				await SendMessage(context, message, image, result.Query, LOCATION);
 
 			}
 			else
-				await SendMessage(context, lang.NoLocation);
+				await SendMessage(context, lang.NoLocation, result.Query, LOCATION);
 
 			context.Wait(MessageReceived);
 		}
@@ -248,7 +257,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region Harassment
 
-		[LuisIntent("Harassment")]
+		[LuisIntent(HARASSMENT)]
 		public async Task Harassment(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -261,7 +270,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			await SendMessage(context, lang.Harassment);
+			await SendMessage(context, lang.Harassment, result.Query, HARASSMENT);
 
 			context.Wait(MessageReceived);
 		}
@@ -270,7 +279,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region Harassment
 
-		[LuisIntent("Deep")]
+		[LuisIntent(DEEP)]
 		public async Task Deep(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -283,7 +292,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			await SendMessage(context, lang.Deep);
+			await SendMessage(context, lang.Deep, result.Query, DEEP);
 
 			context.Wait(MessageReceived);
 		}
@@ -292,7 +301,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region 42
 
-		[LuisIntent("42")]
+		[LuisIntent(FORTY_TWO)]
 		public async Task FortyTwo(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -303,7 +312,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			await SendMessage(context, " ", ImageHelper.Get42());
+			await SendMessage(context, " ", ImageHelper.Get42(), result.Query, FORTY_TWO);
 
 			context.Wait(MessageReceived);
 		}
@@ -312,7 +321,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region Peñarol
 
-		[LuisIntent("Peñarol")]
+		[LuisIntent(PENAROL)]
 		public async Task Penarol(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -323,7 +332,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 				OnSuccess(context);
 
-			await SendMessage(context, "Eso depende de qué cuadro seas simpatizante ;)", ImageHelper.GetPanarol());
+			await SendMessage(context, "Eso depende de qué cuadro seas simpatizante ;)", ImageHelper.GetPanarol(), result.Query, PENAROL);
 
 			context.Wait(MessageReceived);
 		}
@@ -332,7 +341,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region Gratitude
 
-		[LuisIntent("Gratitude")]
+		[LuisIntent(GRATITUDE)]
 		public async Task Gratitude(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			if (IsScoreTooLow(context, result))
@@ -345,7 +354,7 @@ namespace GX26Bot.Cognitive.LUIS
 
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
 
-			await SendMessage(context, lang.YourWelcome);
+			await SendMessage(context, lang.YourWelcome, result.Query, GRATITUDE);
 
 			context.Wait(MessageReceived);
 		}
@@ -354,8 +363,8 @@ namespace GX26Bot.Cognitive.LUIS
 
 		#region None
 
-		[LuisIntent("None")]
 		[LuisIntent("")]
+		[LuisIntent(NONE)]
 		public async Task None(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
 		{
 			LanguageManager lang = await LanguageManager.GetLanguage(context, activity);
@@ -420,7 +429,7 @@ namespace GX26Bot.Cognitive.LUIS
 				Search2Response response = await client.Search2Async($"{result.Query} webidioid:{lang.SearchCode}", parm.ToArray(), "SearchHighlight", 1, 10);
 				if (response.Body.Search2Result.DocumentsCount > 0)
 				{
-					await SendMessage(context, string.Format(lang.SearchFound, response.Body.Search2Result.DocumentsCount, result.Query));
+					await SendMessage(context, string.Format(lang.SearchFound, response.Body.Search2Result.DocumentsCount, result.Query), result.Query, NONE);
 					foreach (var doc in response.Body.Search2Result.Documents)
 					{
 						StringBuilder msg = new StringBuilder($"- {doc.Description.Sanitize()}");
@@ -428,7 +437,7 @@ namespace GX26Bot.Cognitive.LUIS
 							if (p.Key == "charlaexp")
 								msg.Append($" ({p.Value.Sanitize()})");
 						
-						await SendMessage(context, msg.ToString());
+						await SendMessage(context, msg.ToString(), result.Query, NONE);
 					}
 					context.Wait(MessageReceived);
 					return;
@@ -459,19 +468,31 @@ namespace GX26Bot.Cognitive.LUIS
 				OnSuccess(context);
 
 			
-			await SendMessage(context, message, image);
+			await SendMessage(context, message, image, result.Query, NONE);
 
 			context.Wait(MessageReceived);
 		}
 
 		#endregion
 
-		async Task SendMessage(IDialogContext context, string message)
-		{
-			await SendMessage(context, message, null);
-		}
+
 
 		async Task SendMessage(IDialogContext context, string message, string image)
+		{
+			await SendMessage(context, message, image, null, null);
+		}
+		
+		async Task SendMessage(IDialogContext context, string message)
+		{
+			await SendMessage(context, message, null, null);
+		}
+
+		async Task SendMessage(IDialogContext context, string message, string original, string intent)
+		{
+			await SendMessage(context, message, null, original, intent);
+		}
+
+		async Task SendMessage(IDialogContext context, string message, string image, string original, string intent)
 		{
 			if (string.IsNullOrEmpty(message))
 				return;
@@ -483,6 +504,14 @@ namespace GX26Bot.Cognitive.LUIS
 				msg.Attachments = new List<Attachment>();
 				msg.Attachments.Add(new Attachment { ContentType = "image/png", ContentUrl = image });
 			}
+
+			try
+			{
+				if (!string.IsNullOrEmpty(intent))
+					StorageLogger.LogData(new DataLog { Question = original, Answer = message, Intent = intent, User = context.MakeMessage().Recipient.Name });
+			}
+			catch { }
+
 			await context.PostAsync(msg);
 		}
 

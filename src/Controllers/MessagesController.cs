@@ -51,7 +51,11 @@ namespace GX26Bot.Controllers
 			}
 			catch (Exception ex)
 			{
-				Trace.TraceError(ex.Message);
+				try
+				{
+					StorageLogger.LogError(new ErrorLog(ex) { Question = activity.Text, User = activity.From.Name });
+				}
+				catch { }
 
 				Activity msg = activity.CreateReply("BOT ERROR! Nooooooooooooooo");
 				msg.Attachments = new List<Attachment>();
