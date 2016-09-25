@@ -58,7 +58,7 @@ namespace GX26Bot.Cognitive.TextAnalytics
 	{
 		public string name { get; set; }
 		public string iso6391Name { get; set; }
-		public decimal score { get; set; }
+		//public string score { get; set; }
 	}
 
 }

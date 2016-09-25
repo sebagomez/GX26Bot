@@ -375,7 +375,7 @@ namespace GX26Bot.Cognitive.LUIS
 			else
 			{
 				ConversationObject convObj = await Watson.Conversation.SendMessage(result.Query);
-				if (convObj.entities.Length > 0)
+				if (convObj != null && convObj.entities.Length > 0)
 				{
 					ConversationEntity convEnt = convObj.entities[0];
 					WatsonEntityHelper.Entity ent = WatsonEntityHelper.GetEntity(convEnt.entity);
@@ -421,7 +421,7 @@ namespace GX26Bot.Cognitive.LUIS
 				}
 			}
 
-			if (string.IsNullOrEmpty(message))
+			if (string.IsNullOrEmpty(message) && result.Query.Length > 2)
 			{
 				SearchServiceSoapClient client = new SearchServiceSoapClient();
 				List<SourceParam> parm = new List<SourceParam>();
