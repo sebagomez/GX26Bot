@@ -107,7 +107,6 @@ namespace GX26Bot.Cognitive.LUIS
 			if (sessions.Sessions.Count() == 0)
 			{
 				await SendMessage(context, string.Format(lang.NoSpeakersSession, $"{speaker}"), original, SPEAKER_SESSION);
-				context.Wait(MessageReceived);
 				return;
 			}
 			bool many = sessions.Count > 1;
