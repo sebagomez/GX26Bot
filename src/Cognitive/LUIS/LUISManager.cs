@@ -65,7 +65,7 @@ namespace GX26Bot.Cognitive.LUIS
 				name = name.Split(' ')[0];
 			
 			await SendMessage(context, string.Format(lang.Hello, name), result.Query, GREETING);
-			await SendMessage(context, lang.HelloMultiLine, result.Query, GREETING);
+			await SendMessage(context, lang.HelloMultiLine);
 
 			context.Wait(MessageReceived);
 		}
