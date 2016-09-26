@@ -436,7 +436,7 @@ namespace GX26Bot.Cognitive.LUIS
 							if (p.Key == "charlaexp")
 								msg.Append($" ({p.Value.Sanitize()})");
 						
-						await SendMessage(context, msg.ToString(), result.Query, NONE);
+						await SendMessage(context, msg.ToString());
 					}
 					context.Wait(MessageReceived);
 					return;
