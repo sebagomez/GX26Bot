@@ -6,7 +6,7 @@ The code here will not run correctly because you need to provide the necesary ke
 
 It is still a good way of seeing how [LUIS](luis.ai/) can interact with other services either from [Micosoft](https://www.microsoft.com/cognitive-services) or [IBM Watson](http://www.ibm.com/watson/).
 
-If you have any questions or concerns please file an issue.
+If you have any questions or concerns please file an [issue](//issues).
 
 <img src="res//RUDIGX26.png" alt="GX26 RUDI" height="300">
 
