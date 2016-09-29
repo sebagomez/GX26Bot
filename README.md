@@ -8,4 +8,4 @@ It is still a good way of seeing how [LUIS](luis.ai/) can interact with other se
 
 If you have any questions or concerns please file an issue.
 
-![](res/RUDIGX26.png)
+![](res//RUDIGX26.png)
