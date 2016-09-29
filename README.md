@@ -8,4 +8,6 @@ It is still a good way of seeing how [LUIS](luis.ai/) can interact with other se
 
 If you have any questions or concerns please file an issue.
 
-![](res//RUDIGX26.png)
+<img src="res//RUDIGX26.png" alt="GX26 RUDI" height="300">
+
+_For a limited time you will be able to try it live at its [own site](http://gxrudi.azurewebsites.net/) or on [Facebook](facebook.com/gxrudi) and chat to her on [Messenger](https://www.messenger.com/t/gxrudi)._
